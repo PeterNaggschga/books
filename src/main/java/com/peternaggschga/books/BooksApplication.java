@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Main application, configuring and starting {@link SpringApplication Spring}.
+ */
 @SpringBootApplication
 public class BooksApplication {
 
