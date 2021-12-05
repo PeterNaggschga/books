@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de"
+      layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Autoren</title>
+</head>
+<body layout:fragment="content">
+<table class="ui celled table">
+    <thead>
+    <tr>
+        <th th:text="#{authors.table.head.name}">Name</th>
+        <th th:text="#{authors.table.head.born}">Geboren</th>
+        <th th:text="#{authors.table.head.died}">Gestorben</th>
+        <th th:text="#{authors.table.head.nationality}">Nationalität</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="author : ${authors}">
+        <td th:text="${author}">Name</td>
+        <td th:text="${author.birthDateString}">Geboren</td>
+        <td th:text="${author.deathDateString}">Gestorben</td>
+        <td th:text="${author.nationality}">Nationalität</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

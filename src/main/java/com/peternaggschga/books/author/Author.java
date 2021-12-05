@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 /**
  * An entity representing a person writing {@link com.peternaggschga.books.book.Book Book}s.
@@ -73,11 +75,35 @@ public class Author {
         return deathDate;
     }
 
-    public void setDeathDate(LocalDate deathDate) {
-        this.deathDate = deathDate;
-    }
-
     public CountryCode getNationality() {
         return nationality;
+    }
+
+    /**
+     * Returns locally formatted String representing the birthDate.
+     *
+     * @return locally formatted String representing a date, never null.
+     * @see DateTimeFormatter#ofLocalizedDate(FormatStyle)
+     */
+    public String getBirthDateString() {
+        return getBirthDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
+    }
+
+    /**
+     * Returns locally formatted String representing the deathDate.
+     *
+     * @return locally formatted String representing a date, can be null.
+     * @see DateTimeFormatter#ofLocalizedDate(FormatStyle)
+     */
+    public String getDeathDateString() {
+        if (deathDate == null) {
+            return null;
+        }
+        return getDeathDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
+    }
+
+    @Override
+    public String toString() {
+        return getFirstName() + " " + getLastName();
     }
 }

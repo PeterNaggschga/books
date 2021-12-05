@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="de">
+<body>
+<div th:fragment="navigation">
+    <a class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none fs-3" th:href="@{/}"
+       th:text="#{main.title}"></a>
+    <ul class="nav col-12 col-lg-auto mb-2 justify-content-center mb-md-0">
+        <li>
+            <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/authors'? 'text-primary' : 'text-secondary'}"
+               th:href="@{/authors}" th:text="#{authors.title}">Autoren</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
