@@ -5,9 +5,12 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Autoren</title>
+    <title th:text="#{authors.title}">Autoren</title>
 </head>
 <body layout:fragment="content">
+<div class="container row justify-content-end mb-3">
+    <a class="btn btn-primary w-auto" th:href="@{/authors/add}" th:text="#{authors.buttons.add}">Hinzufügen</a>
+</div>
 <table class="ui celled table">
     <thead>
     <tr>
@@ -20,9 +23,12 @@
     <tbody>
     <tr th:each="author : ${authors}">
         <td th:text="${author}">Name</td>
+        <!--suppress ThymeleafVariablesResolveInspection -->
         <td th:text="${author.birthDateString}">Geboren</td>
+        <!--suppress ThymeleafVariablesResolveInspection -->
         <td th:text="${author.deathDateString}">Gestorben</td>
-        <td th:text="${author.nationality}">Nationalität</td>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <td th:text="${author.nationality.name}">Nationalität</td>
     </tr>
     </tbody>
 </table>
