@@ -21,10 +21,10 @@ public class CreateAuthorForm {
     @SuppressWarnings("FieldMayBeFinal")
     private String lastName;
     @NotNull
-    @NotBlank
-    @Pattern(regexp = "[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])")
+    @Pattern(regexp = "([0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|)")
     @SuppressWarnings("FieldMayBeFinal")
     private String birthDateString;
+    @NotNull
     @Pattern(regexp = "([0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|)")
     @SuppressWarnings("FieldMayBeFinal")
     private String deathDateString;
@@ -70,14 +70,11 @@ public class CreateAuthorForm {
     }
 
     public LocalDate getBirthDate() {
-        return LocalDate.parse(birthDateString);
+        return birthDateString.isEmpty() ? null : LocalDate.parse(birthDateString);
     }
 
     public LocalDate getDeathDate() {
-        if (deathDateString.isEmpty()) {
-            return null;
-        }
-        return LocalDate.parse(deathDateString);
+        return deathDateString.isEmpty() ? null : LocalDate.parse(deathDateString);
     }
 
     public CountryCode getCountryCode() {

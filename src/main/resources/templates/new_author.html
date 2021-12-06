@@ -8,6 +8,7 @@
     <title th:text="#{authors.add.title}">Autor hinzufügen</title>
 </head>
 <body layout:fragment="content">
+<!--suppress ThymeleafVariablesResolveInspection -->
 <form class="needs-validation" id="form" method="post" role="form" th:action="@{/authors/add}"
       th:object="${createAuthorForm}">
     <p class="text-danger" th:if="${#fields.hasErrors('*')}" th:text="#{authors.add.form.error}">Fehler</p>
@@ -27,8 +28,8 @@
         <div class="col-3">
             <label class="form-label" for="birthDateString" th:text="#{authors.add.form.birthdate}">Geburtsdatum</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" data-date-format="dd.mm.yyyy" id="birthDateString" required
-                   th:errorclass="fieldError" th:field="*{birthDateString}" type="date">
+            <input class="form-control" data-date-format="dd.mm.yyyy" id="birthDateString" th:errorclass="fieldError"
+                   th:field="*{birthDateString}" type="date">
         </div>
         <div class="col-3">
             <label class="form-label" for="deathDateString" th:text="#{authors.add.form.deathdate}">Todesdatum</label>

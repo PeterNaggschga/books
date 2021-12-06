@@ -46,7 +46,7 @@ public class AuthorController {
     @PostMapping("/authors/add")
     public String addAuthor(Model model, @Valid CreateAuthorForm form, Errors result) {
         if (result.hasErrors()) {
-            LOG.error("Fehlerhafte Formulardaten: " + result.getAllErrors());
+            LOG.warn("Fehlerhafte Formulardaten: " + result.getAllErrors());
             model.addAttribute("countries", CountryCode.values());
             return "new_author";
         }

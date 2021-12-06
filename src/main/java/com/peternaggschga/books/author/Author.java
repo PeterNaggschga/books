@@ -26,7 +26,6 @@ public class Author {
     @NotNull
     @NotBlank
     private String lastName;
-    @NotNull
     private LocalDate birthDate;
     private LocalDate deathDate;
     @NotNull
@@ -43,11 +42,11 @@ public class Author {
      *
      * @param firstName   must not be null or blank.
      * @param lastName    must not be null or blank.
-     * @param birthDate   must not be null.
-     * @param deathDate   can be null, if {@link Author} is currently alive.
+     * @param birthDate   can be null, if unknown.
+     * @param deathDate   can be null, if unknown.
      * @param nationality must not be null.
      */
-    public Author(@NotNull @NotBlank String firstName, @NotNull @NotBlank String lastName, @NotNull LocalDate birthDate,
+    public Author(@NotNull @NotBlank String firstName, @NotNull @NotBlank String lastName, LocalDate birthDate,
                   LocalDate deathDate, @NotNull CountryCode nationality) {
         setFirstName(firstName);
         setLastName(lastName);
@@ -86,12 +85,11 @@ public class Author {
         return birthDate;
     }
 
-    public void setBirthDate(@NotNull LocalDate birthDate) {
-        Objects.requireNonNull(birthDate, "Date of birth must not be null");
-        if (deathDate != null && birthDate.isAfter(deathDate)) {
+    public void setBirthDate(LocalDate birthDate) {
+        if (birthDate != null && deathDate != null && birthDate.isAfter(deathDate)) {
             throw new IllegalArgumentException("Date of birth must not be after date of death");
         }
-        if (birthDate.isAfter(LocalDate.now())) {
+        if (birthDate != null && birthDate.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Date of birth must not be after today");
         }
         this.birthDate = birthDate;
@@ -122,11 +120,11 @@ public class Author {
     /**
      * Returns locally formatted String representing the birthDate.
      *
-     * @return locally formatted String representing a date, never null.
+     * @return locally formatted String representing a date, can be null.
      * @see DateTimeFormatter#ofLocalizedDate(FormatStyle)
      */
     public String getBirthDateString() {
-        return getBirthDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
+        return birthDate == null ? null : getBirthDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
     }
 
     /**
@@ -136,10 +134,7 @@ public class Author {
      * @see DateTimeFormatter#ofLocalizedDate(FormatStyle)
      */
     public String getDeathDateString() {
-        if (deathDate == null) {
-            return null;
-        }
-        return getDeathDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
+        return deathDate == null ? null : getDeathDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
     }
 
     @Override

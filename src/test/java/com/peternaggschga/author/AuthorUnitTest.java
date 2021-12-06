@@ -87,11 +87,12 @@ public class AuthorUnitTest {
         }
 
         @Test
-        void constructorAssertsBirthDateNull() {
+        void constructorAllowsBirthDateNull() {
             try {
                 new Author(FIRST_NAME, LAST_NAME, null, DEATH_DATE, NATIONALITY);
+            } catch (Exception e) {
+                e.printStackTrace();
                 fail();
-            } catch (NullPointerException ignored) {
             }
         }
 
@@ -146,9 +147,10 @@ public class AuthorUnitTest {
     class getterTests {
 
         @Test
-        void getDeathDateStringReturnsNull() {
-            Author author = new Author(FIRST_NAME, LAST_NAME, BIRTH_DATE, null, NATIONALITY);
-            assertNull(author.getDeathDate());
+        void getDateStringReturnsNull() {
+            Author author = new Author(FIRST_NAME, LAST_NAME, null, null, NATIONALITY);
+            assertNull(author.getDeathDateString());
+            assertNull(author.getDeathDateString());
         }
 
         @Test
@@ -229,13 +231,14 @@ public class AuthorUnitTest {
         }
 
         @Test
-        void setBirthDateAssertsNull() {
+        void setBirthDateAllowsNull() {
             try {
                 author.setBirthDate(null);
+            } catch (Exception e) {
+                e.printStackTrace();
                 fail();
-            } catch (NullPointerException ignored) {
             }
-            assertEquals(BIRTH_DATE, author.getBirthDate());
+            assertNull(author.getBirthDate());
         }
 
         @Test
