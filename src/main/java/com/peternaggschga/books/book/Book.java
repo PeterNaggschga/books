@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * An Entity representing a Book.
+ */
 @Entity
 public class Book {
     public static final String ISBN_REGEX = "^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$";
@@ -35,9 +38,22 @@ public class Book {
     @NotNull
     private Locale language;
 
+    /**
+     * No-arg constructor of {@link Author}, only used by {@link org.springframework.boot.SpringApplication Spring}.
+     */
     protected Book() {
     }
 
+    /**
+     * Creates a new {@link Book} instance with the given title, authors, published, isbn, pages and language.
+     *
+     * @param title     must not be null or blank.
+     * @param authors   must not be null or empty.
+     * @param published must not be null.
+     * @param isbn      must not be null, must match {@link Book#ISBN_REGEX}.
+     * @param pages     must be positive.
+     * @param language  must not be null.
+     */
     public Book(@NotNull @NotBlank String title, @NotNull @NotEmpty List<Author> authors, @NotNull LocalDate published,
                 @NotNull String isbn, @Positive int pages, @NotNull Locale language) {
         setTitle(title);
@@ -48,6 +64,16 @@ public class Book {
         setLanguage(language);
     }
 
+    /**
+     * Creates a new {@link Book} instance with the given title, author, published, isbn, pages and language.
+     *
+     * @param title     must not be null or blank.
+     * @param author    must not be null.
+     * @param published must not be null.
+     * @param isbn      must not be null, must match {@link Book#ISBN_REGEX}.
+     * @param pages     must be positive.
+     * @param language  must not be null.
+     */
     public Book(@NotNull @NotBlank String title, @NotNull Author author, @NotNull LocalDate published,
                 @NotNull String isbn, @Positive int pages, @NotNull Locale language) {
         setTitle(title);
