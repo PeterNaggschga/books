@@ -43,7 +43,7 @@ public class AuthorUnitTest {
         }
 
         @Test
-        void constructorAssertsFirstNameEmpty() {
+        void constructorAssertsFirstNameBlank() {
             try {
                 new Author(" ", LAST_NAME, BIRTH_DATE, DEATH_DATE, NATIONALITY);
                 fail();
@@ -73,7 +73,7 @@ public class AuthorUnitTest {
         }
 
         @Test
-        void constructorAssertsLastNameEmpty() {
+        void constructorAssertsLastNameBlank() {
             try {
                 new Author(FIRST_NAME, " ", BIRTH_DATE, DEATH_DATE, NATIONALITY);
                 fail();
@@ -183,7 +183,7 @@ public class AuthorUnitTest {
         }
 
         @Test
-        void setFirstNameAssertsEmpty() {
+        void setFirstNameAssertsBlank() {
             try {
                 author.setFirstName(" ");
                 fail();
@@ -216,7 +216,7 @@ public class AuthorUnitTest {
         }
 
         @Test
-        void setLastNameAssertsEmpty() {
+        void setLastNameAssertsBlank() {
             try {
                 author.setLastName(" ");
                 fail();
