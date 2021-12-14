@@ -53,6 +53,7 @@ public class Book {
      * @param isbn      must not be null, must match {@link Book#ISBN_REGEX}.
      * @param pages     must be positive.
      * @param language  must not be null.
+     * @see Book#Book(String, Author, LocalDate, String, int, Locale)
      */
     public Book(@NotNull @NotBlank String title, @NotNull @NotEmpty List<Author> authors, @NotNull LocalDate published,
                 @NotNull String isbn, @Positive int pages, @NotNull Locale language) {
@@ -66,6 +67,7 @@ public class Book {
 
     /**
      * Creates a new {@link Book} instance with the given title, author, published, isbn, pages and language.
+     * Wrapper of {@link Book#Book(String, List, LocalDate, String, int, Locale)}.
      *
      * @param title     must not be null or blank.
      * @param author    must not be null.
@@ -73,15 +75,11 @@ public class Book {
      * @param isbn      must not be null, must match {@link Book#ISBN_REGEX}.
      * @param pages     must be positive.
      * @param language  must not be null.
+     * @see Book#Book(String, List, LocalDate, String, int, Locale)
      */
     public Book(@NotNull @NotBlank String title, @NotNull Author author, @NotNull LocalDate published,
                 @NotNull String isbn, @Positive int pages, @NotNull Locale language) {
-        setTitle(title);
-        setAuthors(author);
-        setPublished(published);
-        setIsbn(isbn);
-        setPages(pages);
-        setLanguage(language);
+        this(title, List.of(author), published, isbn, pages, language);
     }
 
     public void setAuthors(@NotNull Author author) {

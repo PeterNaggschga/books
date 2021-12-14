@@ -26,7 +26,7 @@ public class Series {
     private String title;
     @NotNull
     @ManyToMany
-    private SortedSet<Book> books;
+    private Set<Book> books;
 
     /**
      * No-arg constructor of {@link Series}, only used by {@link org.springframework.boot.SpringApplication Spring}.
@@ -87,8 +87,16 @@ public class Series {
         return result;
     }
 
+    /**
+     * Returns a {@link SortedSet} of all {@link Book}s contained in this series.
+     * The books are sorted by their date of publication.
+     *
+     * @return a {@link SortedSet} of {@link Book}s.
+     */
     public SortedSet<Book> getBooks() {
-        return books;
+        SortedSet<Book> result = new TreeSet<>(Comparator.comparing(Book::getPublished));
+        result.addAll(books);
+        return result;
     }
 
     /**
