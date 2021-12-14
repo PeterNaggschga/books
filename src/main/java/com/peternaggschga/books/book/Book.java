@@ -95,6 +95,10 @@ public class Book {
         this.authors = authors;
     }
 
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -130,5 +134,9 @@ public class Book {
 
     public void setLanguage(@NotNull Locale language) {
         this.language = Objects.requireNonNull(language, "Language must not be null");
+    }
+
+    public LocalDate getPublished() {
+        return published;
     }
 }
