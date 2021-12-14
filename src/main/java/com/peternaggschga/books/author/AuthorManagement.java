@@ -19,7 +19,7 @@ public class AuthorManagement {
     private final AuthorRepository repository;
 
     /**
-     * Creates a new {@link AuthorManagement} instance with the given repository.
+     * Creates a new {@link AuthorManagement} instance with the given {@link AuthorRepository}.
      *
      * @param repository must not be null.
      */
