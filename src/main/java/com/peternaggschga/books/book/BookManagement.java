@@ -9,30 +9,36 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
 /**
- * Service managing access to the {@link BookRepository} and {@link Book} instances.
+ * Service managing access to the {@link BookRepository} and {@link Book} instances as well as the
+ * {@link SeriesRepository} and {@link Series} instances.
  */
 @Service
 @Transactional
 public class BookManagement {
     @NotNull
-    private final BookRepository repository;
+    private final BookRepository bookRepository;
+    @NotNull
+    private final SeriesRepository seriesRepository;
 
     /**
-     * Creates a new {@link BookManagement} instance with the given {@link BookRepository}.
+     * Creates a new {@link BookManagement} instance with the given {@link BookRepository} and {@link SeriesRepository}.
      *
-     * @param repository must not be null.
+     * @param bookRepository   must not be null.
+     * @param seriesRepository must not be null.
      */
-    public BookManagement(@NotNull BookRepository repository) {
-        this.repository = repository;
+    public BookManagement(BookRepository bookRepository, SeriesRepository seriesRepository) {
+        this.bookRepository = bookRepository;
+        this.seriesRepository = seriesRepository;
     }
 
     /**
      * Creates a new {@link Book} instance with the given title, authors, published, isbn, pages and language.
-     * The new instance is saved into the repository.
+     * The new instance is saved into the bookRepository.
      *
      * @param title     must not be null or blank.
      * @param authors   must not be null or empty.
@@ -40,19 +46,41 @@ public class BookManagement {
      * @param isbn      must not be null, must match {@link Book#ISBN_REGEX}.
      * @param pages     must be positive.
      * @param language  must not be null.
+     * @return the new {@link Book} instance.
      */
     public Book createBook(@NotNull @NotBlank String title, @NotNull @NotEmpty List<Author> authors,
                            @NotNull LocalDate published, @NotNull String isbn, @Positive int pages,
                            @NotNull Locale language) {
-        return repository.save(new Book(title, authors, published, isbn, pages, language));
+        return bookRepository.save(new Book(title, authors, published, isbn, pages, language));
     }
 
     /**
-     * Returns all {@link Book}s present in repository.
+     * Returns all {@link Book}s present in bookRepository.
      *
-     * @return an {@link Iterable} containing all {@link Book} instances in repository.
+     * @return an {@link Iterable} containing all {@link Book} instances in bookRepository.
      */
-    public Iterable<Book> findAll() {
-        return repository.findAll();
+    public Iterable<Book> findAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    /**
+     * Creates a new {@link Series} instance with the given title and books.
+     * The new instance is saved into the seriesRepository.
+     *
+     * @param title must not be null or blank.
+     * @param books can be null.
+     * @return the new {@link Series} instance.
+     */
+    public Series createSeries(@NotNull @NotBlank String title, Collection<Book> books) {
+        return seriesRepository.save(new Series(title, books));
+    }
+
+    /**
+     * Returns all {@link Series} present in seriesRepository.
+     *
+     * @return an {@link Iterable} containing all {@link Series} instances in seriesRepository.
+     */
+    public Iterable<Series> findAllSeries() {
+        return seriesRepository.findAll();
     }
 }
