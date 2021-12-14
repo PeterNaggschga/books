@@ -26,11 +26,11 @@ public class Series {
     private String title;
     @NotNull
     @ManyToMany
-    private SortedSet<Author> authors;
-    @NotNull
-    @ManyToMany
     private SortedSet<Book> books;
 
+    /**
+     * No-arg constructor of {@link Series}, only used by {@link org.springframework.boot.SpringApplication Spring}.
+     */
     protected Series() {
     }
 
@@ -40,9 +40,8 @@ public class Series {
      * @param title must not be null or blank.
      * @param books must not be null.
      */
-    public Series(@NotNull @NotBlank String title, @NotNull Collection<Book> books) {
+    public Series(@NotNull @NotBlank String title, Collection<Book> books) {
         this.books = new TreeSet<>(Comparator.comparing(Book::getPublished));
-        this.authors = new TreeSet<>((author, t1) -> (int) (this.books.stream().filter(book -> book.getAuthors().contains(t1)).count() - this.books.stream().filter(book -> book.getAuthors().contains(author)).count()));
         setTitle(title);
         addAll(books);
     }
@@ -50,13 +49,12 @@ public class Series {
     /**
      * Adds all {@link Book}s of the given {@link Collection} and their associated {@link Author}s to the series.
      *
-     * @param books must not be null.
-     * @return true if books or authors were changed by the operation.
+     * @param books can be null.
+     * @return true if books were changed by the operation.
      */
     @SuppressWarnings("UnusedReturnValue")
-    public boolean addAll(@NotNull Collection<Book> books) {
-        return this.books.addAll(Objects.requireNonNull(books, "Collection of books must not be null")) ||
-                this.authors.addAll(books.stream().flatMap((Function<Book, Stream<Author>>) book -> book.getAuthors().stream()).collect(Collectors.toSet()));
+    public boolean addAll(Collection<Book> books) {
+        return books != null && this.books.addAll(books);
     }
 
     public long getId() {
@@ -71,14 +69,40 @@ public class Series {
         if (Objects.requireNonNull(title, "Title must not be null").isBlank()) {
             throw new IllegalArgumentException("Title must not be blank");
         }
-        this.title = title;
+        this.title = title.trim();
     }
 
+    /**
+     * Returns a {@link SortedSet} of {@link Author}s who wrote a {@link Book} in this series.
+     * The authors are sorted by the amount of books contained in the series they worked on.
+     *
+     * @return a {@link SortedSet} of {@link Author}s.
+     */
     public SortedSet<Author> getAuthors() {
-        return authors;
+        SortedSet<Author> result = new TreeSet<>((author, t1) ->
+                (int) (this.books.stream().filter(book -> book.getAuthors().contains(t1)).count()
+                        - this.books.stream().filter(book -> book.getAuthors().contains(author)).count()));
+        result.addAll(books.stream().flatMap((Function<Book, Stream<Author>>) book ->
+                book.getAuthors().stream()).collect(Collectors.toSet()));
+        return result;
     }
 
     public SortedSet<Book> getBooks() {
         return books;
+    }
+
+    /**
+     * Removes the given {@link Book} from books.
+     *
+     * @param book can be null.
+     * @return true if books were changed by the operation.
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    public boolean remove(Book book) {
+        return book != null && books.remove(book);
+    }
+
+    public void clear() {
+        books.clear();
     }
 }

@@ -39,7 +39,7 @@ public class Book {
     private Locale language;
 
     /**
-     * No-arg constructor of {@link Author}, only used by {@link org.springframework.boot.SpringApplication Spring}.
+     * No-arg constructor of {@link Book}, only used by {@link org.springframework.boot.SpringApplication Spring}.
      */
     protected Book() {
     }

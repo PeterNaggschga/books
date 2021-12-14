@@ -293,9 +293,9 @@ public class AuthorUnitTest {
         }
 
         @Test
-        void constructorAssertsNationalityNull() {
+        void setNationalityAssertsNull() {
             try {
-                new Author(FIRST_NAME, LAST_NAME, BIRTH_DATE, DEATH_DATE, null);
+                author.setNationality(null);
                 fail();
             } catch (NullPointerException ignored) {
             }
