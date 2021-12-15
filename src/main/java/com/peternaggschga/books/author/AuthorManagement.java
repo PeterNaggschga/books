@@ -65,4 +65,15 @@ public class AuthorManagement {
     public Iterable<Author> findAll() {
         return repository.findAll();
     }
+
+    /**
+     * Returns the {@link Author} referenced by the given id.
+     * If the id does not exist, a {@link java.util.NoSuchElementException} is thrown.
+     *
+     * @param id must be valid, else {@link java.util.NoSuchElementException} is thrown.
+     * @return the {@link Author} referenced by id.
+     */
+    public Author findById(long id) {
+        return repository.findById(id).orElseThrow();
+    }
 }
