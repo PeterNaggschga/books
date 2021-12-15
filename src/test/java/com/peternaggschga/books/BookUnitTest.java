@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = Book.class)
 public class BookUnitTest {
@@ -289,6 +289,32 @@ public class BookUnitTest {
                 fail();
             } catch (NullPointerException ignored) {
             }
+        }
+    }
+
+    @Nested
+    class GetterTests {
+        Book book;
+        Author author;
+
+        @BeforeEach
+        void setup() {
+            author = mock(Author.class);
+            when(author.toString()).thenReturn("Zweiter Autor");
+            when(AUTHOR.toString()).thenReturn("Brandon Sanderson");
+            book = new Book(TITLE, List.of(AUTHOR, author), PUBLISHED, ISBN, PAGES, LANGUAGE);
+        }
+
+        @Test
+        void getAuthorStringReturnsMultipleAuthors() {
+            assertTrue(book.getAuthorString().equals(author.toString() + ", " + AUTHOR.toString())
+                    || book.getAuthorString().equals(AUTHOR + ", " + author.toString()));
+        }
+
+        @Test
+        void getAuthorStringReturnsSingleAuthor() {
+            book.setAuthors(AUTHOR);
+            assertEquals(AUTHOR.toString(), book.getAuthorString());
         }
     }
 }

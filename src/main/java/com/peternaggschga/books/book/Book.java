@@ -8,9 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * An Entity representing a Book.
@@ -27,7 +25,7 @@ public class Book {
     @NotNull
     @NotEmpty
     @ManyToMany
-    private List<Author> authors;
+    private Set<Author> authors;
     @NotNull
     private LocalDate published;
     @NotNull
@@ -55,8 +53,8 @@ public class Book {
      * @param language  must not be null.
      * @see Book#Book(String, Author, LocalDate, String, int, Locale)
      */
-    public Book(@NotNull @NotBlank String title, @NotNull @NotEmpty List<Author> authors, @NotNull LocalDate published,
-                @NotNull String isbn, @Positive int pages, @NotNull Locale language) {
+    public Book(@NotNull @NotBlank String title, @NotNull @NotEmpty Collection<Author> authors,
+                @NotNull LocalDate published, @NotNull String isbn, @Positive int pages, @NotNull Locale language) {
         setTitle(title);
         setAuthors(authors);
         setPublished(published);
@@ -67,7 +65,7 @@ public class Book {
 
     /**
      * Creates a new {@link Book} instance with the given title, author, published, isbn, pages and language.
-     * Wrapper of {@link Book#Book(String, List, LocalDate, String, int, Locale)}.
+     * Wrapper of {@link Book#Book(String, Collection, LocalDate, String, int, Locale)}.
      *
      * @param title     must not be null or blank.
      * @param author    must not be null.
@@ -75,26 +73,40 @@ public class Book {
      * @param isbn      must not be null, must match {@link Book#ISBN_REGEX}.
      * @param pages     must be positive.
      * @param language  must not be null.
-     * @see Book#Book(String, List, LocalDate, String, int, Locale)
+     * @see Book#Book(String, Collection, LocalDate, String, int, Locale)
      */
     public Book(@NotNull @NotBlank String title, @NotNull Author author, @NotNull LocalDate published,
                 @NotNull String isbn, @Positive int pages, @NotNull Locale language) {
-        this(title, List.of(author), published, isbn, pages, language);
+        this(title, Set.of(author), published, isbn, pages, language);
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
     }
 
     public void setAuthors(@NotNull Author author) {
-        this.authors = List.of(Objects.requireNonNull(author, "Author must not be null"));
+        this.authors = Set.of(Objects.requireNonNull(author, "Author must not be null"));
     }
 
-    public void setAuthors(@NotNull @NotEmpty List<Author> authors) {
+    public void setAuthors(@NotNull @NotEmpty Collection<Author> authors) {
         if (Objects.requireNonNull(authors, "List of authors must not be null").isEmpty()) {
             throw new IllegalArgumentException("List of authors must not be empty");
         }
-        this.authors = authors;
+        this.authors = new HashSet<>(authors);
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    /**
+     * Returns a {@link String} containing the names of all {@link Author}s of this book.
+     *
+     * @return a {@link String} of names, never null.
+     */
+    public String getAuthorString() {
+        List<Author> authors = new ArrayList<>(this.authors);
+        StringBuilder builder = new StringBuilder(authors.get(0).toString());
+        for (int i = 1; i < authors.size(); i++) {
+            builder.append(", ").append(authors.get(i).toString());
+        }
+        return builder.toString();
     }
 
     public String getTitle() {
@@ -136,5 +148,10 @@ public class Book {
 
     public LocalDate getPublished() {
         return published;
+    }
+
+    @Override
+    public String toString() {
+        return getAuthorString() + ": " + title;
     }
 }

@@ -35,14 +35,15 @@ public class SeriesController {
         return "series";
     }
 
+    @SuppressWarnings("unused")
     @GetMapping("/series/add")
-    public String addSeries(Model model) {
+    public String addSeries(Model model, CreateSeriesForm form) {
         model.addAttribute("books", management.findAllBooks());
         return "new_series";
     }
 
     @PostMapping("/series/add")
-    public String addAuthor(Model model, @Valid CreateSeriesForm form, Errors result) {
+    public String addSeries(Model model, @Valid CreateSeriesForm form, Errors result) {
         if (result.hasErrors()) {
             LOG.warn("Fehlerhafte Formulardaten: " + result.getAllErrors());
             model.addAttribute("books", management.findAllBooks());

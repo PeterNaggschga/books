@@ -12,7 +12,6 @@ public class CreateSeriesForm {
     @NotBlank
     @SuppressWarnings("FieldMayBeFinal")
     private String title;
-    @NotNull
     @SuppressWarnings("FieldMayBeFinal")
     private List<String> books;
 

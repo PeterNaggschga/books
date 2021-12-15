@@ -98,8 +98,9 @@ public class BookManagement {
      * @see BookManagement#createSeries(String, Collection)
      */
     public Series createSeries(@NotNull @Valid CreateSeriesForm form) {
-        return createSeries(form.getTitle(), form.getBooks().stream().map(this::findBookByTitle)
-                .collect(Collectors.toSet()));
+        return form.getBooks() == null ? createSeries(form.getTitle(), null) :
+                createSeries(form.getTitle(), form.getBooks().stream().map(this::findBookByTitle)
+                        .collect(Collectors.toSet()));
     }
 
     /**
