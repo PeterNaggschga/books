@@ -4,6 +4,7 @@ import com.peternaggschga.books.author.Author;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * Service managing access to the {@link BookRepository} and {@link Book} instances as well as the
@@ -64,15 +66,40 @@ public class BookManagement {
     }
 
     /**
+     * Returns the book with the given title.
+     *
+     * @param title must not be null or blank.
+     * @return the {@link Book} with the given title.
+     */
+    public Book findBookByTitle(@NotNull @NotBlank String title) {
+        return bookRepository.findByTitle(title);
+    }
+
+    /**
      * Creates a new {@link Series} instance with the given title and books.
      * The new instance is saved into the seriesRepository.
      *
      * @param title must not be null or blank.
      * @param books can be null.
      * @return the new {@link Series} instance.
+     * @see BookManagement#createSeries(CreateSeriesForm)
      */
     public Series createSeries(@NotNull @NotBlank String title, Collection<Book> books) {
         return seriesRepository.save(new Series(title, books));
+    }
+
+    /**
+     * Creates a new {@link Series} instance with the given {@link CreateSeriesForm}.
+     * The new instance is saved into the seriesRepository.
+     * Wrapper function of {@link BookManagement#createSeries(String, Collection)}.
+     *
+     * @param form must not be null or invalid.
+     * @return the new {@link Series} instance.
+     * @see BookManagement#createSeries(String, Collection)
+     */
+    public Series createSeries(@NotNull @Valid CreateSeriesForm form) {
+        return createSeries(form.getTitle(), form.getBooks().stream().map(this::findBookByTitle)
+                .collect(Collectors.toSet()));
     }
 
     /**

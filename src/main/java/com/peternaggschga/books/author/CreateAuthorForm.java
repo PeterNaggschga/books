@@ -64,7 +64,6 @@ public class CreateAuthorForm {
         return countryCodeString;
     }
 
-    @SuppressWarnings("unused")
     public void setCountryCodeString(String countryCodeString) {
         this.countryCodeString = countryCodeString;
     }

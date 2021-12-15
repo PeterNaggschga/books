@@ -88,6 +88,27 @@ public class Series {
     }
 
     /**
+     * Returns a {@link String} containing the names of all {@link Author}s who wrote a {@link Book} in this series.
+     * The authors are sorted by the amount of books contained in the series they worked on.
+     *
+     * @return a {@link String} containing names.
+     */
+    public String getAuthorString() {
+        if (books.isEmpty()) {
+            return null;
+        }
+        SortedSet<Author> authors = getAuthors();
+        StringBuilder builder = new StringBuilder(authors.first().toString());
+        authors.remove(authors.first());
+        for (int i = 0; i < authors.size(); i++) {
+            Author author = authors.first();
+            builder.append(", ").append(author);
+            authors.remove(author);
+        }
+        return builder.toString();
+    }
+
+    /**
      * Returns a {@link SortedSet} of all {@link Book}s contained in this series.
      * The books are sorted by their date of publication.
      *

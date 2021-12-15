@@ -9,6 +9,10 @@
             <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/authors'? 'text-primary' : 'text-secondary'}"
                th:href="@{/authors}" th:text="#{authors.title}">Autoren</a>
         </li>
+        <li>
+            <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/series'? 'text-primary' : 'text-secondary'}"
+               th:href="@{/series}" th:text="#{series.title}">Reihen</a>
+        </li>
     </ul>
 </div>
 </body>

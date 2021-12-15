@@ -22,7 +22,7 @@ public class AuthorController {
     private final AuthorManagement management;
 
     /**
-     * Creates a new {@link AuthorController} instance with the given management.
+     * Creates a new {@link AuthorController} instance with the given {@link AuthorManagement}.
      *
      * @param management must not be null.
      */

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de"
+      layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{series.title}">Reihen</title>
+</head>
+<body layout:fragment="content">
+<div class="container row justify-content-end mb-3">
+    <a class="btn btn-primary w-auto" th:href="@{/series/add}" th:text="#{series.buttons.add}">Hinzufügen</a>
+</div>
+<table class="ui celled table">
+    <thead>
+    <tr>
+        <th th:text="#{series.table.head.title}">Titel</th>
+        <th th:text="#{series.table.head.authors}">Autoren</th>
+        <th th:text="#{series.table.head.count}">Teile</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="series : ${seriesIterable}">
+        <td th:text="${series.title}">Titel</td>
+        <td th:text="${series.authorString}">Autoren</td>
+        <td th:text="${series.books.size()}">Teile</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

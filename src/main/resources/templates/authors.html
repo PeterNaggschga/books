@@ -23,11 +23,8 @@
     <tbody>
     <tr th:each="author : ${authors}">
         <td th:text="${author}">Name</td>
-        <!--suppress ThymeleafVariablesResolveInspection -->
         <td th:text="${author.birthDateString}">Geboren</td>
-        <!--suppress ThymeleafVariablesResolveInspection -->
         <td th:text="${author.deathDateString}">Gestorben</td>
-        <!--suppress ThymeleafVariablesResolveInspection -->
         <td th:text="${author.nationality.name}">Nationalität</td>
     </tr>
     </tbody>

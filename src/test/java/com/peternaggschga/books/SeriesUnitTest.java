@@ -156,6 +156,26 @@ public class SeriesUnitTest {
             series.clear();
             assertEquals(0, series.getAuthors().size());
         }
+
+        @Test
+        void getAuthorsReturnsNullWhenEmpty() {
+            series.clear();
+            assertNull(series.getAuthorString());
+        }
+
+        @Test
+        void getAuthorsReturnsAuthorToStringWhenSingleAuthor() {
+            series.remove(BOOKS.get(2));
+            assertEquals(AUTHORS.get(0).toString(), series.getAuthorString());
+        }
+
+        @Test
+        void getAuthorsReturnsMultipleAuthorsSorted() {
+            String name1 = AUTHORS.get(0).toString();
+            String name2 = AUTHORS.get(1).toString();
+            assertEquals(name1 + ", " + name2, series.getAuthorString());
+
+        }
     }
 
     @Nested
