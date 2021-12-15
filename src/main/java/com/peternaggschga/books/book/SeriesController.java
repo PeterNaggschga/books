@@ -35,9 +35,8 @@ public class SeriesController {
         return "series";
     }
 
-    @SuppressWarnings("unused")
     @GetMapping("/series/add")
-    public String addSeries(Model model, CreateSeriesForm form) {
+    public String addSeries(Model model, @SuppressWarnings("unused") CreateSeriesForm form) {
         model.addAttribute("books", management.findAllBooks());
         return "new_series";
     }

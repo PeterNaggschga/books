@@ -23,7 +23,7 @@
             <div class="form-check" th:each="book : ${books}">
                 <!--suppress ThymeleafVariablesResolveInspection -->
                 <input class="form-check-input" id="books" th:field="*{books}" th:text="${book}"
-                       th:value="${book.title}" type="checkbox"/>
+                       th:value="${book.id}" type="checkbox"/>
             </div>
         </div>
     </div>

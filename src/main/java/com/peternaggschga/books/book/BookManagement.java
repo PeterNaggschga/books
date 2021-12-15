@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -66,13 +67,14 @@ public class BookManagement {
     }
 
     /**
-     * Returns the book with the given title.
+     * Returns the {@link Book} referenced by the given id.
+     * If the id does not exist, a {@link java.util.NoSuchElementException} is thrown.
      *
-     * @param title must not be null or blank.
-     * @return the {@link Book} with the given title.
+     * @param id must be valid, else {@link java.util.NoSuchElementException} is thrown.
+     * @return the {@link Book} referenced by id.
      */
-    public Book findBookByTitle(@NotNull @NotBlank String title) {
-        return bookRepository.findByTitle(title);
+    public Book findBookById(long id) {
+        return bookRepository.findById(id).orElseThrow();
     }
 
     /**
@@ -99,7 +101,7 @@ public class BookManagement {
      */
     public Series createSeries(@NotNull @Valid CreateSeriesForm form) {
         return form.getBooks() == null ? createSeries(form.getTitle(), null) :
-                createSeries(form.getTitle(), form.getBooks().stream().map(this::findBookByTitle)
+                createSeries(form.getTitle(), form.getBooks().stream().map(this::findBookById)
                         .collect(Collectors.toSet()));
     }
 

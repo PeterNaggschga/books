@@ -13,9 +13,9 @@ public class CreateSeriesForm {
     @SuppressWarnings("FieldMayBeFinal")
     private String title;
     @SuppressWarnings("FieldMayBeFinal")
-    private List<String> books;
+    private List<Long> books;
 
-    public CreateSeriesForm(String title, List<String> books) {
+    public CreateSeriesForm(String title, List<Long> books) {
         this.title = title;
         this.books = books;
     }
@@ -24,7 +24,7 @@ public class CreateSeriesForm {
         return title;
     }
 
-    public List<String> getBooks() {
+    public List<Long> getBooks() {
         return books;
     }
 }
