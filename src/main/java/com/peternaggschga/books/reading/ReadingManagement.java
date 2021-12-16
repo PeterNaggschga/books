@@ -1,6 +1,5 @@
 package com.peternaggschga.books.reading;
 
-import com.peternaggschga.books.author.Author;
 import com.peternaggschga.books.book.Book;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -53,11 +52,11 @@ public class ReadingManagement {
     }
 
     /**
-     * Returns the {@link Author} referenced by the given id.
+     * Returns the {@link Reading} referenced by the given id.
      * If the id does not exist, a {@link java.util.NoSuchElementException} is thrown.
      *
      * @param id must be valid, else {@link java.util.NoSuchElementException} is thrown.
-     * @return the {@link Author} referenced by id.
+     * @return the {@link Reading} referenced by id.
      */
     public Reading findReadingById(long id) {
         return readingRepository.findById(id).orElseThrow();
