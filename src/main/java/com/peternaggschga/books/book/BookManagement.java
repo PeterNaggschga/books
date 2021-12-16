@@ -2,6 +2,9 @@ package com.peternaggschga.books.book;
 
 import com.peternaggschga.books.author.Author;
 import com.peternaggschga.books.author.AuthorManagement;
+import com.peternaggschga.books.book.series.CreateSeriesForm;
+import com.peternaggschga.books.book.series.Series;
+import com.peternaggschga.books.book.series.SeriesRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

@@ -1,7 +1,6 @@
-package com.peternaggschga.books;
+package com.peternaggschga.books.book;
 
 import com.peternaggschga.books.author.Author;
-import com.peternaggschga.books.book.Book;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;

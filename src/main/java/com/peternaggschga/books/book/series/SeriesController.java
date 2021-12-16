@@ -1,5 +1,7 @@
-package com.peternaggschga.books.book;
+package com.peternaggschga.books.book.series;
 
+import com.peternaggschga.books.book.Book;
+import com.peternaggschga.books.book.BookManagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

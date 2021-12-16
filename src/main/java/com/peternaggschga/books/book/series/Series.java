@@ -1,6 +1,7 @@
-package com.peternaggschga.books.book;
+package com.peternaggschga.books.book.series;
 
 import com.peternaggschga.books.author.Author;
+import com.peternaggschga.books.book.Book;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
