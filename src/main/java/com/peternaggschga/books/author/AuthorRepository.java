@@ -13,7 +13,7 @@ public interface AuthorRepository extends CrudRepository<Author, Long> {
     /**
      * Returns all saved {@link Author} instances.
      *
-     * @return an {@link Streamable} containing all {@link Author} instances.
+     * @return a {@link Streamable} containing all {@link Author} instances.
      */
     @Override
     Streamable<Author> findAll();

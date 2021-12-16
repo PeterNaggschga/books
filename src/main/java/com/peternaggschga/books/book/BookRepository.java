@@ -13,7 +13,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     /**
      * Returns all saved {@link Book} instances.
      *
-     * @return an {@link Streamable} containing all {@link Book} instances.
+     * @return a {@link Streamable} containing all {@link Book} instances.
      */
     @Override
     Streamable<Book> findAll();

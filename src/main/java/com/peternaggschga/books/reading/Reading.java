@@ -39,9 +39,10 @@ public class Reading {
     /**
      * Creates a new {@link Reading} with the given {@link Book}, beginning and end.
      *
-     * @param book      must not be null.
-     * @param beginning must not be null.
-     * @param end       can be null (if reading is not finished yet).
+     * @param book         must not be null.
+     * @param beginning    must not be null.
+     * @param end          can be null (if reading is not finished yet).
+     * @param pagesPerHour must be positive.
      */
     public Reading(@NotNull Book book, @NotNull LocalDate beginning, LocalDate end, @Positive int pagesPerHour) {
         setBook(book);

@@ -13,7 +13,7 @@ public interface SeriesRepository extends CrudRepository<Series, Long> {
     /**
      * Returns all saved {@link Series} instances.
      *
-     * @return an {@link Streamable} containing all {@link Series} instances.
+     * @return a {@link Streamable} containing all {@link Series} instances.
      */
     @Override
     Streamable<Series> findAll();
