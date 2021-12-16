@@ -34,13 +34,13 @@ public class SeriesController {
     @GetMapping("/series")
     public String showSeries(Model model) {
         model.addAttribute("seriesIterable", management.findAllSeries());
-        return "series";
+        return "book/series/series";
     }
 
     @GetMapping("/series/add")
     public String addSeries(Model model, @SuppressWarnings("unused") CreateSeriesForm form) {
         model.addAttribute("books", management.findAllBooks());
-        return "new_series";
+        return "book/series/new_series";
     }
 
     @PostMapping("/series/add")
@@ -48,7 +48,7 @@ public class SeriesController {
         if (result.hasErrors()) {
             LOG.warn("Fehlerhafte Formulardaten: " + result.getAllErrors());
             model.addAttribute("books", management.findAllBooks());
-            return "new_series";
+            return "book/series/new_series";
         }
         management.createSeries(form);
         return "redirect:/series";

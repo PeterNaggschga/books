@@ -38,7 +38,7 @@ public class BookController {
     public String showBooks(Model model) {
         model.addAttribute("authorExists", authorManagement.getAuthorCount() > 0);
         model.addAttribute("books", bookManagement.findAllBooks());
-        return "books";
+        return "book/books";
     }
 
     @GetMapping("/books/add")
@@ -46,7 +46,7 @@ public class BookController {
         model.addAttribute("languages", BookManagement.LANGUAGES);
         model.addAttribute("authors", authorManagement.findAllAuthors());
         model.addAttribute("seriesIterable", bookManagement.findAllSeries());
-        return "new_book";
+        return "book/new_book";
     }
 
     @PostMapping("/books/add")
@@ -56,7 +56,7 @@ public class BookController {
             model.addAttribute("languages", BookManagement.LANGUAGES);
             model.addAttribute("authors", authorManagement.findAllAuthors());
             model.addAttribute("seriesIterable", bookManagement.findAllSeries());
-            return "new_book";
+            return "book/new_book";
         }
         Book book = bookManagement.createBook(form);
         if (form.getSeries() != null) {

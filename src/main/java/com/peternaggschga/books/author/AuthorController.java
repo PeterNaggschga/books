@@ -33,14 +33,14 @@ public class AuthorController {
     @GetMapping("/authors")
     public String showAuthors(Model model) {
         model.addAttribute("authors", management.findAllAuthors());
-        return "authors";
+        return "author/authors";
     }
 
     @GetMapping("/authors/add")
     public String addAuthor(Model model, CreateAuthorForm form) {
         form.setCountryCodeString(CountryCode.US.toString());
         model.addAttribute("countries", CountryCode.values());
-        return "new_author";
+        return "author/new_author";
     }
 
     @PostMapping("/authors/add")
@@ -48,7 +48,7 @@ public class AuthorController {
         if (result.hasErrors()) {
             LOG.warn("Fehlerhafte Formulardaten: " + result.getAllErrors());
             model.addAttribute("countries", CountryCode.values());
-            return "new_author";
+            return "author/new_author";
         }
         management.createAuthor(form);
         return "redirect:/authors";
