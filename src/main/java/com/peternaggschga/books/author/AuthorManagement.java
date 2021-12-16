@@ -1,6 +1,7 @@
 package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
+import com.peternaggschga.books.book.Book;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,20 +17,20 @@ import java.time.LocalDate;
 @Transactional
 public class AuthorManagement {
     @NotNull
-    private final AuthorRepository repository;
+    private final AuthorRepository authorRepository;
 
     /**
      * Creates a new {@link AuthorManagement} instance with the given {@link AuthorRepository}.
      *
-     * @param repository must not be null.
+     * @param authorRepository must not be null.
      */
-    public AuthorManagement(@NotNull AuthorRepository repository) {
-        this.repository = repository;
+    public AuthorManagement(@NotNull AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
     }
 
     /**
      * Creates a new {@link Author} instance with the given firstName, lastName, birthDate, deathDate and nationality.
-     * The new instance is saved into the repository.
+     * The new instance is saved into the {@link AuthorRepository}.
      *
      * @param firstName   must not be null or blank.
      * @param lastName    must not be null or blank.
@@ -40,12 +41,13 @@ public class AuthorManagement {
      */
     public Author createAuthor(@NotNull @NotBlank String firstName, @NotNull @NotBlank String lastName,
                                LocalDate birthDate, LocalDate deathDate, @NotNull CountryCode nationality) {
-        return repository.save(new Author(firstName, lastName, birthDate, deathDate, nationality));
+        return authorRepository.save(new Author(firstName, lastName, birthDate, deathDate, nationality));
     }
 
     /**
-     * Creates a new {@link Author} instance with the given form. The new instance is saved into the repository. Wrapper
-     * function of {@link AuthorManagement#createAuthor(String, String, LocalDate, LocalDate, CountryCode)}.
+     * Creates a new {@link Author} instance with the given form. The new instance is saved into the
+     * {@link AuthorRepository}.
+     * Wrapper function of {@link AuthorManagement#createAuthor(String, String, LocalDate, LocalDate, CountryCode)}.
      *
      * @param form must be valid, must not be null.
      * @return the new {@link Author} instance.
@@ -58,12 +60,21 @@ public class AuthorManagement {
     }
 
     /**
-     * Returns all {@link Author}s present in repository.
+     * Returns all {@link Author}s present in {@link AuthorRepository}.
      *
-     * @return an {@link Iterable} containing all {@link Author} instances in repository.
+     * @return an {@link Iterable} containing all {@link Author} instances in {@link AuthorRepository}.
      */
-    public Iterable<Author> findAll() {
-        return repository.findAll();
+    public Iterable<Author> findAllAuthors() {
+        return authorRepository.findAll();
+    }
+
+    /**
+     * Returns the number of {@link Author}s saved in {@link AuthorRepository}.
+     *
+     * @return a long counting the number of {@link Book}s.
+     */
+    public long getAuthorCount() {
+        return authorRepository.count();
     }
 
     /**
@@ -73,7 +84,7 @@ public class AuthorManagement {
      * @param id must be valid, else {@link java.util.NoSuchElementException} is thrown.
      * @return the {@link Author} referenced by id.
      */
-    public Author findById(long id) {
-        return repository.findById(id).orElseThrow();
+    public Author findAuthorById(long id) {
+        return authorRepository.findById(id).orElseThrow();
     }
 }

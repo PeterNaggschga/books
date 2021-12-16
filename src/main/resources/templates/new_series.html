@@ -16,14 +16,15 @@
         <div class="col-12">
             <label class="form-label" for="title" th:text="#{series.title}">Titel</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" id="title" required th:errorclass="fieldError" th:field="*{title}" type="text">
+            <input class="form-control" id="title" required th:errorclass="border-danger" th:field="*{title}"
+                   type="text">
         </div>
         <div class="col-12">
             <label class="form-label" for="books" th:text="#{series.books}">Bücher</label>
             <div class="form-check" th:each="book : ${books}">
                 <!--suppress ThymeleafVariablesResolveInspection -->
-                <input class="form-check-input" id="books" th:field="*{books}" th:text="${book}"
-                       th:value="${book.id}" type="checkbox"/>
+                <input class="form-check-input" id="books" th:field="*{books}" th:text="${book}" th:value="${book.id}"
+                       type="checkbox"/>
             </div>
         </div>
     </div>

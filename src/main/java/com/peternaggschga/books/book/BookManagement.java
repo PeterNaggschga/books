@@ -47,7 +47,7 @@ public class BookManagement {
 
     /**
      * Creates a new {@link Book} instance with the given title, authors, published, isbn, pages and language.
-     * The new instance is saved into the bookRepository.
+     * The new instance is saved into the {@link BookRepository}.
      *
      * @param title     must not be null or blank.
      * @param authors   must not be null or empty.
@@ -65,7 +65,7 @@ public class BookManagement {
 
     /**
      * Creates a new {@link Book} instance with the given {@link CreateBookForm} and adds it to the given series.
-     * The new instance is saved into the bookRepository.
+     * The new instance is saved into the {@link BookRepository}.
      * Wrapper function of {@link BookManagement#createBook(String, Collection, LocalDate, String, int, Locale)}.
      *
      * @param form must not be null or invalid.
@@ -74,14 +74,14 @@ public class BookManagement {
      * @see BookManagement#addBooksToSeries(Book, long)
      */
     public Book createBook(@NotNull @Valid CreateBookForm form) {
-        return createBook(form.getTitle(), form.getAuthors().stream().map(authorManagement::findById)
+        return createBook(form.getTitle(), form.getAuthors().stream().map(authorManagement::findAuthorById)
                 .collect(Collectors.toSet()), form.getPublished(), form.getIsbn(), form.getPages(), form.getLanguage());
     }
 
     /**
-     * Returns all {@link Book}s present in bookRepository.
+     * Returns all {@link Book}s present in {@link BookRepository}.
      *
-     * @return an {@link Iterable} containing all {@link Book} instances in bookRepository.
+     * @return an {@link Iterable} containing all {@link Book} instances in {@link BookRepository}.
      */
     public Iterable<Book> findAllBooks() {
         return bookRepository.findAll();
@@ -100,7 +100,7 @@ public class BookManagement {
 
     /**
      * Creates a new {@link Series} instance with the given title and books.
-     * The new instance is saved into the seriesRepository.
+     * The new instance is saved into the {@link SeriesRepository}.
      *
      * @param title must not be null or blank.
      * @param books can be null.
@@ -113,7 +113,7 @@ public class BookManagement {
 
     /**
      * Creates a new {@link Series} instance with the given {@link CreateSeriesForm}.
-     * The new instance is saved into the seriesRepository.
+     * The new instance is saved into the {@link SeriesRepository}.
      * Wrapper function of {@link BookManagement#createSeries(String, Collection)}.
      *
      * @param form must not be null or invalid.
@@ -156,9 +156,9 @@ public class BookManagement {
     }
 
     /**
-     * Returns all {@link Series} present in seriesRepository.
+     * Returns all {@link Series} present in {@link SeriesRepository}.
      *
-     * @return an {@link Iterable} containing all {@link Series} instances in seriesRepository.
+     * @return an {@link Iterable} containing all {@link Series} instances in {@link SeriesRepository}.
      */
     public Iterable<Series> findAllSeries() {
         return seriesRepository.findAll();

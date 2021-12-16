@@ -14,10 +14,6 @@ public class CreateBookForm {
     @SuppressWarnings("FieldMayBeFinal")
     private String title;
     @NotNull
-    @NotEmpty
-    @SuppressWarnings("FieldMayBeFinal")
-    private List<Long> authors;
-    @NotNull
     @NotBlank
     @SuppressWarnings("FieldMayBeFinal")
     private String publishedString;
@@ -33,6 +29,10 @@ public class CreateBookForm {
     @NotBlank
     @SuppressWarnings("FieldMayBeFinal")
     private String languageString;
+    @NotNull
+    @NotEmpty
+    @SuppressWarnings("FieldMayBeFinal")
+    private List<Long> authors;
     @SuppressWarnings("FieldMayBeFinal")
     private List<Long> series;
 

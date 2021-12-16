@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de"
+      layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{books.site.title}">Bücher</title>
+</head>
+<body layout:fragment="content">
+<div class="container row justify-content-end mb-3" th:if="${authorExists}">
+    <a class="btn btn-primary w-auto" th:href="@{/books/add}" th:text="#{books.add.site.title}">Hinzufügen</a>
+</div>
+<table class="ui celled table">
+    <thead>
+    <tr>
+        <th th:text="#{book.title}">Titel</th>
+        <th th:text="#{book.authors}">Autoren</th>
+        <th th:text="#{book.language}">Sprache</th>
+        <th th:text="#{book.pages}">Seiten</th>
+        <th th:text="#{book.published}">Veröffentlichung</th>
+        <th th:text="#{book.isbn}">ISBN</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.title}">Titel</td>
+        <td th:text="${book.authorString}">Autoren</td>
+        <td th:text="${book.language.language}">Sprache</td>
+        <td th:text="${book.pages}">Seiten</td>
+        <td th:text="${book.publishedString}">Veröffentlichung</td>
+        <td th:text="${book.isbn}">ISBN</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

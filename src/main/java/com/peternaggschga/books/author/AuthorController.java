@@ -32,7 +32,7 @@ public class AuthorController {
 
     @GetMapping("/authors")
     public String showAuthors(Model model) {
-        model.addAttribute("authors", management.findAll());
+        model.addAttribute("authors", management.findAllAuthors());
         return "authors";
     }
 

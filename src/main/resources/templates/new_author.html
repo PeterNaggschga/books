@@ -16,32 +16,33 @@
         <div class="col-6">
             <label class="form-label" for="firstName" th:text="#{author.firstname}">Vorname</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" id="firstName" required th:errorclass="fieldError" th:field="*{firstName}"
+            <input class="form-control" id="firstName" required th:errorclass="border-danger" th:field="*{firstName}"
                    type="text">
         </div>
         <div class="col-6">
             <label class="form-label" for="lastName" th:text="#{author.lastname}">Nachname</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" id="lastName" required th:errorclass="fieldError" th:field="*{lastName}"
+            <input class="form-control" id="lastName" required th:errorclass="border-danger" th:field="*{lastName}"
                    type="text">
         </div>
         <div class="col-3">
             <label class="form-label" for="birthDateString" th:text="#{author.birth}">Geburtsdatum</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" data-date-format="dd.mm.yyyy" id="birthDateString" th:errorclass="fieldError"
-                   th:field="*{birthDateString}" type="date">
+            <input class="form-control" data-date-format="dd.mm.yyyy" id="birthDateString"
+                   th:errorclass="form-control border-danger" th:field="*{birthDateString}" type="date">
         </div>
         <div class="col-3">
             <label class="form-label" for="deathDateString" th:text="#{author.death}">Todesdatum</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" data-date-format="dd.mm.yyyy" id="deathDateString" th:errorclass="fieldError"
+            <input class="form-control" data-date-format="dd.mm.yyyy" id="deathDateString" th:errorclass="border-danger"
                    th:field="*{deathDateString}" type="date">
         </div>
         <div class="col-6">
             <label class="form-label" for="countryCodeString"
                    th:text="#{author.nationality}">Nationalität</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <select class="form-select" id="countryCodeString" th:field="*{countryCodeString}">
+            <select class="form-select" id="countryCodeString" th:errorclass="border-danger"
+                    th:field="*{countryCodeString}">
                 <option th:each="code : ${countries}" th:text="${code.name}" th:value="${code}">Land</option>
             </select>
         </div>

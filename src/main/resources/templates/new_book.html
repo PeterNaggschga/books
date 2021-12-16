@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de"
+      layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{books.site.title}">Buch hinzufügen</title>
+</head>
+<body layout:fragment="content">
+<!--suppress ThymeleafVariablesResolveInspection -->
+<form class="needs-validation" id="form" method="post" role="form" th:action="@{/books/add}"
+      th:object="${createBookForm}">
+    <p class="text-danger" th:if="${#fields.hasErrors('*')}" th:text="#{form.error}">Fehler</p>
+    <div class="row g-3">
+        <div class="col-12">
+            <label class="form-label" for="title" th:text="#{book.title}">Titel</label>
+            <!--suppress ThymeleafVariablesResolveInspection -->
+            <input class="form-control" id="title" required th:errorclass="border-danger" th:field="*{title}"
+                   type="text">
+        </div>
+        <div class="col-6">
+            <label class="form-label" for="publishedString" th:text="#{book.published}">Veröffentlichung</label>
+            <!--suppress ThymeleafVariablesResolveInspection -->
+            <input class="form-control" data-date-format="dd.mm.yyyy" id="publishedString" required
+                   th:errorclass="border-danger" th:field="*{publishedString}" type="date">
+        </div>
+        <div class="col-6">
+            <label class="form-label" for="isbn" th:text="#{book.isbn}">ISBN</label>
+            <!--suppress ThymeleafVariablesResolveInspection -->
+            <input class="form-control" id="isbn" required th:errorclass="border-danger" th:field="*{isbn}" type="text">
+        </div>
+        <div class="col-6">
+            <label class="form-label" for="pages" th:text="#{book.pages}">Seiten</label>
+            <!--suppress ThymeleafVariablesResolveInspection -->
+            <input class="form-control" id="pages" min="1" required th:errorclass="border-danger" th:field="*{pages}"
+                   type="number">
+        </div>
+        <div class="col-6">
+            <label class="form-label" for="languageString" th:text="#{book.language}">Sprache</label>
+            <!--suppress ThymeleafVariablesResolveInspection -->
+            <select class="form-select" id="languageString" th:errorclass="border-danger" th:field="*{languageString}">
+                <option th:each="language : ${languages}" th:text="${language}" th:value="${language}">Sprache</option>
+            </select>
+        </div>
+        <div class="col-6">
+            <label class="form-label" for="authors" th:text="#{book.authors}">Autoren</label>
+            <div class="form-check" th:each="author : ${authors}">
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input class="form-check-input" id="authors" th:field="*{authors}" th:text="${author}"
+                       th:value="${author.id}" type="checkbox"/>
+            </div>
+        </div>
+        <div class="col-6">
+            <label class="form-label" for="series" th:text="#{book.series}">Reihe</label>
+            <div class="form-check" th:each="series : ${seriesIterable}">
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input class="form-check-input" id="series" th:field="*{series}" th:text="${series.title}"
+                       th:value="${series.id}" type="checkbox"/>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary w-100 mt-3" th:text="#{form.submit}" type="submit">Speichern</button>
+</form>
+</body>
+</html>

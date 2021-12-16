@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 
 /**
@@ -80,6 +82,10 @@ public class Book {
         this(title, Set.of(author), published, isbn, pages, language);
     }
 
+    public long getId() {
+        return id;
+    }
+
     public Set<Author> getAuthors() {
         return authors;
     }
@@ -120,6 +126,14 @@ public class Book {
         this.title = title.trim();
     }
 
+    public int getPages() {
+        return pages;
+    }
+
+    public Locale getLanguage() {
+        return language;
+    }
+
     public String getIsbn() {
         return isbn;
     }
@@ -148,6 +162,15 @@ public class Book {
 
     public LocalDate getPublished() {
         return published;
+    }
+
+    /**
+     * Returns a locally formatted {@link String} representing the date of publication.
+     *
+     * @return a {@link String} representing published.
+     */
+    public String getPublishedString() {
+        return published.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
     }
 
     @Override

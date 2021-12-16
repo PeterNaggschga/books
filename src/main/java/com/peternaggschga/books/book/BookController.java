@@ -36,13 +36,15 @@ public class BookController {
 
     @GetMapping("/books")
     public String showBooks(Model model) {
+        model.addAttribute("authorExists", authorManagement.getAuthorCount() > 0);
         model.addAttribute("books", bookManagement.findAllBooks());
         return "books";
     }
 
     @GetMapping("/books/add")
     public String addBook(Model model, @SuppressWarnings("unused") CreateBookForm form) {
-        model.addAttribute("authors", authorManagement.findAll());
+        model.addAttribute("languages", BookManagement.LANGUAGES);
+        model.addAttribute("authors", authorManagement.findAllAuthors());
         model.addAttribute("seriesIterable", bookManagement.findAllSeries());
         return "new_book";
     }
@@ -51,7 +53,8 @@ public class BookController {
     public String addSeries(Model model, @Valid CreateBookForm form, Errors result) {
         if (result.hasErrors()) {
             LOG.warn("Fehlerhafte Formulardaten: " + result.getAllErrors());
-            model.addAttribute("authors", authorManagement.findAll());
+            model.addAttribute("languages", BookManagement.LANGUAGES);
+            model.addAttribute("authors", authorManagement.findAllAuthors());
             model.addAttribute("seriesIterable", bookManagement.findAllSeries());
             return "new_book";
         }
