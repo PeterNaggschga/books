@@ -2,6 +2,7 @@ package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
 import com.peternaggschga.books.book.Book;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -62,9 +63,9 @@ public class AuthorManagement {
     /**
      * Returns all {@link Author}s present in {@link AuthorRepository}.
      *
-     * @return an {@link Iterable} containing all {@link Author} instances in {@link AuthorRepository}.
+     * @return an {@link Streamable} containing all {@link Author} instances in {@link AuthorRepository}.
      */
-    public Iterable<Author> findAllAuthors() {
+    public Streamable<Author> findAllAuthors() {
         return authorRepository.findAll();
     }
 

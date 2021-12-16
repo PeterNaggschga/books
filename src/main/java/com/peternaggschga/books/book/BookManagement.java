@@ -5,6 +5,7 @@ import com.peternaggschga.books.author.AuthorManagement;
 import com.peternaggschga.books.book.series.CreateSeriesForm;
 import com.peternaggschga.books.book.series.Series;
 import com.peternaggschga.books.book.series.SeriesRepository;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -86,7 +87,7 @@ public class BookManagement {
      *
      * @return an {@link Iterable} containing all {@link Book} instances in {@link BookRepository}.
      */
-    public Iterable<Book> findAllBooks() {
+    public Streamable<Book> findAllBooks() {
         return bookRepository.findAll();
     }
 
@@ -163,7 +164,7 @@ public class BookManagement {
      *
      * @return an {@link Iterable} containing all {@link Series} instances in {@link SeriesRepository}.
      */
-    public Iterable<Series> findAllSeries() {
+    public Streamable<Series> findAllSeries() {
         return seriesRepository.findAll();
     }
 

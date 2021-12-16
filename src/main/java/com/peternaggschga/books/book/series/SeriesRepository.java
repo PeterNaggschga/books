@@ -1,6 +1,7 @@
 package com.peternaggschga.books.book.series;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,4 +9,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SeriesRepository extends CrudRepository<Series, Long> {
+
+    /**
+     * Returns all saved {@link Series} instances.
+     *
+     * @return an {@link Streamable} containing all {@link Series} instances.
+     */
+    @Override
+    Streamable<Series> findAll();
 }
