@@ -9,14 +9,14 @@
 </head>
 <body layout:fragment="content">
 <div class="container row justify-content-end mb-3">
-    <a class="btn btn-primary w-auto" th:href="@{/series/add}" th:text="#{series.buttons.add}">Hinzufügen</a>
+    <a class="btn btn-primary w-auto" th:href="@{/series/add}" th:text="#{series.add.site.title}">Hinzufügen</a>
 </div>
 <table class="ui celled table">
     <thead>
     <tr>
-        <th th:text="#{series.table.head.title}">Titel</th>
-        <th th:text="#{series.table.head.authors}">Autoren</th>
-        <th th:text="#{series.table.head.count}">Teile</th>
+        <th th:text="#{series.title}">Titel</th>
+        <th th:text="#{series.authors}">Autoren</th>
+        <th th:text="#{series.count}">Teile</th>
     </tr>
     </thead>
     <tbody>

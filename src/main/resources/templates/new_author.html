@@ -5,48 +5,48 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{authors.add.title}">Autor hinzufügen</title>
+    <title th:text="#{authors.add.site.title}">Autor hinzufügen</title>
 </head>
 <body layout:fragment="content">
 <!--suppress ThymeleafVariablesResolveInspection -->
 <form class="needs-validation" id="form" method="post" role="form" th:action="@{/authors/add}"
       th:object="${createAuthorForm}">
-    <p class="text-danger" th:if="${#fields.hasErrors('*')}" th:text="#{authors.add.form.error}">Fehler</p>
+    <p class="text-danger" th:if="${#fields.hasErrors('*')}" th:text="#{form.error}">Fehler</p>
     <div class="row g-3">
         <div class="col-6">
-            <label class="form-label" for="firstName" th:text="#{authors.add.form.firstname}">Vorname</label>
+            <label class="form-label" for="firstName" th:text="#{author.firstname}">Vorname</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
             <input class="form-control" id="firstName" required th:errorclass="fieldError" th:field="*{firstName}"
                    type="text">
         </div>
         <div class="col-6">
-            <label class="form-label" for="lastName" th:text="#{authors.add.form.lastname}">Nachname</label>
+            <label class="form-label" for="lastName" th:text="#{author.lastname}">Nachname</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
             <input class="form-control" id="lastName" required th:errorclass="fieldError" th:field="*{lastName}"
                    type="text">
         </div>
         <div class="col-3">
-            <label class="form-label" for="birthDateString" th:text="#{authors.add.form.birthdate}">Geburtsdatum</label>
+            <label class="form-label" for="birthDateString" th:text="#{author.birth}">Geburtsdatum</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
             <input class="form-control" data-date-format="dd.mm.yyyy" id="birthDateString" th:errorclass="fieldError"
                    th:field="*{birthDateString}" type="date">
         </div>
         <div class="col-3">
-            <label class="form-label" for="deathDateString" th:text="#{authors.add.form.deathdate}">Todesdatum</label>
+            <label class="form-label" for="deathDateString" th:text="#{author.death}">Todesdatum</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
             <input class="form-control" data-date-format="dd.mm.yyyy" id="deathDateString" th:errorclass="fieldError"
                    th:field="*{deathDateString}" type="date">
         </div>
         <div class="col-6">
             <label class="form-label" for="countryCodeString"
-                   th:text="#{authors.add.form.nationality}">Nationalität</label>
+                   th:text="#{author.nationality}">Nationalität</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
             <select class="form-select" id="countryCodeString" th:field="*{countryCodeString}">
                 <option th:each="code : ${countries}" th:text="${code.name}" th:value="${code}">Land</option>
             </select>
         </div>
     </div>
-    <button class="btn btn-primary w-100 mt-3" th:text="#{authors.add.form.submit}" type="submit">Speichern</button>
+    <button class="btn btn-primary w-100 mt-3" th:text="#{form.submit}" type="submit">Speichern</button>
 </form>
 </body>
 </html>

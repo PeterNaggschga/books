@@ -5,21 +5,21 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{series.add.title}">Reihe hinzufügen</title>
+    <title th:text="#{series.add.site.title}">Reihe hinzufügen</title>
 </head>
 <body layout:fragment="content">
 <!--suppress ThymeleafVariablesResolveInspection -->
 <form class="needs-validation" id="form" method="post" role="form" th:action="@{/series/add}"
       th:object="${createSeriesForm}">
-    <p class="text-danger" th:if="${#fields.hasErrors('*')}" th:text="#{series.add.form.error}">Fehler</p>
+    <p class="text-danger" th:if="${#fields.hasErrors('*')}" th:text="#{form.error}">Fehler</p>
     <div class="row g-3">
         <div class="col-12">
-            <label class="form-label" for="title" th:text="#{series.add.form.title}">Titel</label>
+            <label class="form-label" for="title" th:text="#{series.title}">Titel</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
             <input class="form-control" id="title" required th:errorclass="fieldError" th:field="*{title}" type="text">
         </div>
         <div class="col-12">
-            <label class="form-label" for="books" th:text="#{series.add.form.books}">Bücher</label>
+            <label class="form-label" for="books" th:text="#{series.books}">Bücher</label>
             <div class="form-check" th:each="book : ${books}">
                 <!--suppress ThymeleafVariablesResolveInspection -->
                 <input class="form-check-input" id="books" th:field="*{books}" th:text="${book}"
@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-primary w-100 mt-3" th:text="#{series.add.form.submit}" type="submit">Speichern</button>
+    <button class="btn btn-primary w-100 mt-3" th:text="#{form.submit}" type="submit">Speichern</button>
 </form>
 </body>
 </html>

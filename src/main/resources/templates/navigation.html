@@ -3,15 +3,19 @@
 <body>
 <div th:fragment="navigation">
     <a class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none fs-3" th:href="@{/}"
-       th:text="#{main.title}"></a>
+       th:text="#{main.site.title}"></a>
     <ul class="nav col-12 col-lg-auto mb-2 justify-content-center mb-md-0">
         <li>
+            <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/books'? 'text-primary' : 'text-secondary'}"
+               th:href="@{/books}" th:text="#{books.site.title}">Bücher</a>
+        </li>
+        <li>
             <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/authors'? 'text-primary' : 'text-secondary'}"
-               th:href="@{/authors}" th:text="#{authors.title}">Autoren</a>
+               th:href="@{/authors}" th:text="#{authors.site.title}">Autoren</a>
         </li>
         <li>
             <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/series'? 'text-primary' : 'text-secondary'}"
-               th:href="@{/series}" th:text="#{series.title}">Reihen</a>
+               th:href="@{/series}" th:text="#{series.site.title}">Reihen</a>
         </li>
     </ul>
 </div>
