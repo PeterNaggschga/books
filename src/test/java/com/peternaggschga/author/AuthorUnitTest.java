@@ -144,7 +144,7 @@ public class AuthorUnitTest {
     }
 
     @Nested
-    class getterTests {
+    class GetterTests {
 
         @Test
         void getDateStringReturnsNull() {
