@@ -1,6 +1,6 @@
 package com.peternaggschga.books.reading;
 
-import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Repository;
@@ -13,22 +13,10 @@ public interface ReadingRepository extends CrudRepository<Reading, Long> {
 
     /**
      * Returns all saved {@link Reading} instances, ordered by beginning descending.
-     * Wrapper function of {@link ReadingRepository#findByOrderByBeginningDesc(Sort)}.
      *
      * @return a {@link Streamable} containing all {@link Reading} instances.
-     * @see ReadingRepository#findByOrderByBeginningDesc(Sort)
      */
+    @Query("SELECT r FROM Reading r ORDER BY r.beginning DESC")
     @Override
-    default Streamable<Reading> findAll() {
-        return findByOrderByBeginningDesc(Sort.by(Sort.Direction.DESC));
-    }
-
-    /**
-     * Finds all saved {@link Reading} instances, ordered by beginning.
-     *
-     * @param sort must be valid {@link Sort} instance.
-     * @return a {@link Streamable} containing all {@link Reading} instances.
-     * @see ReadingRepository#findAll()
-     */
-    Streamable<Reading> findByOrderByBeginningDesc(Sort sort);
+    Streamable<Reading> findAll();
 }

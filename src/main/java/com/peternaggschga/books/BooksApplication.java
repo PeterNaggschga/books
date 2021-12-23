@@ -33,7 +33,7 @@ public class BooksApplication {
 
         @Override
         public void addViewControllers(ViewControllerRegistry registry) {
-            registry.addViewController("/").setViewName("book/books");
+            registry.addViewController("/").setViewName("reading/readings");
         }
     }
 
