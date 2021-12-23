@@ -1,10 +1,12 @@
 package com.peternaggschga.books.reading;
 
 import com.peternaggschga.books.book.Book;
+import com.peternaggschga.books.book.BookManagement;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
@@ -17,14 +19,19 @@ import java.time.LocalDate;
 public class ReadingManagement {
     @NotNull
     private final ReadingRepository readingRepository;
+    @NotNull
+    private final BookManagement bookManagement;
 
     /**
-     * Creates a new {@link ReadingManagement} instance with the given {@link ReadingRepository}.
+     * Creates a new {@link ReadingManagement} instance with the given {@link ReadingRepository} and
+     * {@link BookManagement}.
      *
      * @param readingRepository must not be null.
+     * @param bookManagement    must not be null.
      */
-    public ReadingManagement(@NotNull ReadingRepository readingRepository) {
+    public ReadingManagement(@NotNull ReadingRepository readingRepository, @NotNull BookManagement bookManagement) {
         this.readingRepository = readingRepository;
+        this.bookManagement = bookManagement;
     }
 
     /**
@@ -40,6 +47,21 @@ public class ReadingManagement {
     public Reading createReading(@NotNull Book book, @NotNull LocalDate beginning, LocalDate end,
                                  @Positive int pagesPerHour) {
         return readingRepository.save(new Reading(book, beginning, end, pagesPerHour));
+    }
+
+    /**
+     * Creates a new {@link Reading} instance with the given {@link CreateReadingForm}. Saves the new instance to the
+     * {@link ReadingRepository}.
+     * Wrapper function of {@link ReadingManagement#createReading(Book, LocalDate, LocalDate, int)}.
+     *
+     * @param form must be valid, must not be null.
+     * @return the new {@link Reading} instance.
+     * @see ReadingManagement#createReading(Book, LocalDate, LocalDate, int)
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    public Reading createReading(@NotNull @Valid CreateReadingForm form) {
+        return createReading(bookManagement.findBookById(form.getBookId()), form.getBeginning(), form.getEnd(),
+                form.getPagesPerHour());
     }
 
     /**
