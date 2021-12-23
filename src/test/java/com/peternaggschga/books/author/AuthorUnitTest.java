@@ -1,7 +1,6 @@
-package com.peternaggschga.author;
+package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
-import com.peternaggschga.books.author.Author;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
