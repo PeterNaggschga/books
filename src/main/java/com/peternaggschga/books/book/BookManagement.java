@@ -92,6 +92,15 @@ public class BookManagement {
     }
 
     /**
+     * Returns the number of {@link Book}s saved in {@link BookRepository}.
+     *
+     * @return a long counting the number of {@link Book}s.
+     */
+    public long getBookCount() {
+        return bookRepository.count();
+    }
+
+    /**
      * Returns the {@link Book} referenced by the given id.
      * If the id does not exist, a {@link java.util.NoSuchElementException} is thrown.
      *

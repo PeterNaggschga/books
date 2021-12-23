@@ -37,6 +37,7 @@ public class ReadingController {
 
     @GetMapping("/readings")
     public String showReadings(Model model) {
+        model.addAttribute("bookExists", bookManagement.getBookCount() > 0);
         model.addAttribute("readings", readingManagement.findAllReadings());
         return "reading/readings";
     }
