@@ -93,11 +93,6 @@
             <artifactId>webjars-locator-core</artifactId>
             <version>0.48</version>
         </dependency>
-        <dependency>
-            <groupId>org.webjars.bower</groupId>
-            <artifactId>jquery</artifactId>
-            <version>3.6.0</version>
-        </dependency>
     </dependencies>
 
     <build>
