@@ -43,7 +43,7 @@ public class ReadingController {
 
     @GetMapping("/readings/add")
     public String addReading(Model model, @SuppressWarnings("unused") CreateReadingForm form) {
-        model.addAttribute(bookManagement.findAllBooks());
+        model.addAttribute("books", bookManagement.findAllBooks());
         return "reading/new_reading";
     }
 
@@ -51,7 +51,13 @@ public class ReadingController {
     public String addReading(Model model, @Valid CreateReadingForm form, Errors result) {
         if (result.hasErrors()) {
             LOG.warn("Fehlerhafte Formulardaten: " + result.getAllErrors());
-            model.addAttribute(bookManagement.findAllBooks());
+            model.addAttribute("books", bookManagement.findAllBooks());
+            return "reading/new_reading";
+        }
+        if (form.getEnd() != null && form.getBeginning().isAfter(form.getEnd())) {
+            LOG.warn("Fehlerhafte Formulardaten: Beginn nach Ende!");
+            result.rejectValue("endString", "IsBeforeBeginningDate");
+            model.addAttribute("books", bookManagement.findAllBooks());
             return "reading/new_reading";
         }
         readingManagement.createReading(form);

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de"
+      layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{readings.add.site.title}">Lesung hinzufügen</title>
+</head>
+<body layout:fragment="content">
+<!--suppress ThymeleafVariablesResolveInspection -->
+<form class="needs-validation" id="form" method="post" role="form" th:action="@{/readings/add}"
+      th:object="${createReadingForm}">
+    <p class="text-danger" th:if="${#fields.hasErrors('*')}" th:text="#{form.error}">Fehler</p>
+    <div class="row g-3">
+        <div class="col-12">
+            <label class="form-label" for="bookId" th:text="#{reading.book}">Buch</label>
+            <!--suppress ThymeleafVariablesResolveInspection -->
+            <select class="form-select" id="bookId" required th:errorclass="border-danger" th:field="*{bookId}">
+                <option th:each="book : ${books}" th:text="${book}" th:value="${book.id}">Buch</option>
+            </select>
+        </div>
+        <div class="col-4">
+            <label class="form-label" for="beginningString" th:text="#{reading.beginning}">Beginn</label>
+            <!--suppress ThymeleafVariablesResolveInspection -->
+            <input class="form-control" data-date-format="dd.mm.yyyy" id="beginningString" required
+                   th:errorclass="border-danger" th:field="*{beginningString}" type="date">
+        </div>
+        <div class="col-4">
+            <label class="form-label" for="endString" th:text="#{reading.end}">Ende</label>
+            <!--suppress ThymeleafVariablesResolveInspection -->
+            <input class="form-control" data-date-format="dd.mm.yyyy" id="endString" th:errorclass="border-danger"
+                   th:field="*{endString}" type="date">
+        </div>
+        <div class="col-4">
+            <label class="form-label" for="pagesPerHour" th:text="#{reading.pagesPerHour}">Todesdatum</label>
+            <!--suppress ThymeleafVariablesResolveInspection -->
+            <input class="form-control" id="pagesPerHour" min="1" required th:errorclass="border-danger"
+                   th:field="*{pagesPerHour}" type="number">
+        </div>
+    </div>
+    <button class="btn btn-primary w-100 mt-3" th:text="#{form.submit}" type="submit">Speichern</button>
+</form>
+</body>
+</html>

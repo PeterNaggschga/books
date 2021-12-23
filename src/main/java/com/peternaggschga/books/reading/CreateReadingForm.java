@@ -11,7 +11,6 @@ import java.time.LocalDate;
  */
 public class CreateReadingForm {
     @NotNull
-    @NotBlank
     @SuppressWarnings("FieldMayBeFinal")
     private Long bookId;
     @NotNull
@@ -40,7 +39,7 @@ public class CreateReadingForm {
     }
 
     public LocalDate getEnd() {
-        return endString == null ? null : LocalDate.parse(endString);
+        return endString == null || endString.isBlank() ? null : LocalDate.parse(endString);
     }
 
     public Long getBookId() {
