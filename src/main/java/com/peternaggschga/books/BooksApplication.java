@@ -19,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class BooksApplication {
 
     public static void main(String[] args) {
-        // TODO: backup database
         SpringApplication.run(BooksApplication.class, args);
     }
 

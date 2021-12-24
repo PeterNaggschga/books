@@ -2,6 +2,7 @@ package com.peternaggschga.books.book.series;
 
 import com.peternaggschga.books.author.Author;
 import com.peternaggschga.books.book.Book;
+import lombok.NonNull;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,7 +42,7 @@ public class Series {
      * @param title must not be null or blank.
      * @param books must not be null.
      */
-    public Series(@NotNull @NotBlank String title, Collection<Book> books) {
+    public Series(@NonNull @NotBlank String title, Collection<Book> books) {
         this.books = new TreeSet<>(Comparator.comparing(Book::getPublished));
         setTitle(title);
         addAll(books);
@@ -66,8 +67,8 @@ public class Series {
         return title;
     }
 
-    public void setTitle(@NotNull @NotBlank String title) {
-        if (Objects.requireNonNull(title, "Title must not be null").isBlank()) {
+    public void setTitle(@NonNull @NotBlank String title) {
+        if (title.isBlank()) {
             throw new IllegalArgumentException("Title must not be blank");
         }
         this.title = title.trim();

@@ -1,6 +1,7 @@
 package com.peternaggschga.books.book;
 
 import com.peternaggschga.books.author.Author;
+import lombok.NonNull;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,8 +56,8 @@ public class Book {
      * @param language  must not be null.
      * @see Book#Book(String, Author, LocalDate, String, int, Locale)
      */
-    public Book(@NotNull @NotBlank String title, @NotNull @NotEmpty Collection<Author> authors,
-                @NotNull LocalDate published, @NotNull String isbn, @Positive int pages, @NotNull Locale language) {
+    public Book(@NonNull @NotBlank String title, @NonNull @NotEmpty Collection<Author> authors,
+                @NonNull LocalDate published, @NonNull String isbn, @Positive int pages, @NonNull Locale language) {
         setTitle(title);
         setAuthors(authors);
         setPublished(published);
@@ -77,8 +78,8 @@ public class Book {
      * @param language  must not be null.
      * @see Book#Book(String, Collection, LocalDate, String, int, Locale)
      */
-    public Book(@NotNull @NotBlank String title, @NotNull Author author, @NotNull LocalDate published,
-                @NotNull String isbn, @Positive int pages, @NotNull Locale language) {
+    public Book(@NonNull @NotBlank String title, @NonNull Author author, @NonNull LocalDate published,
+                @NonNull String isbn, @Positive int pages, @NonNull Locale language) {
         this(title, Set.of(author), published, isbn, pages, language);
     }
 
@@ -90,12 +91,12 @@ public class Book {
         return authors;
     }
 
-    public void setAuthors(@NotNull Author author) {
-        this.authors = Set.of(Objects.requireNonNull(author, "Author must not be null"));
+    public void setAuthors(@NonNull Author author) {
+        this.authors = Set.of(author);
     }
 
-    public void setAuthors(@NotNull @NotEmpty Collection<Author> authors) {
-        if (Objects.requireNonNull(authors, "List of authors must not be null").isEmpty()) {
+    public void setAuthors(@NonNull @NotEmpty Collection<Author> authors) {
+        if (authors.isEmpty()) {
             throw new IllegalArgumentException("List of authors must not be empty");
         }
         this.authors = new HashSet<>(authors);
@@ -119,8 +120,8 @@ public class Book {
         return title;
     }
 
-    public void setTitle(@NotNull @NotBlank String title) {
-        if (Objects.requireNonNull(title, "Title must not be null").isBlank()) {
+    public void setTitle(@NonNull @NotBlank String title) {
+        if (title.isBlank()) {
             throw new IllegalArgumentException("Title must not be blank");
         }
         this.title = title.trim();
@@ -138,15 +139,15 @@ public class Book {
         return isbn;
     }
 
-    public void setIsbn(@NotNull String isbn) {
-        if (!Objects.requireNonNull(isbn).trim().matches(ISBN_REGEX)) {
+    public void setIsbn(@NonNull String isbn) {
+        if (!isbn.trim().matches(ISBN_REGEX)) {
             throw new IllegalArgumentException("ISBN must match regex " + ISBN_REGEX);
         }
         this.isbn = isbn.trim();
     }
 
-    public void setPublished(@NotNull LocalDate published) {
-        this.published = Objects.requireNonNull(published, "Date of publication must not be null");
+    public void setPublished(@NonNull LocalDate published) {
+        this.published = published;
     }
 
     public void setPages(@Positive int pages) {
@@ -156,8 +157,8 @@ public class Book {
         this.pages = pages;
     }
 
-    public void setLanguage(@NotNull Locale language) {
-        this.language = Objects.requireNonNull(language, "Language must not be null");
+    public void setLanguage(@NonNull Locale language) {
+        this.language = language;
     }
 
     public LocalDate getPublished() {

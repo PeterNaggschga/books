@@ -2,6 +2,7 @@ package com.peternaggschga.books.book.series;
 
 import com.peternaggschga.books.book.Book;
 import com.peternaggschga.books.book.BookManagement;
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ public class SeriesController {
      *
      * @param management must not be null.
      */
-    public SeriesController(@NotNull BookManagement management) {
+    public SeriesController(@NonNull BookManagement management) {
         this.management = management;
     }
 

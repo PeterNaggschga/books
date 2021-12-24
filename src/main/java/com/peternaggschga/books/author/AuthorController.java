@@ -1,6 +1,7 @@
 package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,7 @@ public class AuthorController {
      *
      * @param management must not be null.
      */
-    public AuthorController(@NotNull AuthorManagement management) {
+    public AuthorController(@NonNull AuthorManagement management) {
         this.management = management;
     }
 

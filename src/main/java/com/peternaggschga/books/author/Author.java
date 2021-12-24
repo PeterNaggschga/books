@@ -1,6 +1,7 @@
 package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
+import lombok.NonNull;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Objects;
 
 /**
  * An entity representing a person writing {@link com.peternaggschga.books.book.Book Book}s.
@@ -46,8 +46,8 @@ public class Author {
      * @param deathDate   can be null, if unknown.
      * @param nationality must not be null.
      */
-    public Author(@NotNull @NotBlank String firstName, @NotNull @NotBlank String lastName, LocalDate birthDate,
-                  LocalDate deathDate, @NotNull CountryCode nationality) {
+    public Author(@NonNull @NotBlank String firstName, @NonNull @NotBlank String lastName, LocalDate birthDate,
+                  LocalDate deathDate, @NonNull CountryCode nationality) {
         setFirstName(firstName);
         setLastName(lastName);
         setBirthDate(birthDate);
@@ -63,8 +63,8 @@ public class Author {
         return firstName;
     }
 
-    public void setFirstName(@NotNull @NotBlank String firstName) {
-        if (Objects.requireNonNull(firstName, "Firstname must not be null").isBlank()) {
+    public void setFirstName(@NonNull @NotBlank String firstName) {
+        if (firstName.isBlank()) {
             throw new IllegalArgumentException("Firstname must not be blank");
         }
         this.firstName = firstName.trim();
@@ -74,8 +74,8 @@ public class Author {
         return lastName;
     }
 
-    public void setLastName(@NotNull @NotBlank String lastName) {
-        if (Objects.requireNonNull(lastName, "Lastname must not be null").isBlank()) {
+    public void setLastName(@NonNull @NotBlank String lastName) {
+        if (lastName.isBlank()) {
             throw new IllegalArgumentException("Lastname must not be blank");
         }
         this.lastName = lastName.trim();
@@ -113,8 +113,8 @@ public class Author {
         return nationality;
     }
 
-    public void setNationality(@NotNull CountryCode nationality) {
-        this.nationality = Objects.requireNonNull(nationality, "Nationality must not be null");
+    public void setNationality(@NonNull CountryCode nationality) {
+        this.nationality = nationality;
     }
 
     /**

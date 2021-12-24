@@ -2,6 +2,7 @@ package com.peternaggschga.books.reading;
 
 import com.peternaggschga.books.book.Book;
 import com.peternaggschga.books.book.BookManagement;
+import lombok.NonNull;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class ReadingManagement {
      * @param readingRepository must not be null.
      * @param bookManagement    must not be null.
      */
-    public ReadingManagement(@NotNull ReadingRepository readingRepository, @NotNull BookManagement bookManagement) {
+    public ReadingManagement(@NonNull ReadingRepository readingRepository, @NonNull BookManagement bookManagement) {
         this.readingRepository = readingRepository;
         this.bookManagement = bookManagement;
     }
@@ -44,7 +45,7 @@ public class ReadingManagement {
      * @param pagesPerHour must be positive.
      * @return the new {@link Reading} instance.
      */
-    public Reading createReading(@NotNull Book book, @NotNull LocalDate beginning, LocalDate end,
+    public Reading createReading(@NonNull Book book, @NonNull LocalDate beginning, LocalDate end,
                                  @Positive int pagesPerHour) {
         return readingRepository.save(new Reading(book, beginning, end, pagesPerHour));
     }
@@ -59,7 +60,7 @@ public class ReadingManagement {
      * @see ReadingManagement#createReading(Book, LocalDate, LocalDate, int)
      */
     @SuppressWarnings("UnusedReturnValue")
-    public Reading createReading(@NotNull @Valid CreateReadingForm form) {
+    public Reading createReading(@NonNull @Valid CreateReadingForm form) {
         return createReading(bookManagement.findBookById(form.getBookId()), form.getBeginning(), form.getEnd(),
                 form.getPagesPerHour());
     }

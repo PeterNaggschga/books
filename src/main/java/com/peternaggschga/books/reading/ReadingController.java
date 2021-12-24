@@ -1,6 +1,7 @@
 package com.peternaggschga.books.reading;
 
 import com.peternaggschga.books.book.BookManagement;
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class ReadingController {
      * @param readingManagement must not be null.
      * @param bookManagement    must not be null.
      */
-    public ReadingController(@NotNull ReadingManagement readingManagement, @NotNull BookManagement bookManagement) {
+    public ReadingController(@NonNull ReadingManagement readingManagement, @NonNull BookManagement bookManagement) {
         this.readingManagement = readingManagement;
         this.bookManagement = bookManagement;
     }

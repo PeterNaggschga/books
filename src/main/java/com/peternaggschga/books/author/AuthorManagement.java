@@ -2,6 +2,7 @@ package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
 import com.peternaggschga.books.book.Book;
+import lombok.NonNull;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class AuthorManagement {
      *
      * @param authorRepository must not be null.
      */
-    public AuthorManagement(@NotNull AuthorRepository authorRepository) {
+    public AuthorManagement(@NonNull AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
 
@@ -40,8 +41,8 @@ public class AuthorManagement {
      * @param nationality must not be null.
      * @return the new {@link Author} instance.
      */
-    public Author createAuthor(@NotNull @NotBlank String firstName, @NotNull @NotBlank String lastName,
-                               LocalDate birthDate, LocalDate deathDate, @NotNull CountryCode nationality) {
+    public Author createAuthor(@NonNull @NotBlank String firstName, @NonNull @NotBlank String lastName,
+                               LocalDate birthDate, LocalDate deathDate, @NonNull CountryCode nationality) {
         return authorRepository.save(new Author(firstName, lastName, birthDate, deathDate, nationality));
     }
 
@@ -55,7 +56,7 @@ public class AuthorManagement {
      * @see AuthorManagement#createAuthor(String, String, LocalDate, LocalDate, CountryCode)
      */
     @SuppressWarnings("UnusedReturnValue")
-    public Author createAuthor(@NotNull @Valid CreateAuthorForm form) {
+    public Author createAuthor(@NonNull @Valid CreateAuthorForm form) {
         return createAuthor(form.getFirstName(), form.getLastName(), form.getBirthDate(), form.getDeathDate(),
                 form.getCountryCode());
     }

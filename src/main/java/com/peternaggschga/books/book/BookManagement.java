@@ -5,6 +5,7 @@ import com.peternaggschga.books.author.AuthorManagement;
 import com.peternaggschga.books.book.series.CreateSeriesForm;
 import com.peternaggschga.books.book.series.Series;
 import com.peternaggschga.books.book.series.SeriesRepository;
+import lombok.NonNull;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +43,8 @@ public class BookManagement {
      * @param seriesRepository must not be null.
      * @param authorManagement must not be null.
      */
-    public BookManagement(@NotNull BookRepository bookRepository, @NotNull SeriesRepository seriesRepository,
-                          @NotNull AuthorManagement authorManagement) {
+    public BookManagement(@NonNull BookRepository bookRepository, @NonNull SeriesRepository seriesRepository,
+                          @NonNull AuthorManagement authorManagement) {
         this.bookRepository = bookRepository;
         this.seriesRepository = seriesRepository;
         this.authorManagement = authorManagement;
@@ -61,9 +62,9 @@ public class BookManagement {
      * @param language  must not be null.
      * @return the new {@link Book} instance.
      */
-    public Book createBook(@NotNull @NotBlank String title, @NotNull @NotEmpty Collection<Author> authors,
-                           @NotNull LocalDate published, @NotNull String isbn, @Positive int pages,
-                           @NotNull Locale language) {
+    public Book createBook(@NonNull @NotBlank String title, @NonNull @NotEmpty Collection<Author> authors,
+                           @NonNull LocalDate published, @NonNull String isbn, @Positive int pages,
+                           @NonNull Locale language) {
         return bookRepository.save(new Book(title, authors, published, isbn, pages, language));
     }
 
@@ -77,7 +78,7 @@ public class BookManagement {
      * @see BookManagement#createBook(String, Collection, LocalDate, String, int, Locale)
      * @see BookManagement#addBooksToSeries(Book, long)
      */
-    public Book createBook(@NotNull @Valid CreateBookForm form) {
+    public Book createBook(@NonNull @Valid CreateBookForm form) {
         return createBook(form.getTitle(), form.getAuthors().stream().map(authorManagement::findAuthorById)
                 .collect(Collectors.toSet()), form.getPublished(), form.getIsbn(), form.getPages(), form.getLanguage());
     }
@@ -120,7 +121,7 @@ public class BookManagement {
      * @return the new {@link Series} instance.
      * @see BookManagement#createSeries(CreateSeriesForm)
      */
-    public Series createSeries(@NotNull @NotBlank String title, Collection<Book> books) {
+    public Series createSeries(@NonNull @NotBlank String title, Collection<Book> books) {
         return seriesRepository.save(new Series(title, books));
     }
 
@@ -133,7 +134,7 @@ public class BookManagement {
      * @return the new {@link Series} instance.
      * @see BookManagement#createSeries(String, Collection)
      */
-    public Series createSeries(@NotNull @Valid CreateSeriesForm form) {
+    public Series createSeries(@NonNull @Valid CreateSeriesForm form) {
         return form.getBooks() == null ? createSeries(form.getTitle(), null) :
                 createSeries(form.getTitle(), form.getBooks().stream().map(this::findBookById)
                         .collect(Collectors.toSet()));
@@ -164,7 +165,7 @@ public class BookManagement {
      * @return the updated {@link Series}.
      * @see BookManagement#addBooksToSeries(Collection, long)
      */
-    public Series addBooksToSeries(@NotNull Book book, long seriesId) {
+    public Series addBooksToSeries(@NonNull Book book, long seriesId) {
         return addBooksToSeries(Set.of(book), seriesId);
     }
 

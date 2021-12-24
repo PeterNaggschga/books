@@ -1,6 +1,7 @@
 package com.peternaggschga.books.reading;
 
 import com.peternaggschga.books.book.Book;
+import lombok.NonNull;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,7 +45,7 @@ public class Reading {
      * @param end          can be null (if reading is not finished yet).
      * @param pagesPerHour must be positive.
      */
-    public Reading(@NotNull Book book, @NotNull LocalDate beginning, LocalDate end, @Positive int pagesPerHour) {
+    public Reading(@NonNull Book book, @NonNull LocalDate beginning, LocalDate end, @Positive int pagesPerHour) {
         setBook(book);
         setBeginning(beginning);
         setEnd(end);
@@ -59,17 +60,16 @@ public class Reading {
         return book;
     }
 
-    public void setBook(@NotNull Book book) {
-        this.book = Objects.requireNonNull(book, "Book must not be null");
+    public void setBook(@NonNull Book book) {
+        this.book = book;
     }
 
     public LocalDate getBeginning() {
         return beginning;
     }
 
-    public void setBeginning(@NotNull LocalDate beginning) {
-        if (end != null
-                && Objects.requireNonNull(beginning, "Date of beginning must not be null").isAfter(end)) {
+    public void setBeginning(@NonNull LocalDate beginning) {
+        if (end != null && beginning.isAfter(end)) {
             throw new IllegalArgumentException("Beginning must be before end");
         }
         this.beginning = Objects.requireNonNull(beginning, "Date of beginning must not be null");
