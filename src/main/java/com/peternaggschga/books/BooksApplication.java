@@ -1,6 +1,9 @@
 package com.peternaggschga.books;
 
+import lombok.NonNull;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -9,17 +12,48 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Main application, configuring and starting {@link SpringApplication Spring}.
  */
 @SpringBootApplication
 public class BooksApplication {
+    private static final Logger LOG = LoggerFactory.getLogger(BooksApplication.class);
 
     public static void main(String[] args) {
+        try {
+            saveDatabaseBackup(new File("db/books.mv.db"), new File("db/backup/"));
+        } catch (IOException e) {
+            LOG.error("Fehler beim Datenbankbackup: " + e);
+            e.printStackTrace();
+        }
         SpringApplication.run(BooksApplication.class, args);
+    }
+
+    private static void saveDatabaseBackup(@NonNull File currentDatabase, @NonNull File backupDirectory) throws IOException {
+        File backupFile = new File(backupDirectory.getPath() + '/'
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm")) + ".mv.db");
+        File[] backupFiles = backupDirectory.listFiles();
+        if (backupFiles != null && backupFiles.length >= 20) {
+            File oldestBackup = backupFiles[0];
+            for (File file : backupFiles) {
+                if (file.lastModified() < oldestBackup.lastModified()) {
+                    oldestBackup = file;
+                }
+            }
+            FileSystemUtils.deleteRecursively(oldestBackup);
+        }
+        if (backupFile.createNewFile()) {
+            FileSystemUtils.copyRecursively(currentDatabase, backupFile);
+        }
     }
 
     @Bean
