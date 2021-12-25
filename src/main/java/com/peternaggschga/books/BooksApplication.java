@@ -51,7 +51,7 @@ public class BooksApplication {
             }
             FileSystemUtils.deleteRecursively(oldestBackup);
         }
-        if (backupFile.createNewFile()) {
+        if (currentDatabase.exists() && !backupFile.exists()) {
             FileSystemUtils.copyRecursively(currentDatabase, backupFile);
         }
     }
