@@ -38,7 +38,11 @@ public class BooksApplication {
         SpringApplication.run(BooksApplication.class, args);
     }
 
-    private static void saveDatabaseBackup(@NonNull File currentDatabase, @NonNull File backupDirectory) throws IOException {
+    private static void saveDatabaseBackup(@NonNull File currentDatabase, @NonNull File backupDirectory)
+            throws IOException {
+        if (!(backupDirectory.mkdirs() || backupDirectory.exists())) {
+            return;
+        }
         File backupFile = new File(backupDirectory.getPath() + '/'
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm")) + ".mv.db");
         File[] backupFiles = backupDirectory.listFiles();
