@@ -70,7 +70,7 @@ public class BooksApplication {
 
         @Override
         public void addViewControllers(ViewControllerRegistry registry) {
-            registry.addViewController("/").setViewName("reading/readings");
+            registry.addRedirectViewController("/", "/readings");
         }
     }
 
