@@ -24,6 +24,12 @@
         <td th:text="${series.title}">Titel</td>
         <td th:text="${series.authorString}">Autoren</td>
         <td th:text="${series.books.size()}">Teile</td>
+        <td>
+            <form method="post" th:action="@{/series/delete}">
+                <input name="id" th:value="${series.id}" type="hidden">
+                <button class="btn-danger" th:text="#{form.delete}" type="submit">Löschen</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

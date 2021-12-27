@@ -209,6 +209,15 @@ public class BookManagement {
     }
 
     /**
+     * Deletes the {@link Series} referenced by the given id from {@link SeriesRepository}.
+     *
+     * @param id must be valid.
+     */
+    public void deleteSeries(long id) {
+        seriesRepository.deleteById(id);
+    }
+
+    /**
      * Returns all {@link Series} present in {@link SeriesRepository}.
      *
      * @return an {@link Iterable} containing all {@link Series} instances in {@link SeriesRepository}.

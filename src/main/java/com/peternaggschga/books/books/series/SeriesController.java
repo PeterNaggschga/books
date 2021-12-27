@@ -54,4 +54,10 @@ public class SeriesController {
         management.createSeries(form);
         return "redirect:/series";
     }
+
+    @PostMapping("/series/delete")
+    public String deleteSeries(long id) {
+        management.deleteSeries(id);
+        return "redirect:/series";
+    }
 }
