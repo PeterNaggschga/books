@@ -12,7 +12,7 @@ import java.time.LocalDate;
 /**
  * A container class for validation of form inputs concerning {@link Author}s.
  */
-public class CreateAuthorForm {
+public class EditAuthorForm {
     @NotNull
     @NotBlank
     @SuppressWarnings("FieldMayBeFinal")
@@ -33,8 +33,8 @@ public class CreateAuthorForm {
     @Length(min = 2, max = 2)
     private String countryCodeString;
 
-    public CreateAuthorForm(String firstName, String lastName, String birthDateString, String deathDateString,
-                            String countryCodeString) {
+    public EditAuthorForm(String firstName, String lastName, String birthDateString, String deathDateString,
+                          String countryCodeString) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDateString = birthDateString;

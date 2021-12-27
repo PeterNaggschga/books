@@ -39,7 +39,7 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/add")
-    public String addAuthor(Model model, CreateAuthorForm form) {
+    public String addAuthor(Model model, EditAuthorForm form) {
         form.setCountryCodeString(CountryCode.US.toString());
         model.addAttribute("countries", CountryCode.values());
         model.addAttribute("id", -1);
@@ -47,7 +47,7 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/{id}")
-    public String editAuthor(@PathVariable long id, Model model, CreateAuthorForm form) {
+    public String editAuthor(@PathVariable long id, Model model, EditAuthorForm form) {
         Author author = management.findAuthorById(id);
         model.addAttribute("countries", CountryCode.values());
         model.addAttribute("id", author.getId());
@@ -64,7 +64,7 @@ public class AuthorController {
     }
 
     @PostMapping("/authors/save")
-    public String saveAuthor(long id, Model model, @Valid CreateAuthorForm form, Errors result) {
+    public String saveAuthor(long id, Model model, @Valid EditAuthorForm form, Errors result) {
         if (result.hasErrors()) {
             LOG.warn("Fehlerhafte Formulardaten: " + result.getAllErrors());
             model.addAttribute("countries", CountryCode.values());

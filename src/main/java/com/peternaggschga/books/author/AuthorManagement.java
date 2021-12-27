@@ -62,7 +62,7 @@ public class AuthorManagement {
      * @see AuthorManagement#createAuthor(String, String, LocalDate, LocalDate, CountryCode)
      */
     @SuppressWarnings("UnusedReturnValue")
-    public Author createAuthor(@NonNull @Valid CreateAuthorForm form) {
+    public Author createAuthor(@NonNull @Valid EditAuthorForm form) {
         return createAuthor(form.getFirstName(), form.getLastName(), form.getBirthDate(), form.getDeathDate(),
                 form.getCountryCode());
     }
@@ -91,7 +91,7 @@ public class AuthorManagement {
     }
 
     /**
-     * Updates the {@link Author} referred to by the given id with the given {@link CreateAuthorForm}. Wrapper function
+     * Updates the {@link Author} referred to by the given id with the given {@link EditAuthorForm}. Wrapper function
      * of {@link AuthorManagement#updateAuthor(long, String, String, LocalDate, LocalDate, CountryCode)}.
      *
      * @param id   must be valid.
@@ -100,7 +100,7 @@ public class AuthorManagement {
      * @see AuthorManagement#updateAuthor(long, String, String, LocalDate, LocalDate, CountryCode)
      */
     @SuppressWarnings("UnusedReturnValue")
-    public Author updateAuthor(long id, @NonNull @Valid CreateAuthorForm form) {
+    public Author updateAuthor(long id, @NonNull @Valid EditAuthorForm form) {
         return updateAuthor(id, form.getFirstName(), form.getLastName(), form.getBirthDate(), form.getDeathDate(),
                 form.getCountryCode());
     }
