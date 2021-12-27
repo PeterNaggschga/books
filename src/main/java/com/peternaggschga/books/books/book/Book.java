@@ -1,4 +1,4 @@
-package com.peternaggschga.books.book;
+package com.peternaggschga.books.books.book;
 
 import com.peternaggschga.books.author.Author;
 import lombok.NonNull;

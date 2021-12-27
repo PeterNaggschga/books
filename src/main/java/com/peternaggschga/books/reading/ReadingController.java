@@ -1,6 +1,6 @@
 package com.peternaggschga.books.reading;
 
-import com.peternaggschga.books.book.BookManagement;
+import com.peternaggschga.books.books.BookManagement;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

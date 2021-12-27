@@ -1,4 +1,6 @@
-package com.peternaggschga.books.book;
+package com.peternaggschga.books.books.book;
+
+import com.peternaggschga.books.books.BookManagement;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;

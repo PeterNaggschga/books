@@ -1,6 +1,7 @@
-package com.peternaggschga.books.book;
+package com.peternaggschga.books.books;
 
 import com.peternaggschga.books.author.Author;
+import com.peternaggschga.books.books.book.Book;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -37,6 +38,7 @@ public class BookUnitTest {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nested
     class ConstructorTests {
 
@@ -182,6 +184,7 @@ public class BookUnitTest {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nested
     class SetterTests {
         Book book;

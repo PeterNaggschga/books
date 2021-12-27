@@ -1,7 +1,7 @@
 package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
-import com.peternaggschga.books.book.Book;
+import com.peternaggschga.books.books.book.Book;
 import lombok.NonNull;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;

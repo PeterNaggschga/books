@@ -1,4 +1,4 @@
-package com.peternaggschga.books.book.series;
+package com.peternaggschga.books.books.series;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;

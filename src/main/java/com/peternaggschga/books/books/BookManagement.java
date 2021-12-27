@@ -1,10 +1,13 @@
-package com.peternaggschga.books.book;
+package com.peternaggschga.books.books;
 
 import com.peternaggschga.books.author.Author;
 import com.peternaggschga.books.author.AuthorManagement;
-import com.peternaggschga.books.book.series.CreateSeriesForm;
-import com.peternaggschga.books.book.series.Series;
-import com.peternaggschga.books.book.series.SeriesRepository;
+import com.peternaggschga.books.books.book.Book;
+import com.peternaggschga.books.books.book.BookRepository;
+import com.peternaggschga.books.books.book.CreateBookForm;
+import com.peternaggschga.books.books.series.CreateSeriesForm;
+import com.peternaggschga.books.books.series.Series;
+import com.peternaggschga.books.books.series.SeriesRepository;
 import lombok.NonNull;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;

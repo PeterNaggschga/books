@@ -1,7 +1,7 @@
-package com.peternaggschga.books.book.series;
+package com.peternaggschga.books.books.series;
 
 import com.peternaggschga.books.author.Author;
-import com.peternaggschga.books.book.Book;
+import com.peternaggschga.books.books.book.Book;
 import lombok.NonNull;
 
 import javax.persistence.Entity;

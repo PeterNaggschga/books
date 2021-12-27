@@ -1,4 +1,4 @@
-package com.peternaggschga.books.book.series;
+package com.peternaggschga.books.books.series;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

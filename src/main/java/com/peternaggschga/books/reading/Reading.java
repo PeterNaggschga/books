@@ -1,6 +1,6 @@
 package com.peternaggschga.books.reading;
 
-import com.peternaggschga.books.book.Book;
+import com.peternaggschga.books.books.book.Book;
 import lombok.NonNull;
 
 import javax.persistence.Entity;

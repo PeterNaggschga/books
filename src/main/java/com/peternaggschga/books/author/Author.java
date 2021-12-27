@@ -1,6 +1,7 @@
 package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
+import com.peternaggschga.books.books.book.Book;
 import lombok.NonNull;
 
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
 /**
- * An entity representing a person writing {@link com.peternaggschga.books.book.Book Book}s.
+ * An entity representing a person writing {@link Book}s.
  */
 @Entity
 public class Author {

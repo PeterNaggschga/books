@@ -1,6 +1,6 @@
 package com.peternaggschga.books.reading;
 
-import com.peternaggschga.books.book.Book;
+import com.peternaggschga.books.books.book.Book;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -29,6 +29,7 @@ public class ReadingUnitTest {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nested
     class ConstructorTests {
 
@@ -111,6 +112,7 @@ public class ReadingUnitTest {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nested
     class SetterTests {
         Reading reading;

@@ -1,6 +1,7 @@
-package com.peternaggschga.books.book;
+package com.peternaggschga.books.books.book;
 
 import com.peternaggschga.books.author.AuthorManagement;
+import com.peternaggschga.books.books.BookManagement;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

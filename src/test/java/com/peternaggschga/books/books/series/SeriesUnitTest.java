@@ -1,8 +1,8 @@
-package com.peternaggschga.books.book.series;
+package com.peternaggschga.books.books.series;
 
 import com.neovisionaries.i18n.CountryCode;
 import com.peternaggschga.books.author.Author;
-import com.peternaggschga.books.book.Book;
+import com.peternaggschga.books.books.book.Book;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -47,6 +47,7 @@ public class SeriesUnitTest {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nested
     class ConstructorTests {
 
@@ -177,6 +178,7 @@ public class SeriesUnitTest {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nested
     class SetterTests {
         Series series;
