@@ -43,7 +43,7 @@ public class BookController {
     public String showBooks(Model model) {
         model.addAttribute("authorExists", authorManagement.getAuthorCount() > 0);
         model.addAttribute("books", bookManagement.findAllBooks());
-        return "book/books";
+        return "books/book/books";
     }
 
     @GetMapping("/books/add")
@@ -51,7 +51,7 @@ public class BookController {
         model.addAttribute("languages", BookManagement.LANGUAGES);
         model.addAttribute("authors", authorManagement.findAllAuthors());
         model.addAttribute("seriesIterable", bookManagement.findAllSeries());
-        return "book/new_book";
+        return "books/book/new_book";
     }
 
     @PostMapping("/books/add")
@@ -61,7 +61,7 @@ public class BookController {
             model.addAttribute("languages", BookManagement.LANGUAGES);
             model.addAttribute("authors", authorManagement.findAllAuthors());
             model.addAttribute("seriesIterable", bookManagement.findAllSeries());
-            return "book/new_book";
+            return "books/book/new_book";
         }
         Set<Author> authors = form.getAuthors().stream().map(authorManagement::findAuthorById)
                 .collect(Collectors.toSet());
@@ -71,6 +71,12 @@ public class BookController {
                 bookManagement.addBooksToSeries(book, id);
             }
         }
+        return "redirect:/books";
+    }
+
+    @PostMapping("/books/delete")
+    public String deleteBook(long id) {
+        bookManagement.deleteBook(id);
         return "redirect:/books";
     }
 }

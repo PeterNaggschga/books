@@ -30,6 +30,12 @@
         <td th:text="${book.pages}">Seiten</td>
         <td th:text="${book.publishedString}">Veröffentlichung</td>
         <td th:text="${book.isbn}">ISBN</td>
+        <td>
+            <form method="post" th:action="@{/books/delete}">
+                <input name="id" th:value="${book.id}" type="hidden">
+                <button class="btn-danger" th:text="#{form.delete}" type="submit">Löschen</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
