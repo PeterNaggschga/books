@@ -11,7 +11,7 @@
 <div class="container row justify-content-end mb-3">
     <a class="btn btn-primary w-auto" th:href="@{/authors/add}" th:text="#{authors.add.site.title}">Hinzufügen</a>
 </div>
-<table class="ui celled table">
+<table class="ui celled table align-middle">
     <thead>
     <tr>
         <th th:text="#{author.name}">Name</th>
@@ -27,9 +27,13 @@
         <td th:text="${author.deathDateString}">Gestorben</td>
         <td th:text="${author.nationality.name}">Nationalität</td>
         <td>
+            <a class="btn btn-secondary" th:href="@{/authors/{id}(id=${author.id})}"
+               th:text="#{form.edit}">Bearbeiten</a>
+        </td>
+        <td>
             <form method="post" th:action="@{/authors/delete}">
                 <input name="id" th:value="${author.id}" type="hidden">
-                <button class="btn-danger" th:text="#{form.delete}" type="submit">Löschen</button>
+                <button class="btn btn-danger" th:text="#{form.delete}" type="submit">Löschen</button>
             </form>
         </td>
     </tr>

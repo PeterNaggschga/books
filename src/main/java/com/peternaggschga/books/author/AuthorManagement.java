@@ -68,6 +68,44 @@ public class AuthorManagement {
     }
 
     /**
+     * Updates the {@link Author} referred to by the given id with the given firstName, lastName, birthDate, deathDate
+     * and nationality. The updated instance is saved to the {@link AuthorRepository}.
+     *
+     * @param id          must be valid.
+     * @param firstName   must not be null or blank.
+     * @param lastName    must not be null or blank.
+     * @param birthDate   can be null, if unknown.
+     * @param deathDate   can be null, if unknown.
+     * @param nationality must not be null.
+     * @return the updated {@link Author} instance.
+     */
+    public Author updateAuthor(long id, @NonNull @NotBlank String firstName, @NonNull @NotBlank String lastName,
+                               LocalDate birthDate, LocalDate deathDate, @NonNull CountryCode nationality) {
+        Author author = findAuthorById(id);
+        author.setFirstName(firstName);
+        author.setLastName(lastName);
+        author.setBirthDate(birthDate);
+        author.setDeathDate(deathDate);
+        author.setNationality(nationality);
+        return authorRepository.save(author);
+    }
+
+    /**
+     * Updates the {@link Author} referred to by the given id with the given {@link CreateAuthorForm}. Wrapper function
+     * of {@link AuthorManagement#updateAuthor(long, String, String, LocalDate, LocalDate, CountryCode)}.
+     *
+     * @param id   must be valid.
+     * @param form must be valid, must not be null.
+     * @return the updated {@link Author} instance.
+     * @see AuthorManagement#updateAuthor(long, String, String, LocalDate, LocalDate, CountryCode)
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    public Author updateAuthor(long id, @NonNull @Valid CreateAuthorForm form) {
+        return updateAuthor(id, form.getFirstName(), form.getLastName(), form.getBirthDate(), form.getDeathDate(),
+                form.getCountryCode());
+    }
+
+    /**
      * Deletes the given {@link Author} from {@link AuthorRepository}.
      *
      * @param author must not be null.

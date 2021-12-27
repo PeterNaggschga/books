@@ -1,6 +1,7 @@
 package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
+import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -64,10 +65,6 @@ public class CreateAuthorForm {
         return countryCodeString;
     }
 
-    public void setCountryCodeString(String countryCodeString) {
-        this.countryCodeString = countryCodeString;
-    }
-
     public LocalDate getBirthDate() {
         return birthDateString.isEmpty() ? null : LocalDate.parse(birthDateString);
     }
@@ -78,5 +75,25 @@ public class CreateAuthorForm {
 
     public CountryCode getCountryCode() {
         return CountryCode.getByCode(countryCodeString);
+    }
+
+    public void setFirstName(@NonNull @NotBlank String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(@NonNull @NotBlank String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setBirthDateString(@NonNull @NotBlank String birthDateString) {
+        this.birthDateString = birthDateString;
+    }
+
+    public void setDeathDateString(@NonNull @NotBlank String deathDateString) {
+        this.deathDateString = deathDateString;
+    }
+
+    public void setCountryCodeString(@NonNull @NotBlank String countryCodeString) {
+        this.countryCodeString = countryCodeString;
     }
 }
