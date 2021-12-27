@@ -3,7 +3,7 @@ package com.peternaggschga.books.books;
 import com.peternaggschga.books.author.Author;
 import com.peternaggschga.books.books.book.Book;
 import com.peternaggschga.books.books.book.BookRepository;
-import com.peternaggschga.books.books.book.CreateBookForm;
+import com.peternaggschga.books.books.book.EditBookForm;
 import com.peternaggschga.books.books.series.CreateSeriesForm;
 import com.peternaggschga.books.books.series.Series;
 import com.peternaggschga.books.books.series.SeriesRepository;
@@ -73,7 +73,7 @@ public class BookManagement {
     }
 
     /**
-     * Creates a new {@link Book} instance with the given {@link CreateBookForm}. The new instance is saved into the
+     * Creates a new {@link Book} instance with the given {@link EditBookForm}. The new instance is saved into the
      * {@link BookRepository}.
      * Wrapper function of {@link BookManagement#createBook(String, Collection, LocalDate, String, int, Locale)}.
      *
@@ -82,8 +82,49 @@ public class BookManagement {
      * @see BookManagement#createBook(String, Collection, LocalDate, String, int, Locale)
      * @see BookManagement#addBooksToSeries(Book, long)
      */
-    public Book createBook(@NonNull @Valid CreateBookForm form, Collection<Author> authors) {
+    public Book createBook(@NonNull @Valid EditBookForm form, Collection<Author> authors) {
         return createBook(form.getTitle(), authors, form.getPublished(), form.getIsbn(), form.getPages(),
+                form.getLanguage());
+    }
+
+
+    /**
+     * Updates the {@link Book} referred to by the given id with the given title, authors, published, isbn, pages and
+     * language. The updated instance is saved to the {@link BookRepository}.
+     *
+     * @param id        must be valid.
+     * @param title     must not be null or blank.
+     * @param authors   must not be null or empty.
+     * @param published must not be null.
+     * @param isbn      must not be null, must match {@link Book#ISBN_REGEX}.
+     * @param pages     must be positive.
+     * @param language  must not be null.
+     * @return the updated {@link Book} instance.
+     */
+    public Book updateBook(long id, @NonNull @NotBlank String title, @NonNull @NotEmpty Collection<Author> authors,
+                           @NonNull LocalDate published, @NonNull String isbn, @Positive int pages,
+                           @NonNull Locale language) {
+        Book book = findBookById(id);
+        book.setTitle(title);
+        book.setAuthors(authors);
+        book.setPublished(published);
+        book.setIsbn(isbn);
+        book.setPages(pages);
+        book.setLanguage(language);
+        return bookRepository.save(book);
+    }
+
+    /**
+     * Updates the {@link Book} referred to by the given id with the given {@link EditBookForm}. Wrapper function
+     * of {@link BookManagement#updateBook(long, String, Collection, LocalDate, String, int, Locale)}.
+     *
+     * @param id   must be valid.
+     * @param form must be valid, must not be null.
+     * @return the updated {@link Book} instance.
+     * @see BookManagement#updateBook(long, String, Collection, LocalDate, String, int, Locale)
+     */
+    public Book updateBook(long id, @NonNull @Valid EditBookForm form, Collection<Author> authors) {
+        return updateBook(id, form.getTitle(), authors, form.getPublished(), form.getIsbn(), form.getPages(),
                 form.getLanguage());
     }
 
@@ -180,6 +221,15 @@ public class BookManagement {
     }
 
     /**
+     * Deletes the {@link Series} referenced by the given id from {@link SeriesRepository}.
+     *
+     * @param id must be valid.
+     */
+    public void deleteSeries(long id) {
+        seriesRepository.deleteById(id);
+    }
+
+    /**
      * Adds all {@link Book}s of the given {@link Collection} to the {@link Series} referenced by the given id.
      *
      * @param books    can be null.
@@ -209,12 +259,15 @@ public class BookManagement {
     }
 
     /**
-     * Deletes the {@link Series} referenced by the given id from {@link SeriesRepository}.
+     * Removes the given {@link Book} from all {@link Series}, it is associated to.
      *
-     * @param id must be valid.
+     * @param book must not be null.
      */
-    public void deleteSeries(long id) {
-        seriesRepository.deleteById(id);
+    public void removeBookFromAllSeries(@NonNull Book book) {
+        for (Series series : findSeriesByBook(book)) {
+            series.remove(book);
+            seriesRepository.save(series);
+        }
     }
 
     /**

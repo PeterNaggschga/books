@@ -1,6 +1,7 @@
 package com.peternaggschga.books.books.book;
 
 import com.peternaggschga.books.books.BookManagement;
+import lombok.NonNull;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.util.Locale;
 /**
  * A container class for validation of form inputs concerning {@link Book}s.
  */
-public class CreateBookForm {
+public class EditBookForm {
     @NotNull
     @NotBlank
     @SuppressWarnings("FieldMayBeFinal")
@@ -38,8 +39,8 @@ public class CreateBookForm {
     @SuppressWarnings("FieldMayBeFinal")
     private List<Long> series;
 
-    public CreateBookForm(String title, List<Long> authors, String publishedString, String isbn, Integer pages,
-                          String languageString, List<Long> series) {
+    public EditBookForm(String title, List<Long> authors, String publishedString, String isbn, Integer pages,
+                        String languageString, List<Long> series) {
         this.title = title;
         this.authors = authors;
         this.publishedString = publishedString;
@@ -86,5 +87,33 @@ public class CreateBookForm {
 
     public List<Long> getSeries() {
         return series;
+    }
+
+    public void setTitle(@NonNull @NotBlank String title) {
+        this.title = title;
+    }
+
+    public void setPublishedString(@NonNull @NotBlank String publishedString) {
+        this.publishedString = publishedString;
+    }
+
+    public void setIsbn(@NonNull @NotBlank String isbn) {
+        this.isbn = isbn;
+    }
+
+    public void setPages(@NonNull @Positive Integer pages) {
+        this.pages = pages;
+    }
+
+    public void setLanguageString(@NonNull @NotBlank String languageString) {
+        this.languageString = languageString;
+    }
+
+    public void setAuthors(@NonNull @NotEmpty List<Long> authors) {
+        this.authors = authors;
+    }
+
+    public void setSeries(@NonNull List<Long> series) {
+        this.series = series;
     }
 }

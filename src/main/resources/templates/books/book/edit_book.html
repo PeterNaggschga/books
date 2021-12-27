@@ -9,32 +9,33 @@
 </head>
 <body layout:fragment="content">
 <!--suppress ThymeleafVariablesResolveInspection -->
-<form class="needs-validation" id="form" method="post" role="form" th:action="@{/books/add}"
-      th:object="${createBookForm}">
+<form class="needs-validation" id="form" method="post" role="form" th:action="@{/books/save}"
+      th:object="${editBookForm}">
     <p class="text-danger" th:if="${#fields.hasErrors('*')}" th:text="#{form.error}">Fehler</p>
     <div class="row g-3">
         <div class="col-12">
             <label class="form-label" for="title" th:text="#{book.title}">Titel</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" id="title" required th:errorclass="border-danger" th:field="*{title}"
+            <input class="form-control" id="title" required="required" th:errorclass="border-danger" th:field="*{title}"
                    type="text">
         </div>
         <div class="col-6">
             <label class="form-label" for="publishedString" th:text="#{book.published}">Veröffentlichung</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" data-date-format="dd.mm.yyyy" id="publishedString" required
+            <input class="form-control" data-date-format="dd.mm.yyyy" id="publishedString" required="required"
                    th:errorclass="border-danger" th:field="*{publishedString}" type="date">
         </div>
         <div class="col-6">
             <label class="form-label" for="isbn" th:text="#{book.isbn}">ISBN</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" id="isbn" required th:errorclass="border-danger" th:field="*{isbn}" type="text">
+            <input class="form-control" id="isbn" required="required" th:errorclass="border-danger" th:field="*{isbn}"
+                   type="text">
         </div>
         <div class="col-6">
             <label class="form-label" for="pages" th:text="#{book.pages}">Seiten</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" id="pages" min="1" required th:errorclass="border-danger" th:field="*{pages}"
-                   type="number">
+            <input class="form-control" id="pages" min="1" required="required" th:errorclass="border-danger"
+                   th:field="*{pages}" type="number">
         </div>
         <div class="col-6">
             <label class="form-label" for="languageString" th:text="#{book.language}">Sprache</label>
@@ -60,7 +61,10 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-primary w-100 mt-3" th:text="#{form.submit}" type="submit">Speichern</button>
+    <input name="id" th:value="${id}" type="hidden">
+    <div class="col-12 mt-3">
+        <button class="btn btn-primary w-100" th:text="#{form.submit}" type="submit">Speichern</button>
+    </div>
 </form>
 </body>
 </html>
