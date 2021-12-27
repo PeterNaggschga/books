@@ -54,4 +54,10 @@ public class AuthorController {
         management.createAuthor(form);
         return "redirect:/authors";
     }
+
+    @PostMapping("/authors/delete")
+    public String deleteAuthor(long id) {
+        management.deleteAuthor(id);
+        return "redirect:/authors";
+    }
 }

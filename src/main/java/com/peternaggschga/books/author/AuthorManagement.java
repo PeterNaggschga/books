@@ -1,6 +1,7 @@
 package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
+import com.peternaggschga.books.books.BookManagement;
 import com.peternaggschga.books.books.book.Book;
 import lombok.NonNull;
 import org.springframework.data.util.Streamable;
@@ -20,14 +21,19 @@ import java.time.LocalDate;
 public class AuthorManagement {
     @NotNull
     private final AuthorRepository authorRepository;
+    @NotNull
+    private final BookManagement bookManagement;
 
     /**
-     * Creates a new {@link AuthorManagement} instance with the given {@link AuthorRepository}.
+     * Creates a new {@link AuthorManagement} instance with the given {@link AuthorRepository} and
+     * {@link BookManagement}.
      *
      * @param authorRepository must not be null.
+     * @param bookManagement   must not be null.
      */
-    public AuthorManagement(@NonNull AuthorRepository authorRepository) {
+    public AuthorManagement(@NonNull AuthorRepository authorRepository, @NonNull BookManagement bookManagement) {
         this.authorRepository = authorRepository;
+        this.bookManagement = bookManagement;
     }
 
     /**
@@ -59,6 +65,31 @@ public class AuthorManagement {
     public Author createAuthor(@NonNull @Valid CreateAuthorForm form) {
         return createAuthor(form.getFirstName(), form.getLastName(), form.getBirthDate(), form.getDeathDate(),
                 form.getCountryCode());
+    }
+
+    /**
+     * Deletes the given {@link Author} from {@link AuthorRepository}.
+     *
+     * @param author must not be null.
+     */
+    public void deleteAuthor(@NonNull Author author) {
+        for (Book book : bookManagement.findBooksByAuthor(author)) {
+            if (book.getAuthors().size() == 1) {
+                bookManagement.deleteBook(book);
+            }
+        }
+        authorRepository.delete(author);
+    }
+
+    /**
+     * Deletes the {@link Author} referenced by the given id from {@link AuthorRepository}.
+     * Wrapper function of {@link AuthorManagement#deleteAuthor(Author)}.
+     *
+     * @param id must be valid.
+     * @see AuthorManagement#deleteAuthor(Author)
+     */
+    public void deleteAuthor(long id) {
+        deleteAuthor(findAuthorById(id));
     }
 
     /**

@@ -62,7 +62,7 @@ public class ReadingController {
             model.addAttribute("books", bookManagement.findAllBooks());
             return "reading/new_reading";
         }
-        readingManagement.createReading(form);
+        readingManagement.createReading(form, bookManagement.findBookById(form.getBookId()));
         return "redirect:/readings";
     }
 }

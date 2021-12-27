@@ -1,5 +1,6 @@
 package com.peternaggschga.books.books.book;
 
+import com.peternaggschga.books.author.Author;
 import com.peternaggschga.books.author.AuthorManagement;
 import com.peternaggschga.books.books.BookManagement;
 import lombok.NonNull;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A controller dealing with requests concerning {@link Book}s.
@@ -60,7 +63,9 @@ public class BookController {
             model.addAttribute("seriesIterable", bookManagement.findAllSeries());
             return "book/new_book";
         }
-        Book book = bookManagement.createBook(form);
+        Set<Author> authors = form.getAuthors().stream().map(authorManagement::findAuthorById)
+                .collect(Collectors.toSet());
+        Book book = bookManagement.createBook(form, authors);
         if (form.getSeries() != null) {
             for (long id : form.getSeries()) {
                 bookManagement.addBooksToSeries(book, id);

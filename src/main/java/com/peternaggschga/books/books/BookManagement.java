@@ -1,13 +1,13 @@
 package com.peternaggschga.books.books;
 
 import com.peternaggschga.books.author.Author;
-import com.peternaggschga.books.author.AuthorManagement;
 import com.peternaggschga.books.books.book.Book;
 import com.peternaggschga.books.books.book.BookRepository;
 import com.peternaggschga.books.books.book.CreateBookForm;
 import com.peternaggschga.books.books.series.CreateSeriesForm;
 import com.peternaggschga.books.books.series.Series;
 import com.peternaggschga.books.books.series.SeriesRepository;
+import com.peternaggschga.books.reading.ReadingManagement;
 import lombok.NonNull;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -37,20 +37,21 @@ public class BookManagement {
     @NotNull
     private final SeriesRepository seriesRepository;
     @NotNull
-    private final AuthorManagement authorManagement;
+    private final ReadingManagement readingManagement;
 
     /**
-     * Creates a new {@link BookManagement} instance with the given {@link BookRepository} and {@link SeriesRepository}.
+     * Creates a new {@link BookManagement} instance with the given {@link BookRepository}, {@link SeriesRepository} and
+     * {@link ReadingManagement}.
      *
-     * @param bookRepository   must not be null.
-     * @param seriesRepository must not be null.
-     * @param authorManagement must not be null.
+     * @param bookRepository    must not be null.
+     * @param seriesRepository  must not be null.
+     * @param readingManagement must not be null.
      */
     public BookManagement(@NonNull BookRepository bookRepository, @NonNull SeriesRepository seriesRepository,
-                          @NonNull AuthorManagement authorManagement) {
+                          @NonNull ReadingManagement readingManagement) {
         this.bookRepository = bookRepository;
         this.seriesRepository = seriesRepository;
-        this.authorManagement = authorManagement;
+        this.readingManagement = readingManagement;
     }
 
     /**
@@ -72,8 +73,8 @@ public class BookManagement {
     }
 
     /**
-     * Creates a new {@link Book} instance with the given {@link CreateBookForm} and adds it to the given series.
-     * The new instance is saved into the {@link BookRepository}.
+     * Creates a new {@link Book} instance with the given {@link CreateBookForm}. The new instance is saved into the
+     * {@link BookRepository}.
      * Wrapper function of {@link BookManagement#createBook(String, Collection, LocalDate, String, int, Locale)}.
      *
      * @param form must not be null or invalid.
@@ -81,9 +82,34 @@ public class BookManagement {
      * @see BookManagement#createBook(String, Collection, LocalDate, String, int, Locale)
      * @see BookManagement#addBooksToSeries(Book, long)
      */
-    public Book createBook(@NonNull @Valid CreateBookForm form) {
-        return createBook(form.getTitle(), form.getAuthors().stream().map(authorManagement::findAuthorById)
-                .collect(Collectors.toSet()), form.getPublished(), form.getIsbn(), form.getPages(), form.getLanguage());
+    public Book createBook(@NonNull @Valid CreateBookForm form, Collection<Author> authors) {
+        return createBook(form.getTitle(), authors, form.getPublished(), form.getIsbn(), form.getPages(),
+                form.getLanguage());
+    }
+
+    /**
+     * Deletes the given {@link Book} from {@link BookRepository}.
+     *
+     * @param book must not be null.
+     */
+    public void deleteBook(@NonNull Book book) {
+        for (Series series : findSeriesByBook(book)) {
+            series.remove(book);
+            seriesRepository.save(series);
+        }
+        readingManagement.deleteReadingsByBook(book);
+        bookRepository.delete(book);
+    }
+
+    /**
+     * Deletes the {@link Book} referenced by the given id from {@link BookRepository}.
+     * Wrapper function of {@link BookManagement#deleteBook(Book)}.
+     *
+     * @param id must be valid.
+     * @see BookManagement#deleteBook(Book)
+     */
+    public void deleteBook(long id) {
+        deleteBook(findBookById(id));
     }
 
     /**
@@ -113,6 +139,16 @@ public class BookManagement {
      */
     public Book findBookById(long id) {
         return bookRepository.findById(id).orElseThrow();
+    }
+
+    /**
+     * Returns all {@link Book}s associated with the given {@link Author}.
+     *
+     * @param author must not be null.
+     * @return a {@link Streamable} containing {@link Book}s.
+     */
+    public Streamable<Book> findBooksByAuthor(@NonNull Author author) {
+        return bookRepository.findByAuthorsContains(author);
     }
 
     /**
@@ -190,5 +226,15 @@ public class BookManagement {
      */
     public Series findSeriesById(long id) {
         return seriesRepository.findById(id).orElseThrow();
+    }
+
+    /**
+     * Returns all {@link Series} saved in {@link SeriesRepository} that contain the given {@link Book}.
+     *
+     * @param book must not be null.
+     * @return a {@link Streamable} containing {@link Series}.
+     */
+    public Streamable<Series> findSeriesByBook(@NonNull Book book) {
+        return seriesRepository.findByBooksContains(book);
     }
 }

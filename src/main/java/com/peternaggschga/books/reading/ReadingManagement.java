@@ -1,7 +1,8 @@
 package com.peternaggschga.books.reading;
 
-import com.peternaggschga.books.books.BookManagement;
 import com.peternaggschga.books.books.book.Book;
+import com.peternaggschga.books.books.series.Series;
+import com.peternaggschga.books.books.series.SeriesRepository;
 import lombok.NonNull;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -20,19 +21,14 @@ import java.time.LocalDate;
 public class ReadingManagement {
     @NotNull
     private final ReadingRepository readingRepository;
-    @NotNull
-    private final BookManagement bookManagement;
 
     /**
-     * Creates a new {@link ReadingManagement} instance with the given {@link ReadingRepository} and
-     * {@link BookManagement}.
+     * Creates a new {@link ReadingManagement} instance with the given {@link ReadingRepository}.
      *
      * @param readingRepository must not be null.
-     * @param bookManagement    must not be null.
      */
-    public ReadingManagement(@NonNull ReadingRepository readingRepository, @NonNull BookManagement bookManagement) {
+    public ReadingManagement(@NonNull ReadingRepository readingRepository) {
         this.readingRepository = readingRepository;
-        this.bookManagement = bookManagement;
     }
 
     /**
@@ -60,9 +56,37 @@ public class ReadingManagement {
      * @see ReadingManagement#createReading(Book, LocalDate, LocalDate, int)
      */
     @SuppressWarnings("UnusedReturnValue")
-    public Reading createReading(@NonNull @Valid CreateReadingForm form) {
-        return createReading(bookManagement.findBookById(form.getBookId()), form.getBeginning(), form.getEnd(),
-                form.getPagesPerHour());
+    public Reading createReading(@NonNull @Valid CreateReadingForm form, @NonNull Book book) {
+        return createReading(book, form.getBeginning(), form.getEnd(), form.getPagesPerHour());
+    }
+
+    /**
+     * Deletes the given {@link Reading} from {@link ReadingRepository}.
+     *
+     * @param reading must not be null.
+     */
+    public void deleteReading(@NonNull Reading reading) {
+        readingRepository.delete(reading);
+    }
+
+    /**
+     * Deletes the {@link Reading} referenced by the given id from {@link ReadingRepository}.
+     *
+     * @param id must be valid.
+     */
+    public void deleteReading(long id) {
+        readingRepository.deleteById(id);
+    }
+
+    /**
+     * Deletes all {@link Reading}s concerning the given {@link Book} from {@link ReadingRepository}.
+     *
+     * @param book must be valid.
+     */
+    public void deleteReadingsByBook(@NonNull Book book) {
+        for (Reading reading : findReadingsByBook(book)) {
+            deleteReading(reading);
+        }
     }
 
     /**
@@ -83,5 +107,15 @@ public class ReadingManagement {
      */
     public Reading findReadingById(long id) {
         return readingRepository.findById(id).orElseThrow();
+    }
+
+    /**
+     * Returns all {@link Series} saved in {@link SeriesRepository} that contain the given {@link Book}.
+     *
+     * @param book must not be null.
+     * @return a {@link Streamable} containing {@link Series}.
+     */
+    public Streamable<Reading> findReadingsByBook(@NonNull Book book) {
+        return readingRepository.findReadingsByBook(book);
     }
 }

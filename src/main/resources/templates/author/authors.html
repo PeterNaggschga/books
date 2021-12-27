@@ -26,6 +26,12 @@
         <td th:text="${author.birthDateString}">Geboren</td>
         <td th:text="${author.deathDateString}">Gestorben</td>
         <td th:text="${author.nationality.name}">Nationalität</td>
+        <td>
+            <form method="post" th:action="@{/authors/delete}">
+                <input name="id" th:value="${author.id}" type="hidden">
+                <button class="btn-danger" th:text="#{form.delete}" type="submit">Löschen</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
