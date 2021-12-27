@@ -6,20 +6,20 @@
        th:text="#{main.site.title}"></a>
     <ul class="nav col-12 col-lg-auto mb-2 justify-content-center mb-md-0">
         <li>
-            <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/books'? 'text-primary' : 'text-secondary'}"
-               th:href="@{/books}" th:text="#{books.site.title}">Bücher</a>
-        </li>
-        <li>
-            <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/authors'? 'text-primary' : 'text-secondary'}"
-               th:href="@{/authors}" th:text="#{authors.site.title}">Autoren</a>
+            <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/readings'? 'text-primary' : 'text-secondary'}"
+               th:href="@{/readings}" th:text="#{readings.site.title}">Lesungen</a>
         </li>
         <li>
             <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/series'? 'text-primary' : 'text-secondary'}"
                th:href="@{/series}" th:text="#{series.site.title}">Reihen</a>
         </li>
         <li>
-            <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/readings'? 'text-primary' : 'text-secondary'}"
-               th:href="@{/readings}" th:text="#{readings.site.title}">Lesungen</a>
+            <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/books'? 'text-primary' : 'text-secondary'}"
+               th:href="@{/books}" th:text="#{books.site.title}">Bücher</a>
+        </li>
+        <li>
+            <a th:class="'nav-link px-2 fw-light '+${#httpServletRequest.requestURI == '/authors'? 'text-primary' : 'text-secondary'}"
+               th:href="@{/authors}" th:text="#{authors.site.title}">Autoren</a>
         </li>
     </ul>
 </div>
