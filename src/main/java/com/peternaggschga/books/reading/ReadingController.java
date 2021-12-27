@@ -65,4 +65,10 @@ public class ReadingController {
         readingManagement.createReading(form, bookManagement.findBookById(form.getBookId()));
         return "redirect:/readings";
     }
+
+    @PostMapping("/readings/delete")
+    public String deleteReading(long id) {
+        readingManagement.deleteReading(id);
+        return "redirect:/readings";
+    }
 }

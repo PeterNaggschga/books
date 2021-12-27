@@ -26,6 +26,12 @@
         <td th:text="${reading.beginningString}">Beginn</td>
         <td th:text="${reading.endString}">Ende</td>
         <td th:text="${reading.pagesPerHour}">Seiten</td>
+        <td>
+            <form method="post" th:action="@{/readings/delete}">
+                <input name="id" th:value="${reading.id}" type="hidden">
+                <button class="btn-danger" th:text="#{form.delete}" type="submit">Löschen</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
