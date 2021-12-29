@@ -11,7 +11,7 @@
 <div class="container row justify-content-end mb-3">
     <a class="btn btn-primary w-auto" th:href="@{/series/add}" th:text="#{series.add.site.title}">Hinzufügen</a>
 </div>
-<table class="ui celled table">
+<table class="ui celled table align-middle">
     <thead>
     <tr>
         <th th:text="#{series.title}">Titel</th>
@@ -25,9 +25,13 @@
         <td th:text="${series.authorString}">Autoren</td>
         <td th:text="${series.books.size()}">Teile</td>
         <td>
+            <a class="btn btn-secondary" th:href="@{/series/{id}(id=${series.id})}"
+               th:text="#{form.edit}">Bearbeiten</a>
+        </td>
+        <td>
             <form method="post" th:action="@{/series/delete}">
                 <input name="id" th:value="${series.id}" type="hidden">
-                <button class="btn-danger" th:text="#{form.delete}" type="submit">Löschen</button>
+                <button class="btn btn-danger" th:text="#{form.delete}" type="submit">Löschen</button>
             </form>
         </td>
     </tr>

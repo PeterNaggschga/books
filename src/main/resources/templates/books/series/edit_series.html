@@ -9,14 +9,14 @@
 </head>
 <body layout:fragment="content">
 <!--suppress ThymeleafVariablesResolveInspection -->
-<form class="needs-validation" id="form" method="post" role="form" th:action="@{/series/add}"
-      th:object="${createSeriesForm}">
+<form class="needs-validation" id="form" method="post" role="form" th:action="@{/series/save}"
+      th:object="${editSeriesForm}">
     <p class="text-danger" th:if="${#fields.hasErrors('*')}" th:text="#{form.error}">Fehler</p>
     <div class="row g-3">
         <div class="col-12">
             <label class="form-label" for="title" th:text="#{series.title}">Titel</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" id="title" required th:errorclass="border-danger" th:field="*{title}"
+            <input class="form-control" id="title" required="required" th:errorclass="border-danger" th:field="*{title}"
                    type="text">
         </div>
         <div class="col-12">
@@ -28,7 +28,10 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-primary w-100 mt-3" th:text="#{form.submit}" type="submit">Speichern</button>
+    <input name="id" th:value="${id}" type="hidden">
+    <div class="col-12 mt-3">
+        <button class="btn btn-primary w-100" th:text="#{form.submit}" type="submit">Speichern</button>
+    </div>
 </form>
 </body>
 </html>

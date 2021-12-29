@@ -9,10 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.stream.Collectors;
 
 /**
  * A controller dealing with requests concerning {@link Book}s.
@@ -39,19 +41,35 @@ public class SeriesController {
     }
 
     @GetMapping("/series/add")
-    public String addSeries(Model model, @SuppressWarnings("unused") CreateSeriesForm form) {
+    public String addSeries(Model model, @SuppressWarnings("unused") EditSeriesForm form) {
         model.addAttribute("books", management.findAllBooks());
-        return "books/series/new_series";
+        model.addAttribute("id", -1);
+        return "books/series/edit_series";
     }
 
-    @PostMapping("/series/add")
-    public String addSeries(Model model, @Valid CreateSeriesForm form, Errors result) {
+    @GetMapping("/series/{id}")
+    public String editAuthor(@PathVariable long id, Model model, EditSeriesForm form) {
+        Series series = management.findSeriesById(id);
+        model.addAttribute("books", management.findAllBooks());
+        model.addAttribute("id", series.getId());
+        form.setTitle(series.getTitle());
+        form.setBooks(series.getBooks().stream().map(Book::getId).collect(Collectors.toList()));
+        return "books/series/edit_series";
+    }
+
+    @PostMapping("/series/save")
+    public String saveSeries(long id, Model model, @Valid EditSeriesForm form, Errors result) {
         if (result.hasErrors()) {
             LOG.warn("Fehlerhafte Formulardaten: " + result.getAllErrors());
             model.addAttribute("books", management.findAllBooks());
-            return "books/series/new_series";
+            model.addAttribute("id", id);
+            return "books/series/edit_series";
         }
-        management.createSeries(form);
+        if (id < 0) {
+            management.createSeries(form);
+        } else {
+            management.updateSeries(id, form);
+        }
         return "redirect:/series";
     }
 

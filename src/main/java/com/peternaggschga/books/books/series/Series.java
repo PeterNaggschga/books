@@ -45,7 +45,7 @@ public class Series {
     public Series(@NonNull @NotBlank String title, Collection<Book> books) {
         this.books = new TreeSet<>(Comparator.comparing(Book::getPublished));
         setTitle(title);
-        addAll(books);
+        setBooks(books);
     }
 
     /**
@@ -57,6 +57,11 @@ public class Series {
     @SuppressWarnings("UnusedReturnValue")
     public boolean addAll(Collection<Book> books) {
         return books != null && this.books.addAll(books);
+    }
+
+    public void setBooks(Collection<Book> books) {
+        clear();
+        addAll(books);
     }
 
     public long getId() {

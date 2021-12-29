@@ -4,7 +4,7 @@ import com.peternaggschga.books.author.Author;
 import com.peternaggschga.books.books.book.Book;
 import com.peternaggschga.books.books.book.BookRepository;
 import com.peternaggschga.books.books.book.EditBookForm;
-import com.peternaggschga.books.books.series.CreateSeriesForm;
+import com.peternaggschga.books.books.series.EditSeriesForm;
 import com.peternaggschga.books.books.series.Series;
 import com.peternaggschga.books.books.series.SeriesRepository;
 import com.peternaggschga.books.reading.ReadingManagement;
@@ -118,12 +118,13 @@ public class BookManagement {
      * Updates the {@link Book} referred to by the given id with the given {@link EditBookForm}. Wrapper function
      * of {@link BookManagement#updateBook(long, String, Collection, LocalDate, String, int, Locale)}.
      *
-     * @param id   must be valid.
-     * @param form must be valid, must not be null.
+     * @param id      must be valid.
+     * @param form    must be valid, must not be null.
+     * @param authors must not be null or empty.
      * @return the updated {@link Book} instance.
      * @see BookManagement#updateBook(long, String, Collection, LocalDate, String, int, Locale)
      */
-    public Book updateBook(long id, @NonNull @Valid EditBookForm form, Collection<Author> authors) {
+    public Book updateBook(long id, @NonNull @Valid EditBookForm form, @NonNull @NotEmpty Collection<Author> authors) {
         return updateBook(id, form.getTitle(), authors, form.getPublished(), form.getIsbn(), form.getPages(),
                 form.getLanguage());
     }
@@ -199,14 +200,13 @@ public class BookManagement {
      * @param title must not be null or blank.
      * @param books can be null.
      * @return the new {@link Series} instance.
-     * @see BookManagement#createSeries(CreateSeriesForm)
      */
     public Series createSeries(@NonNull @NotBlank String title, Collection<Book> books) {
         return seriesRepository.save(new Series(title, books));
     }
 
     /**
-     * Creates a new {@link Series} instance with the given {@link CreateSeriesForm}.
+     * Creates a new {@link Series} instance with the given {@link EditSeriesForm}.
      * The new instance is saved into the {@link SeriesRepository}.
      * Wrapper function of {@link BookManagement#createSeries(String, Collection)}.
      *
@@ -214,10 +214,42 @@ public class BookManagement {
      * @return the new {@link Series} instance.
      * @see BookManagement#createSeries(String, Collection)
      */
-    public Series createSeries(@NonNull @Valid CreateSeriesForm form) {
+    public Series createSeries(@NonNull @Valid EditSeriesForm form) {
         return form.getBooks() == null ? createSeries(form.getTitle(), null) :
                 createSeries(form.getTitle(), form.getBooks().stream().map(this::findBookById)
                         .collect(Collectors.toSet()));
+    }
+
+    /**
+     * Updates the {@link Series} referred to by the given id with the given title and {@link Book}s.
+     * The updated instance is saved to the {@link SeriesRepository}.
+     *
+     * @param id    must be valid.
+     * @param title must not be null or blank.
+     * @param books can be null.
+     * @return the updated {@link Series} instance.
+     */
+    public Series updateSeries(long id, @NonNull @NotBlank String title, Collection<Book> books) {
+        Series series = findSeriesById(id);
+        series.setTitle(title);
+        series.setBooks(books);
+        return seriesRepository.save(series);
+    }
+
+    /**
+     * Updates the {@link Series} referred to by the given id with the given {@link EditSeriesForm}.
+     * The updated instance is saved to the {@link SeriesRepository}.
+     * Wrapper function of {@link BookManagement#updateSeries(long, String, Collection)}.
+     *
+     * @param id   must be valid.
+     * @param form must not be null or invalid.
+     * @return the updated {@link Series} instance.
+     * @see BookManagement#updateSeries(long, String, Collection)
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    public Series updateSeries(long id, @NonNull @Valid EditSeriesForm form) {
+        return updateSeries(id, form.getTitle(), form.getBooks() == null ? null :
+                form.getBooks().stream().map(this::findBookById).collect(Collectors.toSet()));
     }
 
     /**
