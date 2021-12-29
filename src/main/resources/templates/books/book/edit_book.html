@@ -60,10 +60,10 @@
                        th:value="${series.id}" type="checkbox"/>
             </div>
         </div>
-    </div>
-    <input name="id" th:value="${id}" type="hidden">
-    <div class="col-12 mt-3">
-        <button class="btn btn-primary w-100" th:text="#{form.submit}" type="submit">Speichern</button>
+        <input name="id" th:value="${id}" type="hidden">
+        <div class="col-12">
+            <button class="btn btn-primary w-100" th:text="#{form.submit}" type="submit">Speichern</button>
+        </div>
     </div>
 </form>
 </body>

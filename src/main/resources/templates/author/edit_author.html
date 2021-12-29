@@ -37,7 +37,7 @@
             <input class="form-control" data-date-format="dd.mm.yyyy" id="deathDateString" th:errorclass="border-danger"
                    th:field="*{deathDateString}" type="date">
         </div>
-        <div th:class="col-6">
+        <div class="col-6">
             <label class="form-label" for="countryCodeString" th:text="#{author.nationality}">Nationalität</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
             <select class="form-select" id="countryCodeString" required="required" th:errorclass="border-danger"
