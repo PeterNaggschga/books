@@ -11,7 +11,7 @@
 <div class="container row justify-content-end mb-3" th:if="${authorExists}">
     <a class="btn btn-primary w-auto" th:href="@{/books/add}" th:text="#{books.add.site.title}">Hinzufügen</a>
 </div>
-<table class="ui celled table align-middle">
+<table class="ui celled table table-striped align-middle">
     <thead>
     <tr>
         <th th:text="#{book.title}">Titel</th>
