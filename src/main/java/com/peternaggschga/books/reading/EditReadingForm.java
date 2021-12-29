@@ -1,5 +1,7 @@
 package com.peternaggschga.books.reading;
 
+import lombok.NonNull;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -9,7 +11,7 @@ import java.time.LocalDate;
 /**
  * A container class for validation of form inputs concerning {@link Reading}s.
  */
-public class CreateReadingForm {
+public class EditReadingForm {
     @NotNull
     @SuppressWarnings("FieldMayBeFinal")
     private Long bookId;
@@ -27,7 +29,7 @@ public class CreateReadingForm {
     @SuppressWarnings("FieldMayBeFinal")
     private Integer pagesPerHour;
 
-    public CreateReadingForm(Long bookId, String beginningString, String endString, Integer pagesPerHour) {
+    public EditReadingForm(Long bookId, String beginningString, String endString, Integer pagesPerHour) {
         this.bookId = bookId;
         this.beginningString = beginningString;
         this.endString = endString;
@@ -58,5 +60,21 @@ public class CreateReadingForm {
 
     public Integer getPagesPerHour() {
         return pagesPerHour;
+    }
+
+    public void setBookId(long bookId) {
+        this.bookId = bookId;
+    }
+
+    public void setBeginningString(@NonNull @NotBlank String beginningString) {
+        this.beginningString = beginningString;
+    }
+
+    public void setEndString(@NonNull @NotBlank String endString) {
+        this.endString = endString;
+    }
+
+    public void setPagesPerHour(int pagesPerHour) {
+        this.pagesPerHour = pagesPerHour;
     }
 }

@@ -47,7 +47,7 @@ public class ReadingManagement {
     }
 
     /**
-     * Creates a new {@link Reading} instance with the given {@link CreateReadingForm}. Saves the new instance to the
+     * Creates a new {@link Reading} instance with the given {@link EditReadingForm}. Saves the new instance to the
      * {@link ReadingRepository}.
      * Wrapper function of {@link ReadingManagement#createReading(Book, LocalDate, LocalDate, int)}.
      *
@@ -56,8 +56,44 @@ public class ReadingManagement {
      * @see ReadingManagement#createReading(Book, LocalDate, LocalDate, int)
      */
     @SuppressWarnings("UnusedReturnValue")
-    public Reading createReading(@NonNull @Valid CreateReadingForm form, @NonNull Book book) {
+    public Reading createReading(@NonNull @Valid EditReadingForm form, @NonNull Book book) {
         return createReading(book, form.getBeginning(), form.getEnd(), form.getPagesPerHour());
+    }
+
+    /**
+     * Updates the {@link Reading} referred to by the given id with the given {@link Book}, beginning, end and
+     * pagesPerHour. The updated instance is saved to the {@link ReadingRepository}.
+     *
+     * @param id           must be valid.
+     * @param book         must not be null.
+     * @param beginning    must not be null.
+     * @param end          can be null (if reading is not finished yet).
+     * @param pagesPerHour must be positive.
+     * @return the updated {@link Reading} instance.
+     */
+    public Reading updateReading(long id, @NonNull Book book, @NonNull LocalDate beginning, LocalDate end,
+                                 @Positive int pagesPerHour) {
+        Reading reading = findReadingById(id);
+        reading.setBook(book);
+        reading.setBeginning(beginning);
+        reading.setEnd(end);
+        reading.setPagesPerHour(pagesPerHour);
+        return readingRepository.save(reading);
+    }
+
+    /**
+     * Updates the {@link Reading} referred to by the given id with the given {@link EditReadingForm}.
+     * Wrapper function of {@link ReadingManagement#updateReading(long, Book, LocalDate, LocalDate, int)}.
+     *
+     * @param id   must be valid.
+     * @param form must be valid, must not be null.
+     * @param book must not be null.
+     * @return the updated {@link Reading} instance.
+     * @see ReadingManagement#updateReading(long, Book, LocalDate, LocalDate, int)
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    public Reading updateReading(long id, @NonNull @Valid EditReadingForm form, @NonNull Book book) {
+        return updateReading(id, book, form.getBeginning(), form.getEnd(), form.getPagesPerHour());
     }
 
     /**
