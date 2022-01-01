@@ -29,6 +29,7 @@ public class AuthorUnitTest {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nested
     class ConstructorTests {
 
@@ -162,6 +163,7 @@ public class AuthorUnitTest {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nested
     class SetterTests {
         Author author;
