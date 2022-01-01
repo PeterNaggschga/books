@@ -37,23 +37,8 @@ public class BookUnitTest {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Nested
     class ConstructorTests {
-
-        @Test
-        void constructorsAssertsTitleNull() {
-            try {
-                new Book(null, AUTHORS, PUBLISHED, ISBN, PAGES, LANGUAGE);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            try {
-                new Book(null, AUTHOR, PUBLISHED, ISBN, PAGES, LANGUAGE);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
 
         @Test
         void constructorsAssertsTitleBlank() {
@@ -90,53 +75,11 @@ public class BookUnitTest {
         }
 
         @Test
-        void constructorsAssertsAuthorsNull() {
-            try {
-                new Book(TITLE, (List<Author>) null, PUBLISHED, ISBN, PAGES, LANGUAGE);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            try {
-                new Book(TITLE, (Author) null, PUBLISHED, ISBN, PAGES, LANGUAGE);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
-
-        @Test
         void constructorsAssertsAuthorsEmpty() {
             try {
                 new Book(TITLE, new ArrayList<>(), PUBLISHED, ISBN, PAGES, LANGUAGE);
                 fail();
             } catch (IllegalArgumentException ignored) {
-            }
-        }
-
-        @Test
-        void constructorsAssertsPublishedNull() {
-            try {
-                new Book(TITLE, AUTHORS, null, ISBN, PAGES, LANGUAGE);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            try {
-                new Book(TITLE, AUTHOR, null, ISBN, PAGES, LANGUAGE);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
-
-        @Test
-        void constructorsAssertsIsbnNull() {
-            try {
-                new Book(TITLE, AUTHORS, PUBLISHED, null, PAGES, LANGUAGE);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            try {
-                new Book(TITLE, AUTHOR, PUBLISHED, null, PAGES, LANGUAGE);
-                fail();
-            } catch (NullPointerException ignored) {
             }
         }
 
@@ -167,23 +110,8 @@ public class BookUnitTest {
             } catch (IllegalArgumentException ignored) {
             }
         }
-
-        @Test
-        void constructorsAssertsLanguageNull() {
-            try {
-                new Book(TITLE, AUTHORS, PUBLISHED, ISBN, PAGES, null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            try {
-                new Book(TITLE, AUTHOR, PUBLISHED, ISBN, PAGES, null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Nested
     class SetterTests {
         Book book;
@@ -191,15 +119,6 @@ public class BookUnitTest {
         @BeforeEach
         void setup() {
             book = new Book(TITLE, AUTHOR, PUBLISHED, ISBN, PAGES, LANGUAGE);
-        }
-
-        @Test
-        void setTitleAssertsNull() {
-            try {
-                book.setTitle(null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
         }
 
         @Test
@@ -225,43 +144,11 @@ public class BookUnitTest {
         }
 
         @Test
-        void setAuthorsAssertsNull() {
-            try {
-                book.setAuthors((List<Author>) null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            try {
-                book.setAuthors((Author) null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
-
-        @Test
         void setAuthorsAssertsEmpty() {
             try {
                 book.setAuthors(new ArrayList<>());
                 fail();
             } catch (IllegalArgumentException ignored) {
-            }
-        }
-
-        @Test
-        void setPublishedAssertsNull() {
-            try {
-                book.setPublished(null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
-
-        @Test
-        void setIsbnAssertsNull() {
-            try {
-                book.setIsbn(null);
-                fail();
-            } catch (NullPointerException ignored) {
             }
         }
 
@@ -280,15 +167,6 @@ public class BookUnitTest {
                 book.setPages(0);
                 fail();
             } catch (IllegalArgumentException ignored) {
-            }
-        }
-
-        @Test
-        void setLanguageAssertsNull() {
-            try {
-                book.setLanguage(null);
-                fail();
-            } catch (NullPointerException ignored) {
             }
         }
     }

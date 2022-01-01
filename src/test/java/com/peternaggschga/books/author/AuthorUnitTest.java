@@ -29,18 +29,8 @@ public class AuthorUnitTest {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Nested
     class ConstructorTests {
-
-        @Test
-        void constructorAssertsFirstNameNull() {
-            try {
-                new Author(null, LAST_NAME, BIRTH_DATE, DEATH_DATE, NATIONALITY);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
 
         @Test
         void constructorAssertsFirstNameBlank() {
@@ -61,15 +51,6 @@ public class AuthorUnitTest {
             Author author = new Author(" " + FIRST_NAME + " ", " " + LAST_NAME + " ", BIRTH_DATE, DEATH_DATE, NATIONALITY);
             assertEquals(FIRST_NAME, author.getFirstName());
             assertEquals(LAST_NAME, author.getLastName());
-        }
-
-        @Test
-        void constructorAssertsLastNameNull() {
-            try {
-                new Author(FIRST_NAME, null, BIRTH_DATE, DEATH_DATE, NATIONALITY);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
         }
 
         @Test
@@ -132,15 +113,6 @@ public class AuthorUnitTest {
             } catch (IllegalArgumentException ignored) {
             }
         }
-
-        @Test
-        void constructorAssertsNationalityNull() {
-            try {
-                new Author(FIRST_NAME, LAST_NAME, BIRTH_DATE, DEATH_DATE, null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
     }
 
     @Nested
@@ -163,7 +135,6 @@ public class AuthorUnitTest {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Nested
     class SetterTests {
         Author author;
@@ -171,16 +142,6 @@ public class AuthorUnitTest {
         @BeforeEach
         void setup() {
             author = new Author(FIRST_NAME, LAST_NAME, BIRTH_DATE, DEATH_DATE, NATIONALITY);
-        }
-
-        @Test
-        void setFirstNameAssertsNull() {
-            try {
-                author.setFirstName(null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            assertEquals(FIRST_NAME, author.getFirstName());
         }
 
         @Test
@@ -203,16 +164,6 @@ public class AuthorUnitTest {
             author.setFirstName(" " + FIRST_NAME + " ");
             assertEquals(FIRST_NAME, author.getFirstName());
             author.setLastName(" " + LAST_NAME + " ");
-            assertEquals(LAST_NAME, author.getLastName());
-        }
-
-        @Test
-        void setLastNameAssertsNull() {
-            try {
-                author.setLastName(null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
             assertEquals(LAST_NAME, author.getLastName());
         }
 
@@ -291,16 +242,6 @@ public class AuthorUnitTest {
             } catch (IllegalArgumentException ignored) {
             }
             assertEquals(DEATH_DATE, author.getDeathDate());
-        }
-
-        @Test
-        void setNationalityAssertsNull() {
-            try {
-                author.setNationality(null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            assertEquals(NATIONALITY, author.getNationality());
         }
     }
 }

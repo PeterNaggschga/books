@@ -47,18 +47,8 @@ public class SeriesUnitTest {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Nested
     class ConstructorTests {
-
-        @Test
-        void constructorAssertsTitleNull() {
-            try {
-                new Series(null, BOOKS);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
 
         @Test
         void constructorAssertsTitleBlank() {
@@ -178,7 +168,6 @@ public class SeriesUnitTest {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Nested
     class SetterTests {
         Series series;
@@ -186,16 +175,6 @@ public class SeriesUnitTest {
         @BeforeEach
         void setup() {
             series = new Series(TITLE, BOOKS);
-        }
-
-        @Test
-        void setTitleAssertsNull() {
-            try {
-                series.setTitle(null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            assertEquals(TITLE, series.getTitle());
         }
 
         @Test

@@ -29,27 +29,8 @@ public class ReadingUnitTest {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Nested
     class ConstructorTests {
-
-        @Test
-        void constructorAssertsBookNull() {
-            try {
-                new Reading(null, BEGINNING, END, PAGES_PER_HOUR);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
-
-        @Test
-        void constructorAssertsBeginningNull() {
-            try {
-                new Reading(BOOK, null, END, PAGES_PER_HOUR);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-        }
 
         @Test
         void constructorAssertsBeginningAfterEnd() {
@@ -112,7 +93,6 @@ public class ReadingUnitTest {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Nested
     class SetterTests {
         Reading reading;
@@ -120,26 +100,6 @@ public class ReadingUnitTest {
         @BeforeEach
         void setup() {
             reading = new Reading(BOOK, BEGINNING, END, PAGES_PER_HOUR);
-        }
-
-        @Test
-        void setBookAssertsNull() {
-            try {
-                reading.setBook(null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            assertEquals(BOOK, reading.getBook());
-        }
-
-        @Test
-        void setBeginningAssertsNull() {
-            try {
-                reading.setBeginning(null);
-                fail();
-            } catch (NullPointerException ignored) {
-            }
-            assertEquals(BEGINNING, reading.getBeginning());
         }
 
         @Test
