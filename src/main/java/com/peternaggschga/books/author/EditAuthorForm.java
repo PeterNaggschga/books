@@ -78,22 +78,39 @@ public class EditAuthorForm {
     }
 
     public void setFirstName(@NonNull @NotBlank String firstName) {
+        if (firstName.isBlank()) {
+            throw new IllegalArgumentException("Names must not be blank");
+        }
         this.firstName = firstName;
     }
 
     public void setLastName(@NonNull @NotBlank String lastName) {
+        if (lastName.isBlank()) {
+            throw new IllegalArgumentException("Names must not be blank");
+        }
         this.lastName = lastName;
     }
 
-    public void setBirthDateString(@NonNull @NotBlank String birthDateString) {
+    public void setBirthDateString(
+            @NonNull @Pattern(regexp = "[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])") String birthDateString) {
+        if (!birthDateString.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])")) {
+            throw new IllegalArgumentException("Date must match date format");
+        }
         this.birthDateString = birthDateString;
     }
 
-    public void setDeathDateString(@NonNull @NotBlank String deathDateString) {
+    public void setDeathDateString(
+            @NonNull @Pattern(regexp = "[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])") String deathDateString) {
+        if (!deathDateString.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])")) {
+            throw new IllegalArgumentException("Date must match date format");
+        }
         this.deathDateString = deathDateString;
     }
 
     public void setCountryCodeString(@NonNull @NotBlank String countryCodeString) {
+        if (countryCodeString.isBlank()) {
+            throw new IllegalArgumentException("CountryCodeString must not be blank");
+        }
         this.countryCodeString = countryCodeString;
     }
 }
