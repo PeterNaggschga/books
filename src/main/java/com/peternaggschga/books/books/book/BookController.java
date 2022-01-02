@@ -93,10 +93,8 @@ public class BookController {
             book = bookManagement.updateBook(id, form, authors);
         }
         bookManagement.removeBookFromAllSeries(book);
-        if (form.getSeries() != null) {
-            for (long seriesId : form.getSeries()) {
-                bookManagement.addBooksToSeries(book, seriesId);
-            }
+        for (long seriesId : form.getSeries()) {
+            bookManagement.addBooksToSeries(book, seriesId);
         }
         return "redirect:/books";
     }

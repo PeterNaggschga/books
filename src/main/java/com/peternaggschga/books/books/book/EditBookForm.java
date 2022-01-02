@@ -5,6 +5,8 @@ import lombok.NonNull;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,7 +66,7 @@ public class EditBookForm {
     }
 
     public LocalDate getPublished() {
-        return publishedString == null ? null : LocalDate.parse(publishedString);
+        return LocalDate.parse(publishedString);
     }
 
     public String getIsbn() {
@@ -86,30 +88,50 @@ public class EditBookForm {
     }
 
     public List<Long> getSeries() {
-        return series;
+        return series == null ? new ArrayList<>() : series;
     }
 
     public void setTitle(@NonNull @NotBlank String title) {
+        if (title.isBlank()) {
+            throw new IllegalArgumentException("Title must not be blank");
+        }
         this.title = title;
     }
 
-    public void setPublishedString(@NonNull @NotBlank String publishedString) {
+    public void setPublishedString(
+            @NonNull @Pattern(regexp = "[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])") String publishedString) {
+        if (!publishedString.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])")) {
+            throw new IllegalArgumentException("Date must match date format");
+        }
         this.publishedString = publishedString;
     }
 
-    public void setIsbn(@NonNull @NotBlank String isbn) {
+    public void setIsbn(@NonNull @Pattern(regexp = Book.ISBN_REGEX) String isbn) {
+        if (!isbn.matches(Book.ISBN_REGEX)) {
+            throw new IllegalArgumentException("Isbn must match regex " + Book.ISBN_REGEX);
+        }
         this.isbn = isbn;
     }
 
     public void setPages(@NonNull @Positive Integer pages) {
+        if (pages <= 0) {
+            throw new IllegalArgumentException("Pages must be positive");
+        }
         this.pages = pages;
     }
 
     public void setLanguageString(@NonNull @NotBlank String languageString) {
+        if (Arrays.stream(BookManagement.LANGUAGES).map(Locale::toString).noneMatch(s -> s.equals(languageString))) {
+            throw new IllegalArgumentException("LanguageString must be toString of Locale in "
+                    + Arrays.toString(BookManagement.LANGUAGES));
+        }
         this.languageString = languageString;
     }
 
     public void setAuthors(@NonNull @NotEmpty List<Long> authors) {
+        if (authors.isEmpty()) {
+            throw new IllegalArgumentException("Authors must not be empty");
+        }
         this.authors = authors;
     }
 
