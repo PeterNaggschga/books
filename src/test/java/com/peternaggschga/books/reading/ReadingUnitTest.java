@@ -52,12 +52,16 @@ public class ReadingUnitTest {
         }
 
         @Test
-        void constructorAssertsNotPositivePagesPerHour() {
+        void constructorAssertsZeroPagesPerHour() {
             try {
                 new Reading(BOOK, END, BEGINNING, 0);
                 fail();
             } catch (IllegalArgumentException ignored) {
             }
+        }
+
+        @Test
+        void constructorAssertsNegativePagesPerHour() {
             try {
                 new Reading(BOOK, END, BEGINNING, -1);
                 fail();
@@ -73,15 +77,6 @@ public class ReadingUnitTest {
         void getEndStringReturnsNull() {
             Reading reading = new Reading(BOOK, BEGINNING, null, PAGES_PER_HOUR);
             assertNull(reading.getEndString());
-        }
-
-        @Test
-        void getDateReturnsFormattedStrings() {
-            Reading reading = new Reading(BOOK, BEGINNING, END, PAGES_PER_HOUR);
-            assertEquals(BEGINNING.getDayOfMonth() + "." + BEGINNING.getMonthValue() + "." + BEGINNING.getYear(),
-                    reading.getBeginningString());
-            assertEquals(END.getDayOfMonth() + "." + END.getMonthValue() + "." + END.getYear(),
-                    reading.getEndString());
         }
 
         @Test
@@ -154,12 +149,16 @@ public class ReadingUnitTest {
         }
 
         @Test
-        void setPagesPerHourAssertsNotPositive() {
+        void setPagesPerHourAssertsZero() {
             try {
                 reading.setPagesPerHour(0);
                 fail();
             } catch (IllegalArgumentException ignored) {
             }
+        }
+
+        @Test
+        void setPagesPerHourAssertsNegative() {
             try {
                 reading.setPagesPerHour(-1);
                 fail();
