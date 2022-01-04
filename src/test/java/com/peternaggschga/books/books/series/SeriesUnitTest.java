@@ -148,19 +148,19 @@ public class SeriesUnitTest {
         }
 
         @Test
-        void getAuthorsReturnsNullWhenEmpty() {
+        void getAuthorStringReturnsNullWhenEmpty() {
             series.clear();
             assertNull(series.getAuthorString());
         }
 
         @Test
-        void getAuthorsReturnsAuthorToStringWhenSingleAuthor() {
+        void getAuthorStringReturnsAuthorToStringWhenSingleAuthor() {
             series.remove(BOOKS.get(2));
             assertEquals(AUTHORS.get(0).toString(), series.getAuthorString());
         }
 
         @Test
-        void getAuthorsReturnsMultipleAuthorsSorted() {
+        void getAuthorStringReturnsMultipleAuthorsSorted() {
             String name1 = AUTHORS.get(0).toString();
             String name2 = AUTHORS.get(1).toString();
             assertEquals(name1 + ", " + name2, series.getAuthorString());
@@ -197,6 +197,42 @@ public class SeriesUnitTest {
         void setTitleTrimsString() {
             series.setTitle(" " + TITLE + " ");
             assertEquals(TITLE, series.getTitle());
+        }
+
+        @Test
+        void setBooksAllowsNull() {
+            try {
+                series.setBooks(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+                fail();
+            }
+            assertEquals(0, series.getBooks().size());
+        }
+
+        @Test
+        void setBooksAllowsEmpty() {
+            try {
+                series.setBooks(new ArrayList<>());
+            } catch (Exception e) {
+                e.printStackTrace();
+                fail();
+            }
+            assertEquals(0, series.getBooks().size());
+        }
+
+        @Test
+        void setBooksAddsAllBooks() {
+            series.clear();
+            series.setBooks(BOOKS);
+            assertEquals(BOOKS.size(), series.getBooks().size());
+        }
+
+        @Test
+        void setBooksAddsAllAuthors() {
+            series.clear();
+            series.setBooks(BOOKS);
+            assertEquals(AUTHORS.size(), series.getAuthors().size());
         }
     }
 

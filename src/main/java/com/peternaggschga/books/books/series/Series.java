@@ -40,23 +40,12 @@ public class Series {
      * Creates a new {@link Series} instance with the given title and books.
      *
      * @param title must not be null or blank.
-     * @param books must not be null.
+     * @param books can be null.
      */
     public Series(@NonNull @NotBlank String title, Collection<Book> books) {
         this.books = new TreeSet<>(Comparator.comparing(Book::getPublished));
         setTitle(title);
         setBooks(books);
-    }
-
-    /**
-     * Adds all {@link Book}s of the given {@link Collection} and their associated {@link Author}s to the series.
-     *
-     * @param books can be null.
-     * @return true if books were changed by the operation.
-     */
-    @SuppressWarnings("UnusedReturnValue")
-    public boolean addAll(Collection<Book> books) {
-        return books != null && this.books.addAll(books);
     }
 
     public void setBooks(Collection<Book> books) {
@@ -128,12 +117,21 @@ public class Series {
     }
 
     /**
+     * Adds all {@link Book}s of the given {@link Collection} and their associated {@link Author}s to the series.
+     *
+     * @param books can be null.
+     * @return true if books were changed by the operation.
+     */
+    public boolean addAll(Collection<Book> books) {
+        return books != null && this.books.addAll(books);
+    }
+
+    /**
      * Removes the given {@link Book} from books.
      *
      * @param book can be null.
      * @return true if books were changed by the operation.
      */
-    @SuppressWarnings("UnusedReturnValue")
     public boolean remove(Book book) {
         return book != null && books.remove(book);
     }
