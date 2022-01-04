@@ -16,29 +16,22 @@ import java.util.Locale;
 public class EditBookForm {
     @NotNull
     @NotBlank
-    @SuppressWarnings("FieldMayBeFinal")
     private String title;
     @NotNull
     @NotBlank
-    @SuppressWarnings("FieldMayBeFinal")
     private String publishedString;
     @NotNull
     @Pattern(regexp = Book.ISBN_REGEX)
-    @SuppressWarnings("FieldMayBeFinal")
     private String isbn;
     @NotNull
     @Positive
-    @SuppressWarnings("FieldMayBeFinal")
     private Integer pages;
     @NotNull
     @NotBlank
-    @SuppressWarnings("FieldMayBeFinal")
     private String languageString;
     @NotNull
     @NotEmpty
-    @SuppressWarnings("FieldMayBeFinal")
     private List<Long> authors;
-    @SuppressWarnings("FieldMayBeFinal")
     private List<Long> series;
 
     public EditBookForm(String title, List<Long> authors, String publishedString, String isbn, Integer pages,
@@ -60,7 +53,6 @@ public class EditBookForm {
         return authors;
     }
 
-    @SuppressWarnings("unused")
     public String getPublishedString() {
         return publishedString;
     }
@@ -77,7 +69,6 @@ public class EditBookForm {
         return pages;
     }
 
-    @SuppressWarnings("unused")
     public String getLanguageString() {
         return languageString;
     }

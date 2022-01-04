@@ -15,19 +15,15 @@ import java.time.LocalDate;
 public class EditAuthorForm {
     @NotNull
     @NotBlank
-    @SuppressWarnings("FieldMayBeFinal")
     private String firstName;
     @NotNull
     @NotBlank
-    @SuppressWarnings("FieldMayBeFinal")
     private String lastName;
     @NotNull
     @Pattern(regexp = "([0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|)")
-    @SuppressWarnings("FieldMayBeFinal")
     private String birthDateString;
     @NotNull
     @Pattern(regexp = "([0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|)")
-    @SuppressWarnings("FieldMayBeFinal")
     private String deathDateString;
     @NotNull
     @Length(min = 2, max = 2)
@@ -50,17 +46,14 @@ public class EditAuthorForm {
         return lastName;
     }
 
-    @SuppressWarnings("unused")
     public String getBirthDateString() {
         return birthDateString;
     }
 
-    @SuppressWarnings("unused")
     public String getDeathDateString() {
         return deathDateString;
     }
 
-    @SuppressWarnings("unused")
     public String getCountryCodeString() {
         return countryCodeString;
     }
