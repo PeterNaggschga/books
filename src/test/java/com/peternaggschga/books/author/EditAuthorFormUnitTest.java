@@ -2,6 +2,7 @@ package com.peternaggschga.books.author;
 
 import com.neovisionaries.i18n.CountryCode;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,7 +50,12 @@ public class EditAuthorFormUnitTest {
 
     @Nested
     class SetterTests {
-        EditAuthorForm form = new EditAuthorForm(null, null, null, null, null);
+        EditAuthorForm form;
+
+        @BeforeEach
+        void setup() {
+            form = new EditAuthorForm(null, null, null, null, null);
+        }
 
         @Test
         void setFirstNameAssertsBlank() {

@@ -2,6 +2,7 @@ package com.peternaggschga.books.books.book;
 
 import com.peternaggschga.books.books.BookManagement;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,7 +50,12 @@ public class EditBookFormUnitTest {
 
     @Nested
     class SetterTests {
-        EditBookForm form = new EditBookForm(null, null, null, null, null, null, null);
+        EditBookForm form;
+
+        @BeforeEach
+        void setup() {
+            form = new EditBookForm(null, null, null, null, null, null, null);
+        }
 
         @Test
         void setTitleAssertsBlank() {

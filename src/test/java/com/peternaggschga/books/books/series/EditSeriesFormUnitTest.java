@@ -1,6 +1,7 @@
 package com.peternaggschga.books.books.series;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,7 +39,12 @@ public class EditSeriesFormUnitTest {
 
     @Nested
     class SetterTests {
-        EditSeriesForm form = new EditSeriesForm(null, null);
+        EditSeriesForm form;
+
+        @BeforeEach
+        void setup() {
+            form = new EditSeriesForm(null, null);
+        }
 
         @Test
         void setTitleAssertsBlank() {

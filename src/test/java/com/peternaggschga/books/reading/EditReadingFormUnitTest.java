@@ -1,6 +1,7 @@
 package com.peternaggschga.books.reading;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +36,12 @@ public class EditReadingFormUnitTest {
 
     @Nested
     class SetterTests {
-        EditReadingForm form = new EditReadingForm(null, null, null, null);
+        EditReadingForm form;
+
+        @BeforeEach
+        void setup() {
+            form = new EditReadingForm(null, null, null, null);
+        }
 
         @Test
         void setBeginningStringAssertsBlank() {
