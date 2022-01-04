@@ -4,6 +4,7 @@ import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,9 +13,7 @@ import java.util.List;
 public class EditSeriesForm {
     @NotNull
     @NotBlank
-    @SuppressWarnings("FieldMayBeFinal")
     private String title;
-    @SuppressWarnings("FieldMayBeFinal")
     private List<Long> books;
 
     public EditSeriesForm(String title, List<Long> books) {
@@ -27,10 +26,13 @@ public class EditSeriesForm {
     }
 
     public List<Long> getBooks() {
-        return books;
+        return books == null ? new ArrayList<>() : books;
     }
 
     public void setTitle(@NonNull @NotBlank String title) {
+        if (title.isBlank()) {
+            throw new IllegalArgumentException("Title must not be blank");
+        }
         this.title = title;
     }
 
