@@ -110,6 +110,22 @@ public class BookUnitTest {
             } catch (IllegalArgumentException ignored) {
             }
         }
+
+        @Test
+        void constructorAssertsIsbnFormat() {
+            for (String isbn : List.of("ISBN", "ISBN 10", "2004-00-12", "57917981289", "123213")) {
+                try {
+                    new Book(TITLE, AUTHORS, PUBLISHED, isbn, PAGES, LANGUAGE);
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                }
+                try {
+                    new Book(TITLE, AUTHOR, PUBLISHED, isbn, PAGES, LANGUAGE);
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+        }
     }
 
     @Nested
@@ -138,9 +154,21 @@ public class BookUnitTest {
         @Test
         void settersTrimStrings() {
             book.setTitle(" " + TITLE + " ");
-            book.setIsbn(" " + ISBN + " ");
             assertEquals(TITLE, book.getTitle());
+            book.setIsbn(" " + ISBN + " ");
             assertEquals(ISBN, book.getIsbn());
+        }
+
+        @Test
+        void setIsbnAssertsFormat() {
+            for (String isbn : List.of("ISBN", "ISBN 10", "2004-00-12", "57917981289", "123213")) {
+                try {
+                    book.setIsbn(isbn);
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                }
+                assertEquals(ISBN, book.getIsbn());
+            }
         }
 
         @Test

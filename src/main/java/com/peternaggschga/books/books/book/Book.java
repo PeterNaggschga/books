@@ -57,7 +57,8 @@ public class Book {
      * @see Book#Book(String, Author, LocalDate, String, int, Locale)
      */
     public Book(@NonNull @NotBlank String title, @NonNull @NotEmpty Collection<Author> authors,
-                @NonNull LocalDate published, @NonNull String isbn, @Positive int pages, @NonNull Locale language) {
+                @NonNull LocalDate published, @NonNull @Pattern(regexp = ISBN_REGEX) String isbn, @Positive int pages,
+                @NonNull Locale language) {
         setTitle(title);
         setAuthors(authors);
         setPublished(published);
@@ -79,7 +80,7 @@ public class Book {
      * @see Book#Book(String, Collection, LocalDate, String, int, Locale)
      */
     public Book(@NonNull @NotBlank String title, @NonNull Author author, @NonNull LocalDate published,
-                @NonNull String isbn, @Positive int pages, @NonNull Locale language) {
+                @NonNull @Pattern(regexp = ISBN_REGEX) String isbn, @Positive int pages, @NonNull Locale language) {
         this(title, Set.of(author), published, isbn, pages, language);
     }
 
@@ -139,7 +140,7 @@ public class Book {
         return isbn;
     }
 
-    public void setIsbn(@NonNull String isbn) {
+    public void setIsbn(@NonNull @Pattern(regexp = ISBN_REGEX) String isbn) {
         if (!isbn.trim().matches(ISBN_REGEX)) {
             throw new IllegalArgumentException("ISBN must match regex " + ISBN_REGEX);
         }
