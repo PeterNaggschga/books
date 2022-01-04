@@ -87,7 +87,7 @@ public class EditAuthorForm {
     public void setBirthDateString(
             @NonNull @Pattern(regexp = "[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])") String birthDateString) {
         if (!birthDateString.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])")) {
-            throw new IllegalArgumentException("Date must match date format");
+            throw new IllegalArgumentException("String must match date format");
         }
         this.birthDateString = birthDateString;
     }
@@ -95,7 +95,7 @@ public class EditAuthorForm {
     public void setDeathDateString(
             @NonNull @Pattern(regexp = "[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])") String deathDateString) {
         if (!deathDateString.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])")) {
-            throw new IllegalArgumentException("Date must match date format");
+            throw new IllegalArgumentException("String must match date format");
         }
         this.deathDateString = deathDateString;
     }
