@@ -61,7 +61,6 @@ public class AuthorManagement {
      * @return the new {@link Author} instance.
      * @see AuthorManagement#createAuthor(String, String, LocalDate, LocalDate, CountryCode)
      */
-    @SuppressWarnings("UnusedReturnValue")
     public Author createAuthor(@NonNull @Valid EditAuthorForm form) {
         return createAuthor(form.getFirstName(), form.getLastName(), form.getBirthDate(), form.getDeathDate(),
                 form.getCountryCode());
@@ -99,7 +98,6 @@ public class AuthorManagement {
      * @return the updated {@link Author} instance.
      * @see AuthorManagement#updateAuthor(long, String, String, LocalDate, LocalDate, CountryCode)
      */
-    @SuppressWarnings("UnusedReturnValue")
     public Author updateAuthor(long id, @NonNull @Valid EditAuthorForm form) {
         return updateAuthor(id, form.getFirstName(), form.getLastName(), form.getBirthDate(), form.getDeathDate(),
                 form.getCountryCode());
