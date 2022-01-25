@@ -17,11 +17,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 public class AuthorManagementUnitTest {
 
     @BeforeAll
-    void canBeInstantiated() {
+    static void canBeInstantiated() {
         try {
             new AuthorManagement(mock(AuthorRepository.class), mock(BookManagement.class));
         } catch (Exception e) {
@@ -32,72 +31,84 @@ public class AuthorManagementUnitTest {
 
     @Nested
     class CreateAuthorTests {
+        Set<Author> authors = new HashSet<>();
+        AuthorManagement management;
+
+        @BeforeEach
+        void setup() {
+            authors.clear();
+            AuthorRepository repository = mock(AuthorRepository.class);
+            when(repository.save(any())).thenAnswer(invocationOnMock -> {
+                authors.add(invocationOnMock.getArgument(0));
+                return invocationOnMock.getArgument(0);
+            });
+            management = new AuthorManagement(repository, mock(BookManagement.class));
+        }
 
         @Test
         void createAuthorAssertsFirstNameBlank() {
-            AuthorManagement management = new AuthorManagement(mock(AuthorRepository.class), mock(BookManagement.class));
             EditAuthorForm form;
             try {
                 management.createAuthor("", "Name", null, null, CountryCode.US);
                 fail();
             } catch (IllegalArgumentException ignored) {
+                assertEquals(0, authors.size());
             }
             form = new EditAuthorForm("", "Name", "", "", CountryCode.US.toString());
             try {
                 management.createAuthor(form);
                 fail();
             } catch (IllegalArgumentException ignored) {
+                assertEquals(0, authors.size());
             }
             try {
                 management.createAuthor(" ", "Name", null, null, CountryCode.US);
                 fail();
             } catch (IllegalArgumentException ignored) {
+                assertEquals(0, authors.size());
             }
             form = new EditAuthorForm(" ", "Name", "", "", CountryCode.US.toString());
             try {
                 management.createAuthor(form);
                 fail();
             } catch (IllegalArgumentException ignored) {
+                assertEquals(0, authors.size());
             }
         }
 
         @Test
         void createAuthorAssertsLastNameBlank() {
-            AuthorManagement management = new AuthorManagement(mock(AuthorRepository.class), mock(BookManagement.class));
             EditAuthorForm form;
             try {
                 management.createAuthor("Name", "", null, null, CountryCode.US);
                 fail();
             } catch (IllegalArgumentException ignored) {
+                assertEquals(0, authors.size());
             }
             form = new EditAuthorForm("Name", "", "", "", CountryCode.US.toString());
             try {
                 management.createAuthor(form);
                 fail();
             } catch (IllegalArgumentException ignored) {
+                assertEquals(0, authors.size());
             }
             try {
                 management.createAuthor("Name", " ", null, null, CountryCode.US);
                 fail();
             } catch (IllegalArgumentException ignored) {
+                assertEquals(0, authors.size());
             }
             form = new EditAuthorForm("Name", " ", "", "", CountryCode.US.toString());
             try {
                 management.createAuthor(form);
                 fail();
             } catch (IllegalArgumentException ignored) {
+                assertEquals(0, authors.size());
             }
         }
 
         @Test
         void createAuthorSavesInstanceWhenValid() {
-            final Set<Author> authors = new HashSet<>();
-            AuthorRepository repository = mock(AuthorRepository.class);
-            when(repository.save(any())).thenAnswer(invocationOnMock -> {
-                authors.add(invocationOnMock.getArgument(0));
-                return invocationOnMock.getArgument(0);
-            });
-            AuthorManagement management = new AuthorManagement(repository, mock(BookManagement.class));
             EditAuthorForm form;
             Author author = new Author("Vorname", "Nachname", null, null, CountryCode.US);
             try {
@@ -129,26 +140,10 @@ public class AuthorManagementUnitTest {
                 e.printStackTrace();
                 fail();
             }
-            authors.clear();
-            try {
-                management.createAuthor("", author.getLastName(), author.getBirthDate(), author.getDeathDate(),
-                        author.getNationality());
-                fail();
-            } catch (IllegalArgumentException ignored) {
-                assertEquals(0, authors.size());
-            }
-            form = new EditAuthorForm("", "Nachname", "", "", CountryCode.US.toString());
-            try {
-                management.createAuthor(form);
-                fail();
-            } catch (IllegalArgumentException ignored) {
-                assertEquals(0, authors.size());
-            }
         }
 
         @Test
         void createAuthorAssertsInvalidForm() {
-            AuthorManagement management = new AuthorManagement(mock(AuthorRepository.class), mock(BookManagement.class));
             EditAuthorForm form;
             form = new EditAuthorForm("", "Autorisch", "2002-04-02", LocalDate.now().toString(), CountryCode.US.toString());
             try {
