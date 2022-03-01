@@ -82,7 +82,7 @@ public class BookManagement {
      * @see BookManagement#createBook(String, Collection, LocalDate, String, int, Locale)
      * @see BookManagement#addBooksToSeries(Book, long)
      */
-    public Book createBook(@NonNull @Valid EditBookForm form, Collection<Author> authors) {
+    public Book createBook(@NonNull @Valid EditBookForm form, @NonNull @NotEmpty Collection<Author> authors) {
         return createBook(form.getTitle(), authors, form.getPublished(), form.getIsbn(), form.getPages(),
                 form.getLanguage());
     }
@@ -214,6 +214,7 @@ public class BookManagement {
      * @return the new {@link Series} instance.
      * @see BookManagement#createSeries(String, Collection)
      */
+    @SuppressWarnings("UnusedReturnValue")
     public Series createSeries(@NonNull @Valid EditSeriesForm form) {
         return form.getBooks() == null ? createSeries(form.getTitle(), null) :
                 createSeries(form.getTitle(), form.getBooks().stream().map(this::findBookById)
@@ -309,6 +310,15 @@ public class BookManagement {
      */
     public Streamable<Series> findAllSeries() {
         return seriesRepository.findAll();
+    }
+
+    /**
+     * Returns the number of {@link Series} saved in {@link SeriesRepository}.
+     *
+     * @return a long counting the number of {@link Series}.
+     */
+    public long getSeriesCount() {
+        return seriesRepository.count();
     }
 
     /**

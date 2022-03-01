@@ -135,6 +135,15 @@ public class ReadingManagement {
     }
 
     /**
+     * Returns the number of {@link Reading}s saved in {@link ReadingRepository}.
+     *
+     * @return a long counting the number of {@link Reading}s.
+     */
+    public long getReadingCount() {
+        return readingRepository.count();
+    }
+
+    /**
      * Returns the {@link Reading} referenced by the given id.
      * If the id does not exist, a {@link java.util.NoSuchElementException} is thrown.
      *
