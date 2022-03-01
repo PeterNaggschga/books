@@ -139,4 +139,23 @@ public class Series {
     public void clear() {
         books.clear();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Series series = (Series) o;
+        boolean books = series.books.size() == this.books.size();
+        for (Book book : series.books) {
+            if (!(books && this.books.contains(book))) {
+                books = false;
+                break;
+            }
+        }
+        return id == series.id && title.equals(series.title) && books;
+    }
 }

@@ -179,4 +179,24 @@ public class Book {
     public String toString() {
         return getAuthorString() + ": " + title;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Book book = (Book) o;
+        boolean authors = book.getAuthors().size() == this.authors.size();
+        for (Author author : book.getAuthors()) {
+            if (!(authors && this.authors.contains(author))) {
+                authors = false;
+                break;
+            }
+        }
+        return id == book.id && authors && pages == book.pages && title.equals(book.title) &&
+                published.equals(book.published) && isbn.equals(book.isbn) && language.equals(book.language);
+    }
 }

@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Objects;
 
 /**
  * An entity representing a person writing {@link Book}s.
@@ -141,5 +142,19 @@ public class Author {
     @Override
     public String toString() {
         return getFirstName() + " " + getLastName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Author author = (Author) o;
+        return id == author.id && firstName.equals(author.firstName) && lastName.equals(author.lastName) &&
+                Objects.equals(birthDate, author.birthDate) && Objects.equals(deathDate, author.deathDate) &&
+                nationality == author.nationality;
     }
 }

@@ -118,4 +118,13 @@ public class Reading {
     public boolean isFinished() {
         return end != null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reading reading = (Reading) o;
+        return id == reading.id && pagesPerHour == reading.pagesPerHour && book.equals(reading.book) &&
+                beginning.equals(reading.beginning) && Objects.equals(end, reading.end);
+    }
 }
