@@ -211,7 +211,8 @@ public class AuthorManagementUnitTest {
             when(bookManagement.findBooksByAuthor(any())).thenReturn(Streamable.empty());
             management = new AuthorManagement(repository, bookManagement);
             for (long i = 1; i <= numberOfTestAuthors; i++) {
-                testAuthors.add(management.createAuthor("Vorname" + i, "Nachname", null, null, CountryCode.US));
+                testAuthors.add(management.createAuthor("Vorname" + i, "Nachname", LocalDate.of(1969, 6, 9),
+                        LocalDate.now(), CountryCode.US));
             }
         }
 
@@ -275,49 +276,49 @@ public class AuthorManagementUnitTest {
                 management.updateAuthor(author.getId(), form);
                 fail();
             } catch (NullPointerException ignored) {
-                assertEquals(author.getFirstName(), management.findAuthorById(author.getId()).getFirstName());
+                assertNotNull(management.findAuthorById(author.getId()).getFirstName());
             }
             form = new EditAuthorForm("", author.getLastName(), "", "", author.getNationality().toString());
             try {
                 management.updateAuthor(author.getId(), form);
                 fail();
             } catch (IllegalArgumentException ignored) {
-                assertEquals(author.getFirstName(), management.findAuthorById(author.getId()).getFirstName());
+                assertNotEquals("", management.findAuthorById(author.getId()).getFirstName());
             }
             form = new EditAuthorForm(author.getFirstName(), null, "", "", author.getNationality().toString());
             try {
                 management.updateAuthor(author.getId(), form);
                 fail();
             } catch (NullPointerException ignored) {
-                assertEquals(author.getLastName(), management.findAuthorById(author.getId()).getLastName());
+                assertNotNull(management.findAuthorById(author.getId()).getLastName());
             }
             form = new EditAuthorForm(author.getFirstName(), "", "", "", author.getNationality().toString());
             try {
                 management.updateAuthor(author.getId(), form);
                 fail();
             } catch (IllegalArgumentException ignored) {
-                assertEquals(author.getLastName(), management.findAuthorById(author.getId()).getLastName());
+                assertNotEquals("", management.findAuthorById(author.getId()).getLastName());
             }
             form = new EditAuthorForm(author.getFirstName(), author.getLastName(), null, "", author.getNationality().toString());
             try {
                 management.updateAuthor(author.getId(), form);
                 fail();
             } catch (NullPointerException ignored) {
-                assertEquals(author.getBirthDate(), management.findAuthorById(author.getId()).getBirthDate());
+                assertNotNull(management.findAuthorById(author.getId()).getBirthDate());
             }
             form = new EditAuthorForm(author.getFirstName(), author.getLastName(), "", null, author.getNationality().toString());
             try {
                 management.updateAuthor(author.getId(), form);
                 fail();
             } catch (NullPointerException ignored) {
-                assertEquals(author.getDeathDate(), management.findAuthorById(author.getId()).getDeathDate());
+                assertNotNull(management.findAuthorById(author.getId()).getDeathDate());
             }
             form = new EditAuthorForm(author.getFirstName(), author.getLastName(), "", "", null);
             try {
                 management.updateAuthor(author.getId(), form);
                 fail();
             } catch (NullPointerException ignored) {
-                assertEquals(author.getNationality(), management.findAuthorById(author.getId()).getNationality());
+                assertNotNull(management.findAuthorById(author.getId()).getNationality());
             }
         }
 
@@ -337,7 +338,7 @@ public class AuthorManagementUnitTest {
                 management.updateAuthor(author.getId(), "", "Name", null, null, author.getNationality());
                 fail();
             } catch (IllegalArgumentException ignored) {
-                assertEquals(author.getFirstName(), management.findAuthorById(author.getId()).getFirstName());
+                assertNotEquals("", management.findAuthorById(author.getId()).getFirstName());
             }
         }
 
@@ -348,7 +349,7 @@ public class AuthorManagementUnitTest {
                 management.updateAuthor(author.getId(), "Name", "", null, null, author.getNationality());
                 fail();
             } catch (IllegalArgumentException ignored) {
-                assertEquals(author.getLastName(), management.findAuthorById(author.getId()).getLastName());
+                assertNotEquals("", management.findAuthorById(author.getId()).getLastName());
             }
         }
 
@@ -360,8 +361,8 @@ public class AuthorManagementUnitTest {
                         author.getNationality());
                 fail();
             } catch (IllegalArgumentException ignored) {
-                assertEquals(author.getBirthDate(), management.findAuthorById(author.getId()).getBirthDate());
-                assertEquals(author.getDeathDate(), management.findAuthorById(author.getId()).getDeathDate());
+                assertNotEquals(LocalDate.now(), management.findAuthorById(author.getId()).getBirthDate());
+                assertNotEquals(LocalDate.now().minusDays(1), management.findAuthorById(author.getId()).getDeathDate());
             }
         }
     }
