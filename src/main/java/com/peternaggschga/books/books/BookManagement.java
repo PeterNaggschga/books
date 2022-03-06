@@ -214,7 +214,6 @@ public class BookManagement {
      * @return the new {@link Series} instance.
      * @see BookManagement#createSeries(String, Collection)
      */
-    @SuppressWarnings("UnusedReturnValue")
     public Series createSeries(@NonNull @Valid EditSeriesForm form) {
         return form.getBooks() == null ? createSeries(form.getTitle(), null) :
                 createSeries(form.getTitle(), form.getBooks().stream().map(this::findBookById)
@@ -247,7 +246,6 @@ public class BookManagement {
      * @return the updated {@link Series} instance.
      * @see BookManagement#updateSeries(long, String, Collection)
      */
-    @SuppressWarnings("UnusedReturnValue")
     public Series updateSeries(long id, @NonNull @Valid EditSeriesForm form) {
         return updateSeries(id, form.getTitle(), form.getBooks() == null ? null :
                 form.getBooks().stream().map(this::findBookById).collect(Collectors.toSet()));

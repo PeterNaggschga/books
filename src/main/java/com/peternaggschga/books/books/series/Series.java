@@ -43,7 +43,7 @@ public class Series {
      * @param books can be null.
      */
     public Series(@NonNull @NotBlank String title, Collection<Book> books) {
-        this.books = new TreeSet<>(Comparator.comparing(Book::getPublished));
+        this.books = new HashSet<>();
         setTitle(title);
         setBooks(books);
     }
@@ -111,7 +111,15 @@ public class Series {
      * @return a {@link SortedSet} of {@link Book}s.
      */
     public SortedSet<Book> getBooks() {
-        SortedSet<Book> result = new TreeSet<>(Comparator.comparing(Book::getPublished));
+        SortedSet<Book> result = new TreeSet<>((book, t1) -> {
+            if (!book.getPublished().equals(t1.getPublished())) {
+                return book.getPublished().compareTo(t1.getPublished());
+            }
+            if (!book.getTitle().equals(t1.getTitle())) {
+                return book.getTitle().compareTo(t1.getTitle());
+            }
+            return (int) (book.getId() - t1.getId());
+        });
         result.addAll(books);
         return result;
     }

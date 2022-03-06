@@ -6,6 +6,7 @@ import com.peternaggschga.books.author.AuthorRepository;
 import com.peternaggschga.books.books.book.Book;
 import com.peternaggschga.books.books.book.BookRepository;
 import com.peternaggschga.books.books.book.EditBookForm;
+import com.peternaggschga.books.books.series.EditSeriesForm;
 import com.peternaggschga.books.books.series.Series;
 import com.peternaggschga.books.books.series.SeriesRepository;
 import com.peternaggschga.books.reading.Reading;
@@ -14,6 +15,7 @@ import com.peternaggschga.books.reading.ReadingRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.util.Streamable;
 
 import javax.transaction.Transactional;
@@ -43,51 +45,56 @@ public class BookManagementUnitTest {
     @Nested
     class BookTests {
         @Nested
+        @SpringBootTest
         class CreateBookTests {
             Set<Book> books = new HashSet<>();
+            @Autowired
+            AuthorRepository authorRepository;
+            @Autowired
+            BookRepository repository;
             BookManagement management;
 
             @BeforeEach
             void setup() {
-                books.clear();
-                BookRepository repository = mock(BookRepository.class);
-                when(repository.save(any())).thenAnswer(invocationOnMock -> {
-                    books.add(invocationOnMock.getArgument(0));
-                    return invocationOnMock.getArgument(0);
-                });
                 management = new BookManagement(repository, mock(SeriesRepository.class),
                         mock(ReadingManagement.class));
+            }
+
+            @AfterEach
+            void tearDown() {
+                repository.deleteAll(books);
+                books.clear();
             }
 
             @Test
             void createBookAssertsTitleBlank() {
                 EditBookForm form;
                 try {
-                    management.createBook("", List.of(mock(Author.class)), LocalDate.now(), "978-3-492-70479-3", 1,
-                            Locale.GERMAN);
+                    books.add(management.createBook("", List.of(mock(Author.class)), LocalDate.now(),
+                            "978-3-492-70479-3", 1, Locale.GERMAN));
                     fail();
                 } catch (IllegalArgumentException ignored) {
                     assertEquals(0, books.size());
                 }
                 form = new EditBookForm("", List.of(1L), LocalDate.now().toString(), "978-3-492-70479-3", 1,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                        Locale.GERMAN.toString(), Collections.emptyList());
                 try {
-                    management.createBook(form, List.of(mock(Author.class)));
+                    books.add(management.createBook(form, List.of(mock(Author.class))));
                     fail();
                 } catch (IllegalArgumentException ignored) {
                     assertEquals(0, books.size());
                 }
                 try {
-                    management.createBook(" ", List.of(mock(Author.class)), LocalDate.now(), "978-3-492-70479-3", 1,
-                            Locale.GERMAN);
+                    books.add(management.createBook(" ", List.of(mock(Author.class)), LocalDate.now(),
+                            "978-3-492-70479-3", 1, Locale.GERMAN));
                     fail();
                 } catch (IllegalArgumentException ignored) {
                     assertEquals(0, books.size());
                 }
                 form = new EditBookForm(" ", List.of(1L), LocalDate.now().toString(), "978-3-492-70479-3", 1,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                        Locale.GERMAN.toString(), Collections.emptyList());
                 try {
-                    management.createBook(form, List.of(mock(Author.class)));
+                    books.add(management.createBook(form, List.of(mock(Author.class))));
                     fail();
                 } catch (IllegalArgumentException ignored) {
                     assertEquals(0, books.size());
@@ -98,16 +105,16 @@ public class BookManagementUnitTest {
             void createBookAssertsAuthorsEmpty() {
                 EditBookForm form;
                 try {
-                    management.createBook("Buch", new ArrayList<>(), LocalDate.now(), "978-3-492-70479-3", 1,
-                            Locale.GERMAN);
+                    books.add(management.createBook("Buch", Collections.emptyList(), LocalDate.now(),
+                            "978-3-492-70479-3", 1, Locale.GERMAN));
                     fail();
                 } catch (IllegalArgumentException ignored) {
                     assertEquals(0, books.size());
                 }
-                form = new EditBookForm("Buch", new ArrayList<>(), LocalDate.now().toString(), "978-3-492-70479-3", 1,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm("Buch", Collections.emptyList(), LocalDate.now().toString(),
+                        "978-3-492-70479-3", 1, Locale.GERMAN.toString(), Collections.emptyList());
                 try {
-                    management.createBook(form, new ArrayList<>());
+                    books.add(management.createBook(form, Collections.emptyList()));
                     fail();
                 } catch (IllegalArgumentException ignored) {
                     assertEquals(0, books.size());
@@ -124,8 +131,8 @@ public class BookManagementUnitTest {
                 } catch (IllegalArgumentException ignored) {
                     assertEquals(0, books.size());
                 }
-                form = new EditBookForm("Buch", new ArrayList<>(), LocalDate.now().toString(), "978-3-492-70479-3", 0,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm("Buch", Collections.emptyList(), LocalDate.now().toString(),
+                        "978-3-492-70479-3", 0, Locale.GERMAN.toString(), Collections.emptyList());
                 try {
                     management.createBook(form, List.of(mock(Author.class)));
                     fail();
@@ -144,8 +151,8 @@ public class BookManagementUnitTest {
                 } catch (IllegalArgumentException ignored) {
                     assertEquals(0, books.size());
                 }
-                form = new EditBookForm("Buch", new ArrayList<>(), LocalDate.now().toString(), "978-3-492-70479-3", -1,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm("Buch", Collections.emptyList(), LocalDate.now().toString(),
+                        "978-3-492-70479-3", -1, Locale.GERMAN.toString(), Collections.emptyList());
                 try {
                     management.createBook(form, List.of(mock(Author.class)));
                     fail();
@@ -157,15 +164,17 @@ public class BookManagementUnitTest {
             @Test
             void createBookSavesInstanceWhenValid() {
                 EditBookForm form;
-                Book book = new Book("Buch", List.of(mock(Author.class)), LocalDate.now(), "978-3-492-70479-3", 1,
-                        Locale.GERMAN);
+                Author author = authorRepository.save(new Author("Testo", "Testi", null, null, CountryCode.DE));
+                Book book = new Book("Buch", List.of(author), LocalDate.now(), "978-3-492-70479-3", 1, Locale.GERMAN);
                 try {
                     Book savedBook = management.createBook(book.getTitle(), book.getAuthors(), book.getPublished(),
                             book.getIsbn(), book.getPages(), book.getLanguage());
-                    assertEquals(1, books.size());
+                    books.add(savedBook);
                     assertTrue(books.contains(savedBook));
                     assertEquals(book.getTitle(), savedBook.getTitle());
                     assertEquals(book.getAuthors().size(), savedBook.getAuthors().size());
+                    assertEquals(book.getAuthors().stream().findAny().orElseThrow(),
+                            savedBook.getAuthors().stream().findAny().orElseThrow());
                     assertEquals(book.getPublished(), savedBook.getPublished());
                     assertEquals(book.getIsbn(), savedBook.getIsbn());
                     assertEquals(book.getPages(), savedBook.getPages());
@@ -174,15 +183,16 @@ public class BookManagementUnitTest {
                     e.printStackTrace();
                     fail();
                 }
-                books.clear();
-                form = new EditBookForm("Buch", new ArrayList<>(), LocalDate.now().toString(), "978-3-492-70479-3", 1,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm("Buch", Collections.emptyList(), LocalDate.now().toString(),
+                        "978-3-492-70479-3", 1, Locale.GERMAN.toString(), Collections.emptyList());
                 try {
-                    Book savedBook = management.createBook(form, List.of(mock(Author.class)));
-                    assertEquals(1, books.size());
+                    Book savedBook = management.createBook(form, List.of(author));
+                    books.add(savedBook);
                     assertTrue(books.contains(savedBook));
                     assertEquals(book.getTitle(), savedBook.getTitle());
                     assertEquals(book.getAuthors().size(), savedBook.getAuthors().size());
+                    assertEquals(book.getAuthors().stream().findAny().orElseThrow(),
+                            savedBook.getAuthors().stream().findAny().orElseThrow());
                     assertEquals(book.getPublished(), savedBook.getPublished());
                     assertEquals(book.getIsbn(), savedBook.getIsbn());
                     assertEquals(book.getPages(), savedBook.getPages());
@@ -196,57 +206,57 @@ public class BookManagementUnitTest {
             @Test
             void createBookAssertsInvalidForm() {
                 EditBookForm form;
-                form = new EditBookForm("", new ArrayList<>(), LocalDate.now().toString(), "978-3-492-70479-3", 1,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm("", Collections.emptyList(), LocalDate.now().toString(), "978-3-492-70479-3", 1,
+                        Locale.GERMAN.toString(), Collections.emptyList());
                 try {
                     management.createBook(form, List.of(mock(Author.class)));
                     fail();
                 } catch (IllegalArgumentException ignored) {
                 }
-                form = new EditBookForm(null, new ArrayList<>(), LocalDate.now().toString(), "978-3-492-70479-3", 1,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm(null, Collections.emptyList(), LocalDate.now().toString(), "978-3-492-70479-3",
+                        1, Locale.GERMAN.toString(), Collections.emptyList());
                 try {
                     management.createBook(form, List.of(mock(Author.class)));
                     fail();
                 } catch (NullPointerException ignored) {
                 }
-                form = new EditBookForm("Buch", new ArrayList<>(), "", "978-3-492-70479-3", 1, Locale.GERMAN.toString(),
-                        new ArrayList<>());
+                form = new EditBookForm("Buch", Collections.emptyList(), "", "978-3-492-70479-3", 1,
+                        Locale.GERMAN.toString(), Collections.emptyList());
                 try {
                     management.createBook(form, List.of(mock(Author.class)));
                     fail();
                 } catch (DateTimeParseException ignored) {
                 }
-                form = new EditBookForm("Buch", new ArrayList<>(), null, "978-3-492-70479-3", 1,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm("Buch", Collections.emptyList(), null, "978-3-492-70479-3", 1,
+                        Locale.GERMAN.toString(), Collections.emptyList());
                 try {
                     management.createBook(form, List.of(mock(Author.class)));
                     fail();
                 } catch (NullPointerException ignored) {
                 }
-                form = new EditBookForm("Buch", new ArrayList<>(), LocalDate.now().toString(), "", 1,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm("Buch", Collections.emptyList(), LocalDate.now().toString(), "", 1,
+                        Locale.GERMAN.toString(), Collections.emptyList());
                 try {
                     management.createBook(form, List.of(mock(Author.class)));
                     fail();
                 } catch (IllegalArgumentException ignored) {
                 }
-                form = new EditBookForm("Buch", new ArrayList<>(), LocalDate.now().toString(), null, 1,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm("Buch", Collections.emptyList(), LocalDate.now().toString(), null, 1,
+                        Locale.GERMAN.toString(), Collections.emptyList());
                 try {
                     management.createBook(form, List.of(mock(Author.class)));
                     fail();
                 } catch (NullPointerException ignored) {
                 }
-                form = new EditBookForm("Buch", new ArrayList<>(), LocalDate.now().toString(), "978-3-492-70479-3", 0,
-                        Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm("Buch", Collections.emptyList(), LocalDate.now().toString(),
+                        "978-3-492-70479-3", 0, Locale.GERMAN.toString(), Collections.emptyList());
                 try {
                     management.createBook(form, List.of(mock(Author.class)));
                     fail();
                 } catch (IllegalArgumentException ignored) {
                 }
-                form = new EditBookForm("Buch", new ArrayList<>(), LocalDate.now().toString(), "978-3-492-70479-3",
-                        null, Locale.GERMAN.toString(), new ArrayList<>());
+                form = new EditBookForm("Buch", Collections.emptyList(), LocalDate.now().toString(),
+                        "978-3-492-70479-3", null, Locale.GERMAN.toString(), Collections.emptyList());
                 try {
                     management.createBook(form, List.of(mock(Author.class)));
                     fail();
@@ -259,7 +269,7 @@ public class BookManagementUnitTest {
         @SpringBootTest
         @Transactional
         class UpdateBookTests {
-            long numberOfTestBooks = 3;
+            int numberOfTestBooks = 3;
             @Autowired
             AuthorRepository authorRepository;
             @Autowired
@@ -276,7 +286,7 @@ public class BookManagementUnitTest {
                 SeriesRepository seriesRepository = mock(SeriesRepository.class);
                 when(seriesRepository.findByBooksContains(any())).thenReturn(Streamable.empty());
                 management = new BookManagement(repository, seriesRepository, new ReadingManagement(readingRepository));
-                for (long i = 1; i <= numberOfTestBooks; i++) {
+                for (int i = 1; i <= numberOfTestBooks; i++) {
                     testBooks.add(management.createBook("Buch" + i, List.of(author), LocalDate.now(),
                             "978-3-492-70479-3", 969, Locale.GERMAN));
                 }
@@ -609,6 +619,447 @@ public class BookManagementUnitTest {
                     management.deleteBook(0);
                     fail();
                 } catch (NoSuchElementException ignored) {
+                }
+            }
+        }
+    }
+
+    @Nested
+    class SeriesTest {
+        @Nested
+        @SpringBootTest
+        @Transactional
+        class CreateSeriesTests {
+            Set<Series> series = new HashSet<>();
+            @Autowired
+            BookRepository bookRepository;
+            @Autowired
+            SeriesRepository seriesRepository;
+            @Autowired
+            BookManagement management;
+            @Autowired
+            AuthorRepository authorRepository;
+
+            @BeforeEach
+            void setup() {
+                management = new BookManagement(bookRepository, seriesRepository, mock(ReadingManagement.class));
+            }
+
+            @AfterEach
+            void tearDown() {
+                seriesRepository.deleteAll(series);
+                series.clear();
+            }
+
+            @Test
+            void createSeriesAssertsTitleBlank() {
+                EditSeriesForm form;
+                try {
+                    series.add(management.createSeries("", null));
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                    assertEquals(0, series.size());
+                }
+                form = new EditSeriesForm("", null);
+                try {
+                    series.add(management.createSeries(form));
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                    assertEquals(0, series.size());
+                }
+                try {
+                    series.add(management.createSeries(" ", null));
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                    assertEquals(0, series.size());
+                }
+                form = new EditSeriesForm(" ", null);
+                try {
+                    series.add(management.createSeries(form));
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                    assertEquals(0, series.size());
+                }
+            }
+
+            @Test
+            void createSeriesAddsAllBooks() {
+                Author author = authorRepository.save(new Author("Testi", "Tester", null, null, CountryCode.DE));
+                Book book1 = management.createBook("Titel1", List.of(author), LocalDate.now(), "978-3-492-70479-3", 69,
+                        Locale.GERMAN);
+                Book book2 = management.createBook("Titel2", List.of(author), LocalDate.now(), "978-3-492-70479-3", 69,
+                        Locale.GERMAN);
+                Series newSeries = management.createSeries("Series", List.of(book1, book2));
+                series.add(newSeries);
+                Set<Book> books = management.findSeriesById(newSeries.getId()).getBooks();
+                assertEquals(2, books.size());
+                assertTrue(books.contains(book1));
+                assertTrue(books.contains(book2));
+                management.deleteBook(book1);
+                management.deleteBook(book2);
+            }
+
+            @Test
+            void createSeriesAllowsBooksEmpty() {
+                try {
+                    series.add(management.createSeries("Title", Collections.emptyList()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fail();
+                }
+            }
+
+            @Test
+            void createSeriesAllowsBooksNull() {
+                try {
+                    series.add(management.createSeries("Title", null));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fail();
+                }
+            }
+
+            @Test
+            void createSeriesSavesInstanceWhenValid() {
+                EditSeriesForm form;
+                Series newSeries = new Series("Series", null);
+                try {
+                    Series savedSeries = management.createSeries(newSeries.getTitle(), null);
+                    series.add(savedSeries);
+                    assertTrue(management.findAllSeries().toList().contains(savedSeries));
+                    assertEquals(newSeries.getTitle(), savedSeries.getTitle());
+                    assertEquals(newSeries.getBooks().size(), savedSeries.getBooks().size());
+                    assertEquals(newSeries.getAuthors().size(), savedSeries.getAuthors().size());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fail();
+                }
+                form = new EditSeriesForm(newSeries.getTitle(), null);
+                try {
+                    Series savedSeries = management.createSeries(form);
+                    series.add(savedSeries);
+                    assertTrue(management.findAllSeries().toList().contains(savedSeries));
+                    assertEquals(newSeries.getTitle(), savedSeries.getTitle());
+                    assertEquals(newSeries.getBooks().size(), savedSeries.getBooks().size());
+                    assertEquals(newSeries.getAuthors().size(), savedSeries.getAuthors().size());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fail();
+                }
+            }
+
+            @Test
+            void createSeriesAssertsInvalidForm() {
+                EditSeriesForm form;
+                form = new EditSeriesForm("", null);
+                try {
+                    series.add(management.createSeries(form));
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                }
+                form = new EditSeriesForm(" ", null);
+                try {
+                    series.add(management.createSeries(form));
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+        }
+
+        @Nested
+        @SpringBootTest
+        @Transactional
+        class UpdateSeriesTests {
+            int numberOfTestSeries = 3;
+            int numberOfTestBooks = 5;
+            @Autowired
+            AuthorRepository authorRepository;
+            @Autowired
+            SeriesRepository seriesRepository;
+            @Autowired
+            BookRepository bookRepository;
+            BookManagement management;
+            List<Author> authors = new ArrayList<>();
+            List<Book> books = new ArrayList<>();
+            Set<Series> series = new HashSet<>();
+
+            @BeforeEach
+            void setup() {
+                authors.add(authorRepository.save(new Author("Testo", "Tester", null, null, CountryCode.DE)));
+                authors.add(authorRepository.save(new Author("Testi", "Tester", null, null, CountryCode.DE)));
+                management = new BookManagement(bookRepository, seriesRepository, mock(ReadingManagement.class));
+                for (int i = 0; i < numberOfTestBooks; i++) {
+                    books.add(management.createBook("Title", authors.subList(i % 2, i % 2 + 1), LocalDate.now(),
+                            "978-3-492-70479-3", 69, Locale.GERMAN));
+                }
+                for (int i = 0; i < numberOfTestSeries; i++) {
+                    series.add(management.createSeries("Series",
+                            books.subList(i, numberOfTestBooks - numberOfTestSeries + i)));
+                }
+            }
+
+            @AfterEach
+            void tearDown() {
+                seriesRepository.deleteAll(series);
+                series.clear();
+                bookRepository.deleteAll(books);
+                books.clear();
+                authorRepository.deleteAll(authors);
+                authors.clear();
+            }
+
+            @Test
+            void updateSeriesUpdatesAttributes() {
+                for (Series series : series) {
+                    SortedSet<Book> books = series.getBooks();
+                    Series updateSeries = management.updateSeries(series.getId(), "Changed", null);
+                    assertEquals("Changed", updateSeries.getTitle());
+                    assertEquals(0, updateSeries.getBooks().size());
+                }
+            }
+
+            @Test
+            void updateSeriesFormUpdatesAttributes() {
+                for (Series series : series) {
+                    SortedSet<Book> books = series.getBooks();
+                    EditSeriesForm form = new EditSeriesForm("Changed", null);
+                    Series updateSeries = management.updateSeries(series.getId(), form);
+                    assertEquals("Changed", updateSeries.getTitle());
+                    assertEquals(0, updateSeries.getBooks().size());
+                }
+            }
+
+            @Test
+            void updateSeriesSavesUpdatedInstance() {
+                for (Series series : series) {
+                    String title = series.getTitle();
+                    management.updateSeries(series.getId(), "Title", null);
+                    Series updated = management.findSeriesById(series.getId());
+                    assertNotEquals(title, updated.getTitle());
+                    assertEquals(0, updated.getBooks().size());
+                    EditSeriesForm form = new EditSeriesForm(title,
+                            series.getBooks().stream().map(Book::getId).collect(Collectors.toList()));
+                    management.updateSeries(series.getId(), form);
+                    assertEquals(title, management.findSeriesById(series.getId()).getTitle());
+                    assertEquals(series.getBooks().size(), management.findSeriesById(series.getId()).getBooks().size());
+                }
+            }
+
+            @Test
+            void updateSeriesAssertsInvalidForm() {
+                Series series = management.findAllSeries().stream().findAny().orElseThrow();
+                EditSeriesForm form;
+                form = new EditSeriesForm(null, null);
+                try {
+                    management.updateSeries(series.getId(), form);
+                    fail();
+                } catch (NullPointerException ignored) {
+                    assertEquals(series.getTitle(), management.findSeriesById(series.getId()).getTitle());
+                }
+                form = new EditSeriesForm("", null);
+                try {
+                    management.updateSeries(series.getId(), form);
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                    assertEquals(series.getTitle(), management.findSeriesById(series.getId()).getTitle());
+                }
+                form = new EditSeriesForm(" ", null);
+                try {
+                    management.updateSeries(series.getId(), form);
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                    assertEquals(series.getTitle(), management.findSeriesById(series.getId()).getTitle());
+                }
+            }
+
+            @Test
+            void updateSeriesAssertsInvalidId() {
+                try {
+                    management.updateSeries(0, "Title", null);
+                    fail();
+                } catch (NoSuchElementException ignored) {
+                }
+            }
+
+            @Test
+            void updateSeriesAssertsTitleBlank() {
+                Series series = management.findAllSeries().stream().findAny().orElseThrow();
+                try {
+                    management.updateSeries(series.getId(), " ", null);
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                    assertEquals(series.getTitle(), management.findSeriesById(series.getId()).getTitle());
+                }
+            }
+        }
+
+        @Nested
+        @SpringBootTest
+        class DeleteSeriesTests {
+            int numberOfTestSeries = 3;
+            int numberOfTestBooks = 5;
+            @Autowired
+            AuthorRepository authorRepository;
+            @Autowired
+            SeriesRepository seriesRepository;
+            @Autowired
+            BookRepository bookRepository;
+            BookManagement management;
+            List<Author> authors = new ArrayList<>();
+            List<Book> books = new ArrayList<>();
+            Set<Series> series = new HashSet<>();
+
+            @BeforeEach
+            void setup() {
+                authors.add(authorRepository.save(new Author("Testo", "Tester", null, null, CountryCode.DE)));
+                authors.add(authorRepository.save(new Author("Testi", "Tester", null, null, CountryCode.DE)));
+                management = new BookManagement(bookRepository, seriesRepository, mock(ReadingManagement.class));
+                for (int i = 0; i < numberOfTestBooks; i++) {
+                    books.add(management.createBook("Title", authors.subList(i % 2, i % 2 + 1), LocalDate.now(),
+                            "978-3-492-70479-3", 69, Locale.GERMAN));
+                }
+                for (int i = 0; i < numberOfTestSeries; i++) {
+                    series.add(management.createSeries("Series",
+                            books.subList(i, numberOfTestBooks - numberOfTestSeries + i)));
+                }
+            }
+
+            @AfterEach
+            void tearDown() {
+                seriesRepository.deleteAll(series);
+                series.clear();
+                bookRepository.deleteAll(books);
+                books.clear();
+                authorRepository.deleteAll(authors);
+                authors.clear();
+            }
+
+            @Test
+            void deleteSeriesDeletesSeries() {
+                for (Series series : series) {
+                    management.deleteSeries(series.getId());
+                    try {
+                        management.findSeriesById(series.getId());
+                        fail();
+                    } catch (NoSuchElementException ignored) {
+                    }
+                }
+            }
+
+            @Test
+            void deleteSeriesKeepsAssociatedBooks() {
+                for (Series series : series) {
+                    long bookCount = management.getBookCount();
+                    management.deleteSeries(series.getId());
+                    assertEquals(bookCount, management.getBookCount());
+                }
+            }
+
+            @Test
+            void deleteSeriesAssertsInvalidId() {
+                try {
+                    management.deleteSeries(0);
+                    fail();
+                } catch (EmptyResultDataAccessException ignored) {
+                }
+            }
+        }
+
+        @Nested
+        @SpringBootTest
+        @Transactional
+        class UpdateElementsTest {
+            int numberOfTestSeries = 3;
+            int numberOfTestBooks = 5;
+            @Autowired
+            AuthorRepository authorRepository;
+            @Autowired
+            SeriesRepository seriesRepository;
+            @Autowired
+            BookRepository bookRepository;
+            BookManagement management;
+            List<Author> authors = new ArrayList<>();
+            List<Book> books = new ArrayList<>();
+            Set<Series> series = new HashSet<>();
+
+            @BeforeEach
+            void setup() {
+                authors.add(authorRepository.save(new Author("Testo", "Tester", null, null, CountryCode.DE)));
+                authors.add(authorRepository.save(new Author("Testi", "Tester", null, null, CountryCode.DE)));
+                management = new BookManagement(bookRepository, seriesRepository, mock(ReadingManagement.class));
+                for (int i = 0; i < numberOfTestBooks; i++) {
+                    books.add(management.createBook("Title" + i, authors.subList(i % 2, i % 2 + 1), LocalDate.now(),
+                            "978-3-492-70479-3", 69, Locale.GERMAN));
+                }
+                for (int i = 0; i < numberOfTestSeries; i++) {
+                    series.add(management.createSeries("Series" + i,
+                            books.subList(i, numberOfTestBooks - numberOfTestSeries + i + 1)));
+                }
+            }
+
+            @AfterEach
+            void tearDown() {
+                seriesRepository.deleteAll(series);
+                series.clear();
+                bookRepository.deleteAll(books);
+                books.clear();
+                authorRepository.deleteAll(authors);
+                authors.clear();
+            }
+
+            @Test
+            void addBooksToSeriesAddsAllBooks() {
+                for (Series series : series) {
+                    for (Book book : books) {
+                        management.addBooksToSeries(book, series.getId());
+                        assertTrue(management.findSeriesById(series.getId()).getBooks().contains(book));
+                    }
+                    assertTrue(series.getBooks().containsAll(books));
+                }
+            }
+
+            @Test
+            void addBooksToSeriesAssertsInvalidId() {
+                try {
+                    management.addBooksToSeries(books, 0);
+                    fail();
+                } catch (NoSuchElementException ignored) {
+                }
+            }
+
+            @Test
+            void addBooksToSeriesAllowsBooksNull() {
+                Series series = this.series.stream().findAny().orElseThrow();
+                Set<Book> books = series.getBooks();
+                try {
+                    management.addBooksToSeries((Collection<Book>) null, series.getId());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fail();
+                }
+                assertEquals(books.size(), management.findSeriesById(series.getId()).getBooks().size());
+            }
+
+            @Test
+            void addBooksToSeriesAllowsBooksEmpty() {
+                Series series = this.series.stream().findAny().orElseThrow();
+                Set<Book> books = series.getBooks();
+                try {
+                    management.addBooksToSeries(Collections.emptyList(), series.getId());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fail();
+                }
+                assertEquals(books.size(), management.findSeriesById(series.getId()).getBooks().size());
+            }
+
+            @Test
+            void removeBookFromAllSeriesRemovesBookFromAllSeries() {
+                for (Book book : books) {
+                    management.removeBookFromAllSeries(book);
+                    for (Series series : series) {
+                        assertFalse(management.findSeriesById(series.getId()).getBooks().contains(book));
+                    }
                 }
             }
         }
