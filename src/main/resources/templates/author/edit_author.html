@@ -28,8 +28,8 @@
         <div class="col-3">
             <label class="form-label" for="birthDateString" th:text="#{author.birth}">Geburtsdatum</label>
             <!--suppress ThymeleafVariablesResolveInspection -->
-            <input class="form-control" data-date-format="dd.mm.yyyy" id="birthDateString"
-                   th:errorclass="form-control border-danger" th:field="*{birthDateString}" type="date">
+            <input class="form-control" data-date-format="dd.mm.yyyy" id="birthDateString" th:errorclass="border-danger"
+                   th:field="*{birthDateString}" type="date">
         </div>
         <div class="col-3">
             <label class="form-label" for="deathDateString" th:text="#{author.death}">Todesdatum</label>

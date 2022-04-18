@@ -19,10 +19,8 @@ public class EditAuthorForm {
     @NotNull
     @NotBlank
     private String lastName;
-    @NotNull
     @Pattern(regexp = "([0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|)")
     private String birthDateString;
-    @NotNull
     @Pattern(regexp = "([0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|)")
     private String deathDateString;
     @NotNull
@@ -59,11 +57,11 @@ public class EditAuthorForm {
     }
 
     public LocalDate getBirthDate() {
-        return birthDateString.isEmpty() ? null : LocalDate.parse(birthDateString);
+        return birthDateString.isBlank() ? null : LocalDate.parse(birthDateString);
     }
 
     public LocalDate getDeathDate() {
-        return deathDateString.isEmpty() ? null : LocalDate.parse(deathDateString);
+        return deathDateString.isBlank() ? null : LocalDate.parse(deathDateString);
     }
 
     public CountryCode getCountryCode() {
@@ -86,7 +84,8 @@ public class EditAuthorForm {
 
     public void setBirthDateString(
             @NonNull @Pattern(regexp = "[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])") String birthDateString) {
-        if (!birthDateString.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])")) {
+        if (!(birthDateString.isBlank() ||
+                birthDateString.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])"))) {
             throw new IllegalArgumentException("String must match date format");
         }
         this.birthDateString = birthDateString;
@@ -94,7 +93,8 @@ public class EditAuthorForm {
 
     public void setDeathDateString(
             @NonNull @Pattern(regexp = "[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])") String deathDateString) {
-        if (!deathDateString.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])")) {
+        if (!(deathDateString.isBlank() ||
+                deathDateString.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])"))) {
             throw new IllegalArgumentException("String must match date format");
         }
         this.deathDateString = deathDateString;

@@ -90,19 +90,23 @@ public class EditAuthorFormUnitTest {
         }
 
         @Test
-        void setBirthDateStringAssertsBlank() {
+        void setBirthDateStringAllowsBlank() {
             try {
                 form.setBirthDateString("");
+            } catch (Exception e) {
+                e.printStackTrace();
                 fail();
-            } catch (IllegalArgumentException ignored) {
             }
-            assertNull(form.getBirthDateString());
+            assertEquals("", form.getBirthDateString());
+            assertNull(form.getBirthDate());
             try {
                 form.setBirthDateString(" ");
+            } catch (Exception e) {
+                e.printStackTrace();
                 fail();
-            } catch (IllegalArgumentException ignored) {
             }
-            assertNull(form.getBirthDateString());
+            assertEquals(" ", form.getBirthDateString());
+            assertNull(form.getBirthDate());
         }
 
         @Test
@@ -119,19 +123,23 @@ public class EditAuthorFormUnitTest {
         }
 
         @Test
-        void setDeathDateStringAssertsBlank() {
+        void setDeathDateStringAllowsBlank() {
             try {
                 form.setDeathDateString("");
+            } catch (Exception e) {
+                e.printStackTrace();
                 fail();
-            } catch (IllegalArgumentException ignored) {
             }
-            assertNull(form.getDeathDateString());
+            assertEquals("", form.getDeathDateString());
+            assertNull(form.getDeathDate());
             try {
                 form.setDeathDateString(" ");
+            } catch (Exception e) {
+                e.printStackTrace();
                 fail();
-            } catch (IllegalArgumentException ignored) {
             }
-            assertNull(form.getDeathDateString());
+            assertEquals(" ", form.getDeathDateString());
+            assertNull(form.getDeathDate());
         }
 
         @Test
